@@ -73,10 +73,10 @@ Table of Contents
    3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  11
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
      4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  12
-     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  12
      4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  13
      4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  14
+     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  13
      4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  14
      4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  15
    5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  15
@@ -129,17 +129,17 @@ Internet-Draft               secevent-token                November 2017
    change of entity state, an implicit change of state or other higher-
    level security statements such as:
 
-   o The creation, modification, removal of a resource.
+   o  The creation, modification, removal of a resource.
 
-   o The resetting or suspension of an account.
+   o  The resetting or suspension of an account.
 
-   o The revocation of a security token prior to its expiry.
+   o  The revocation of a security token prior to its expiry.
 
-   o The logout of a user session.  Or,
+   o  The logout of a user session.  Or,
 
-   o A cumulative conclusion such as to indicate that a user has taken
-   over an email identifier that may have been used in the past by
-   another user.
+   o  A cumulative conclusion such as to indicate that a user has taken
+      over an email identifier that may have been used in the past by
+      another user.
 
    While subject state changes are often triggered by a user-agent or
    security-subsystem, the issuance and transmission of an event often
@@ -472,19 +472,10 @@ Internet-Draft               secevent-token                November 2017
 
    The following are new claims defined by this specification:
 
-   events  The semantics of this claim is to define a set of event
-      statements that each MAY add additional claims to fully describe a
-      single logical event that has occurred (e.g. a state change to a
-      subject).  Multiple event statements of the same type SHALL NOT be
-      accepted.  The "events" claim SHOULD NOT be used to express
-      multiple logical events.  The value of "events" is a JSON object
-      whose members are a set of JSON name/value pairs whose names are
-      URIs representing the event statements being expressed.  Event URI
-      values SHOULD be stable values (e.g. a permanent URL for an event
-      specification).  For each name present, the corresponding value
-      SHALL be a JSON object.  The JSON object MAY be an empty object
-      ("{}"), or it MAY be a JSON object containing data as described by
-      the Profiling Specification.
+   event  A JSON object containing an "event_type" member whose value is
+      a URI representing a type of event defined in a Profiling
+      Specification.  The object MAY otherwise be empty, or MAY contain
+      additional members as described by the Profiling Specification.
 
    txn  An OPTIONAL String value that represents a unique transaction
       identifier.  In cases where multiple SETs are issued based on
@@ -497,6 +488,15 @@ Internet-Draft               secevent-token                November 2017
    type, which can be used to indicate that the content is a SET.  SETs
    MAY include this media type in the "typ" header parameter of the JWT
    representing the SET to explicitly declare that the JWT is a SET.
+   This MUST be included if the SET could be used in an application
+   context in which it could be confused with other kinds of JWTs.
+
+   Per the definition of "typ" in Section 4.1.9 of [RFC7515], it is
+   RECOMMENDED that the "application/" prefix be omitted.  Therefore,
+   the "typ" value used SHOULD be "secevent+jwt".
+
+
+
 
 
 
@@ -505,13 +505,6 @@ Backman & Hunt            Expires May 18, 2018                  [Page 9]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   This MUST be included if the SET could be used in an application
-   context in which it could be confused with other kinds of JWTs.
-
-   Per the definition of "typ" in Section 4.1.9 of [RFC7515], it is
-   RECOMMENDED that the "application/" prefix be omitted.  Therefore,
-   the "typ" value used SHOULD be "secevent+jwt".
 
 2.3.  Security Event Token Construction
 
@@ -525,23 +518,21 @@ Internet-Draft               secevent-token                November 2017
    The following is an example JWT Claims Set for a security event token
    (which has been formatted for readability):
 
-   {
-     "jti": "4d3559ec67504aaba65d40b0363faad8",
-     "iat": 1458496404,
-     "iss": "https://scim.example.com",
-     "aud": [
+  {
+    "jti": "4d3559ec67504aaba65d40b0363faad8",
+    "iat": 1458496404,
+    "iss": "https://scim.example.com",
+    "aud": [
       "https://scim.example.com/Feeds/98d52461fa5bbc879593b7754",
       "https://scim.example.com/Feeds/5d7604516b1d08641d7676ee7"
-     ],
+    ],
 
-     "events": {
-       "urn:ietf:params:scim:event:create": {
-         "ref":
-           "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
-         "attributes":["id", "name", "userName", "password", "emails"]
-       }
-     }
-   }
+    "event": {
+      "event_type": "urn:ietf:params:scim:event:create",
+      "ref": "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
+      "attributes": ["id", "name", "userName", "password", "emails"]
+    }
+  }
 
                       Figure 4: Example Event Claims
 
@@ -553,6 +544,15 @@ Internet-Draft               secevent-token                November 2017
 
    {"typ":"secevent+jwt","alg":"none"}
 
+   Base64url encoding of the octets of the UTF-8 representation of the
+   JOSE Header yields:
+
+   eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
+
+   The example JWT Claims Set is encoded as follows:
+
+
+
 
 
 
@@ -562,34 +562,31 @@ Backman & Hunt            Expires May 18, 2018                 [Page 10]
 Internet-Draft               secevent-token                November 2017
 
 
-   Base64url encoding of the octets of the UTF-8 representation of the
-   JOSE Header yields:
-
-   eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
-
-   The example JWT Claims Set is encoded as follows:
-
-   eyJqdGkiOiI0ZDM1NTllYzY3NTA0YWFiYTY1ZDQwYjAzNjNmYWFkOCIsImlhdCI6MTQ1
-   ODQ5NjQwNCwiaXNzIjoiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tIiwiYXVkIjpbImh0
-   dHBzOi8vc2NpbS5leGFtcGxlLmNvbS9GZWVkcy85OGQ1MjQ2MWZhNWJiYzg3OTU5M2I3
-   NzU0IiwiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzVkNzYwNDUxNmIxZDA4
-   NjQxZDc2NzZlZTciXSwiZXZlbnRzIjp7InVybjppZXRmOnBhcmFtczpzY2ltOmV2ZW50
-   OmNyZWF0ZSI6eyJyZWYiOiJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNlcnMvNDRm
-   NjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsImF0dHJpYnV0ZXMiOlsiaWQiLCJuYW1lIiwi
-   dXNlck5hbWUiLCJwYXNzd29yZCIsImVtYWlscyJdfX19
+   ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
+   YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
+   LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
+   ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
+   LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
+   bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
+   dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
+   cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
+   aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
+   fQo=
 
    The encoded JWS signature is the empty string.  Concatenating the
    parts yields:
 
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-   eyJqdGkiOiI0ZDM1NTllYzY3NTA0YWFiYTY1ZDQwYjAzNjNmYWFkOCIsImlhdCI6MTQ1
-   ODQ5NjQwNCwiaXNzIjoiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tIiwiYXVkIjpbImh0
-   dHBzOi8vc2NpbS5leGFtcGxlLmNvbS9GZWVkcy85OGQ1MjQ2MWZhNWJiYzg3OTU5M2I3
-   NzU0IiwiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzVkNzYwNDUxNmIxZDA4
-   NjQxZDc2NzZlZTciXSwiZXZlbnRzIjp7InVybjppZXRmOnBhcmFtczpzY2ltOmV2ZW50
-   OmNyZWF0ZSI6eyJyZWYiOiJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNlcnMvNDRm
-   NjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsImF0dHJpYnV0ZXMiOlsiaWQiLCJuYW1lIiwi
-   dXNlck5hbWUiLCJwYXNzd29yZCIsImVtYWlscyJdfX19.
+   ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
+   YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
+   LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
+   ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
+   LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
+   bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
+   dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
+   cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
+   aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
+   fQo=.
 
              Figure 5: Example Unsecured Security Event Token
 
@@ -609,6 +606,9 @@ Internet-Draft               secevent-token                November 2017
    Profiling Specifications for SETs define the syntax and semantics of
    SETs conforming to that SET profile and rules for validating those
    SETs.  The syntax defined by profiling specifications includes what
+   claims and event payload values are used by SETs utilizing the
+   profile.
+
 
 
 
@@ -617,9 +617,6 @@ Backman & Hunt            Expires May 18, 2018                 [Page 11]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   claims and event payload values are used by SETs utilizing the
-   profile.
 
    Defining the semantics of the SET contents for SETs utilizing the
    profile is equally important.  Possibly most important is defining
@@ -663,9 +660,12 @@ Internet-Draft               secevent-token                November 2017
    signed using JWS [RFC7515] so that individual events can be
    authenticated and validated by the Event Receiver.
 
+4.2.  Delivery
 
-
-
+   This specification does not define a delivery mechanism by itself.
+   In addition to confidentiality and integrity (discussed above),
+   implementers and Profiling Specifications MUST consider the
+   consequences of delivery mechanisms that are not secure and/or not
 
 
 
@@ -674,12 +674,6 @@ Backman & Hunt            Expires May 18, 2018                 [Page 12]
 Internet-Draft               secevent-token                November 2017
 
 
-4.2.  Delivery
-
-   This specification does not define a delivery mechanism by itself.
-   In addition to confidentiality and integrity (discussed above),
-   implementers and Profiling Specifications MUST consider the
-   consequences of delivery mechanisms that are not secure and/or not
    assured.  For example, while a SET may be end-to-end secured using
    JWE encrypted SETs, without TLS there is no assurance that the
    correct endpoint received the SET and that it could be successfully
@@ -722,6 +716,12 @@ Internet-Draft               secevent-token                November 2017
    specification could use timestamps that allows new sessions to be
    started immediately after a stated logout event time.
 
+4.5.  Distinguishing SETs from ID Tokens
+
+   Because [RFC7519] states that "all claims that are not understood by
+   implementations MUST be ignored", there is a consideration that a SET
+   token might be confused with ID Token [OpenID.Core] if a SET is
+   mistakenly or intentionally used in a context requiring an ID Token.
 
 
 
@@ -730,12 +730,6 @@ Backman & Hunt            Expires May 18, 2018                 [Page 13]
 Internet-Draft               secevent-token                November 2017
 
 
-4.5.  Distinguishing SETs from ID Tokens
-
-   Because [RFC7519] states that "all claims that are not understood by
-   implementations MUST be ignored", there is a consideration that a SET
-   token might be confused with ID Token [OpenID.Core] if a SET is
-   mistakenly or intentionally used in a context requiring an ID Token.
    If a SET could otherwise be interpreted as a valid ID Token (because
    it includes the required claims for an ID Token and valid issuer and
    audience claim values for an ID Token) then that SET profile MUST
@@ -779,16 +773,18 @@ Internet-Draft               secevent-token                November 2017
       This is particularly useful if the same endpoint may receive both
       types of tokens.
 
+   o  Employ explicit typing, as described in Section 2.2, and modify
+      access token validation systems to use the "typ" header parameter
+      value.
+
+
+
 
 
 Backman & Hunt            Expires May 18, 2018                 [Page 14]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   o  Employ explicit typing, as described in Section 2.2, and modify
-      access token validation systems to use the "typ" header parameter
-      value.
 
 4.7.  Distinguishing SETs from other kinds of JWTs
 
@@ -833,6 +829,10 @@ Internet-Draft               secevent-token                November 2017
    If a SET needs to be retained for audit purposes, JWS MAY be used to
    provide verification of its authenticity.
 
+   Event Transmitters SHOULD attempt to specialize feeds so that the
+   content is targeted to the specific business and protocol needs of an
+   Event Receiver.
+
 
 
 
@@ -841,10 +841,6 @@ Backman & Hunt            Expires May 18, 2018                 [Page 15]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   Event Transmitters SHOULD attempt to specialize feeds so that the
-   content is targeted to the specific business and protocol needs of an
-   Event Receiver.
 
    When sharing personally identifiable information or information that
    is otherwise considered confidential to affected users, Event
@@ -890,6 +886,10 @@ Internet-Draft               secevent-token                November 2017
    o  Change Controller: IESG
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
+
+
+
+
 
 
 

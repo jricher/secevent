@@ -37,9 +37,9 @@
 
 
 <t>This specification defines the Security Event Token, which may be
-distributed via a protocol such as HTTP.  The Security Event Token
+distributed via a protocol such as HTTP. The Security Event Token
 (SET) specification profiles the JSON Web Token (JWT), which can be
-optionally signed and/or encrypted.  A SET describes a statement of
+optionally signed and/or encrypted. A SET describes a statement of
 fact from the perspective of an issuer that it intends to share with
 one or more receivers.</t>
 
@@ -55,16 +55,16 @@ one or more receivers.</t>
 
 <section anchor="intro" title="Introduction">
 <t>This specification defines an extensible Security Event Token (SET)
-format which may be exchanged using protocols such as HTTP.  The
+format which may be exchanged using protocols such as HTTP. The
 specification builds on the JSON Web Token (JWT) format <xref target="RFC7519"></xref> in
 order to provide a self-contained token that can be optionally signed
 using JSON Web Signature (JWS) <xref target="RFC7515"></xref> and/or encrypted using JSON
 Web Encryption (JWE) <xref target="RFC7516"></xref>.</t>
 
 <t>This specification profiles the use of JWT for the purpose of issuing
-security event tokens (SETs).  This specification defines a base
+security event tokens (SETs). This specification defines a base
 format upon which profiling specifications define actual events and
-their meanings.  Unless otherwise specified, this specification uses
+their meanings. Unless otherwise specified, this specification uses
 non-normative example events intended to demonstrate how events may
 be constructed.</t>
 
@@ -73,56 +73,54 @@ While security event tokens may be used for other purposes, the
 specification only considers security and privacy concerns relevant
 to identity and personal information.</t>
 
-<t>Security Events are not commands issued between parties.  A security
+<t>Security Events are not commands issued between parties. A security
 event is a statement of fact from the perspective of an issuer about
 the state of a security subject (e.g., a web resource, token, IP
 address, the issuer itself) that the issuer controls or is aware of,
-that has changed in some way (explicitly or implicitly).  A security
+that has changed in some way (explicitly or implicitly). A security
 subject MAY be permanent (e.g., a user account) or temporary (e.g.,
-an HTTP session) in nature.  A state change could describe a direct
+an HTTP session) in nature. A state change could describe a direct
 change of entity state, an implicit change of state or other higher-
 level security statements such as:</t>
 
-<t>o  The creation, modification, removal of a resource.</t>
-
-<t>o  The resetting or suspension of an account.</t>
-
-<t>o  The revocation of a security token prior to its expiry.</t>
-
-<t>o  The logout of a user session.  Or,</t>
-
-<t>o  A cumulative conclusion such as to indicate that a user has taken
+<t><list style="symbols">
+  <t>The creation, modification, removal of a resource.</t>
+  <t>The resetting or suspension of an account.</t>
+  <t>The revocation of a security token prior to its expiry.</t>
+  <t>The logout of a user session. Or,</t>
+  <t>A cumulative conclusion such as to indicate that a user has taken
 over an email identifier that may have been used in the past by
 another user.</t>
+</list></t>
 
 <t>While subject state changes are often triggered by a user-agent or
 security-subsystem, the issuance and transmission of an event often
 occurs asynchronously and in a back-channel to the action which
-caused the change that generated the security event.  Subsequently,
+caused the change that generated the security event. Subsequently,
 an Event Receiver, having received a SET, validates and interprets
-the received SET and takes its own independent actions, if any.  For
+the received SET and takes its own independent actions, if any. For
 example, having been informed of a personal identifier being
 associated with a different security subject (e.g., an email address
 is being used by someone else), the Event Receiver may choose to
 ensure that the new user is not granted access to resources
-associated with the previous user.  Or, the Event Receiver may not
+associated with the previous user. Or, the Event Receiver may not
 have any relationship with the subject, and no action is taken.</t>
 
 <t>While Event Receivers will often take actions upon receiving SETs,
-security events cannot be assumed to be commands or requests.  The
+security events cannot be assumed to be commands or requests. The
 intent of this specification is to define a way of exchanging
 statements of fact that Event Receivers may interpret for their own
-purposes.  As such, SETs have no capability for error signaling other
+purposes. As such, SETs have no capability for error signaling other
 to ensure the validation of a received SET.</t>
 
 <section anchor="conv" title="Notational Conventions">
 <t>The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”,
 “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and
 “OPTIONAL” in this document are to be interpreted as described in
-<xref target="RFC2119"></xref>.  These keywords are capitalized when used to unambiguously
+<xref target="RFC2119"></xref>. These keywords are capitalized when used to unambiguously
 specify requirements of the protocol or application features and
 behavior that affect the inter-operability and security of
-implementations.  When these words are not capitalized, they are
+implementations. When these words are not capitalized, they are
 meant in their natural-language sense.</t>
 
 <t>For purposes of readability, examples are not URL encoded.
@@ -130,7 +128,7 @@ Implementers MUST percent encode URLs as described in Section 2.1 of
 <xref target="RFC3986"></xref>.</t>
 
 <t>Throughout this document, all figures MAY contain spaces and extra
-line-wrapping for readability and space limitations.  Similarly, some
+line-wrapping for readability and space limitations. Similarly, some
 URIs contained within examples have been shortened for space and
 readability reasons.</t>
 
@@ -147,12 +145,12 @@ registered Event Receivers.</t>
 Event Receivers.</t>
   <t hangText='Event Receiver'><vspace blankLines='0'/>
   An Event Receiver is an entity that receives SETs through some
-distribution method.  An Event Receiver is the same entity
+distribution method. An Event Receiver is the same entity
 referred as “recipient” or “receiver” in and related
-specifications.  <xref target="RFC7519"></xref></t>
+specifications. <xref target="RFC7519"></xref></t>
   <t hangText='Subject'><vspace blankLines='0'/>
   A SET describes an event or state change that has occurred about a
-Subject.  A Subject may be a principal (e.g., Section 4.1.2
+Subject. A Subject may be a principal (e.g., Section 4.1.2
 <xref target="RFC7519"></xref>), a web resource, an entity such as an IP address, or
 the issuer itself that a SET might reference.</t>
 </list></t>
@@ -169,30 +167,30 @@ claims included.</t>
 representing one or more related security events about a Subject.</t>
 
 <t>The schema and structure of a SET follows the JWT <xref target="RFC7519"></xref>
-specification.  A SET has the following structure:</t>
+specification. A SET has the following structure:</t>
 
 <t><list style="symbols">
-  <t>An outer JSON object that acts as the SET “envelope”.  The
+  <t>An outer JSON object that acts as the SET “envelope”. The
 envelope contains a set of name/value pairs called the JWT Claims
 Set, typically common to every SET or common to a number of
 different Events within a single Profiling Specification or a
-related series of specifications.  Claims in the envelope (the
+related series of specifications. Claims in the envelope (the
 outer JSON structure) SHOULD be registered in the JWT Token Claims
 Registry <xref target="IANA.JWT.Claims"></xref> or be Public Claims or Private Claims
 as also defined in <xref target="RFC7519"></xref>.</t>
   <t>Envelope claims that are profiled and defined in this
 specification are used to validate a SET and declare the contents
-of the event data included in the SET.  The claim “events”
+of the event data included in the SET. The claim “events”
 identifies the event types expressed that are related to the
 Security Subject and MAY also include event-specific data.</t>
   <t>Each JSON member of the “events” object is a name and value pair.
 The JSON attribute name is a URI String value that expresses an
 event type, and the corresponding value is a JSON object known as
-the event “payload”.  The payload JSON object contains claims
+the event “payload”. The payload JSON object contains claims
 typically unique to the event’s URI type value and are not
-registered as JWT claims.  These claims are defined by their
-associated Profiling Specification.  An event with no payload
-claims SHALL be represented as the empty JSON object (“{}”).  In
+registered as JWT claims. These claims are defined by their
+associated Profiling Specification. An event with no payload
+claims SHALL be represented as the empty JSON object (“{}”). In
 many cases, one event URI expresses the primary event URI, while
 other events might be considered extensions that MAY be used to do
 things such as:</t>
@@ -206,7 +204,7 @@ Event Transmitter and Receiver.</t>
 </list></t>
 
 <t>The following is a non-normative example showing the JWT Claims Set
-for a hypothetical SCIM password reset SET.  This example shows an
+for a hypothetical SCIM password reset SET. This example shows an
 additional events value (“https://example.com/scim/event/
 passwordResetExt”) used to convey additional information – in this
 case, the current count of reset attempts:</t>
@@ -231,7 +229,7 @@ case, the current count of reset attempts:</t>
 ]]></artwork></figure>
 
 <t>The event in the figure above expresses hypothetical password reset
-event for SCIM <xref target="RFC7644"></xref>.  The JWT consists of:</t>
+event for SCIM <xref target="RFC7644"></xref>. The JWT consists of:</t>
 
 <t><list style="symbols">
   <t>An “events” claim specifying the hypothetical SCIM URN
@@ -247,7 +245,7 @@ The syntax of the “aud” claim is defined in Section 4.1.3
 </list></t>
 
 <t>In this example, the SCIM event indicates that a password has been
-updated and the current password reset count is 5.  Notice that the
+updated and the current password reset count is 5. Notice that the
 value for “resetAttempts” is actually part of its own JSON object
 associated with its own event URI attribute.</t>
 
@@ -273,9 +271,9 @@ registered claims “sub” and “sid” to identify the subject that was
 logged-out.</t>
 
 <t>In the following example JWT Claims Set, a fictional medical service
-collects consent for medical actions and notifies other parties.  The
+collects consent for medical actions and notifies other parties. The
 individual for whom consent is identified was originally
-authenticated via OpenID Connect.  In this case, the issuer of the
+authenticated via OpenID Connect. In this case, the issuer of the
 security event is an application rather than the OpenID provider:</t>
 
 <figure title="Example Consent Event" anchor="figconsentevent"><artwork><![CDATA[
@@ -301,7 +299,7 @@ security event is an application rather than the OpenID provider:</t>
 <t>In the above example, the attribute “iss” contained within the
 payload for the event “https://openid.net/heart/specs/consent.html”
 refers to the issuer of the Security Subject (“sub”) rather than the
-event issuer “https://my.examplemed.com”.  They are distinct from the
+event issuer “https://my.examplemed.com”. They are distinct from the
 top level value of “iss”, which always refers to the issuer of the
 event - a medical consent service that is a relying party to the
 OpenID Provider.</t>
@@ -314,13 +312,13 @@ definitions and are profiled for use in an event token:</t>
 <t><list style="hanging">
   <t hangText='jti'><vspace blankLines='0'/>
   As defined by Section 4.1.7 <xref target="RFC7519"></xref> contains a unique identifier
-for an event.  The identifier SHOULD be unique within a particular
+for an event. The identifier SHOULD be unique within a particular
 event feed and MAY be used by clients to track whether a
-particular event has already been received.  This claim is
+particular event has already been received. This claim is
 REQUIRED.</t>
   <t hangText='iss'><vspace blankLines='0'/>
   A single valued String containing the URI of the service provider
-publishing the SET (the issuer).  This claim is REQUIRED.  Note
+publishing the SET (the issuer). This claim is REQUIRED. Note
 that when a SET is expressing an event about a Security Subject
 for which the SET issuer is not the issuer of the Security
 Subject, the conflict SHALL be resolved by including the Security
@@ -332,26 +330,26 @@ This claim contains one or more audience identifiers for the SET.
 This claim is RECOMMENDED.</t>
   <t hangText='iat'><vspace blankLines='0'/>
   As defined by Section 4.1.6 <xref target="RFC7519"></xref>, a value containing a
-NumericDate, which represents when the event was issued.  Unless
+NumericDate, which represents when the event was issued. Unless
 otherwise specified, the value SHOULD be interpreted as equivalent
-to the actual time of the event.  This claim is REQUIRED.</t>
+to the actual time of the event. This claim is REQUIRED.</t>
   <t hangText='toe'><vspace blankLines='0'/>
   A number whose value is a Numeric Data ( see Section 2 <xref target="RFC7519"></xref>).
 The value is the date and time in which the event is
 believed to have occurred in the past or will occur in the future.
-This claim is RECOMMENDED.  Note that some profiles may choose to
+This claim is RECOMMENDED. Note that some profiles may choose to
 omit “toe” and convey event time information with the “iat”claim
 or another claim.</t>
   <t hangText='sub'><vspace blankLines='0'/>
   As defined by Section 4.1.2 <xref target="RFC7519"></xref>, a String or URI value
-representing the principal or the subject of the SET.  This is
-usually the entity whose “state” was changed.  For example, an IP
-Address was added to a black list.  A URI representing a user
-resource that was modified.  A token identifier for a revoked
-token.  If used, the Profiling Specification SHOULD define the
-content and format semantics for the value.  This claim is
+representing the principal or the subject of the SET. This is
+usually the entity whose “state” was changed. For example, an IP
+Address was added to a black list. A URI representing a user
+resource that was modified. A token identifier for a revoked
+token. If used, the Profiling Specification SHOULD define the
+content and format semantics for the value. This claim is
 OPTIONAL, as the principal for any given profile may already be
-identified without the inclusion of a subject claim.  Note that
+identified without the inclusion of a subject claim. Note that
 some SET profiles MAY choose to convey event subject information
 in the event payload (either using the “sub” member name or
 another name), particularly if the subject information is relative
@@ -359,7 +357,7 @@ to issuer information that is also conveyed in the event payload,
 which may be the case for some identity SET profiles.</t>
   <t hangText='exp'><vspace blankLines='0'/>
   As defined by <xref target="RFC7519"></xref>, this claim is time on which the JWT
-MUST NOT be accepted for processing.  In the context of a SET
+MUST NOT be accepted for processing. In the context of a SET
 however, this notion does not apply since a SET reflects something
 that has already been processed and is historical in nature.
 While some specifications MAY have a need for this claim, its use
@@ -369,25 +367,14 @@ in general cases is NOT RECOMMENDED.</t>
 <t>The following are new claims defined by this specification:</t>
 
 <t><list style="hanging">
-  <t hangText='events'>
-  The semantics of this claim is to define a set of event statements
-that each MAY add additional claims to fully describe a single
-logical event that has occurred (e.g. a state change to a
-subject).  Multiple event statements of the same type SHALL NOT be
-accepted.  The “events” claim SHOULD NOT be used to express
-multiple logical events.
-
-The value of “events” is a JSON object whose members are a set of
-JSON name/value pairs whose names are URIs representing the event
-statements being expressed.  Event URI values SHOULD be stable
-values (e.g. a permanent URL for an event specification).  For
-each name present, the corresponding value SHALL be a JSON object.
-The JSON object MAY be an empty object (“{}”), or it MAY be a JSON
-object containing data as described by the Profiling
-Specification.</t>
+  <t hangText='event'>
+  A JSON object containing an “event_type” member whose value is a URI
+representing a type of event defined in a Profiling Specification. The
+object MAY otherwise be empty, or MAY contain additional members as
+described by the Profiling Specification.</t>
   <t hangText='txn'>
   An OPTIONAL String value that represents a unique transaction
-identifier.  In cases where multiple SETs are issued based on
+identifier. In cases where multiple SETs are issued based on
 different event URIs, the transaction identifier MAY be used to
 correlate SETs to the same originating event or stateful change.</t>
 </list></t>
@@ -395,14 +382,14 @@ correlate SETs to the same originating event or stateful change.</t>
 </section>
 <section anchor="set-type" title="Explicit Typing of SETs">
 <t>This specification registers the “application/secevent+jwt” media
-type, which can be used to indicate that the content is a SET.  SETs
+type, which can be used to indicate that the content is a SET. SETs
 MAY include this media type in the “typ” header parameter of the JWT
 representing the SET to explicitly declare that the JWT is a SET.
 This MUST be included if the SET could be used in an application
 context in which it could be confused with other kinds of JWTs.</t>
 
 <t>Per the definition of “typ” in Section 4.1.9 of <xref target="RFC7515"></xref>, it is
-RECOMMENDED that the “application/” prefix be omitted.  Therefore,
+RECOMMENDED that the “application/” prefix be omitted. Therefore,
 the “typ” value used SHOULD be “secevent+jwt”.</t>
 
 </section>
@@ -423,16 +410,14 @@ NOT use SETs to convey authentication or authorization assertions.</t>
   "iat": 1458496404,
   "iss": "https://scim.example.com",
   "aud": [
-   "https://scim.example.com/Feeds/98d52461fa5bbc879593b7754",
-   "https://scim.example.com/Feeds/5d7604516b1d08641d7676ee7"
+    "https://scim.example.com/Feeds/98d52461fa5bbc879593b7754",
+    "https://scim.example.com/Feeds/5d7604516b1d08641d7676ee7"
   ],
-
-  "events": {
-    "urn:ietf:params:scim:event:create": {
-      "ref":
-        "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
-      "attributes":["id", "name", "userName", "password", "emails"]
-    }
+ 
+  "event": {
+    "event_type": "urn:ietf:params:scim:event:create",
+    "ref": "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
+    "attributes": ["id", "name", "userName", "password", "emails"]
   }
 }
 ]]></artwork></figure>
@@ -441,7 +426,7 @@ NOT use SETs to convey authentication or authorization assertions.</t>
 per <xref target="RFC7519"></xref>.</t>
 
 <t>The following is an example of a SCIM Event expressed as an unsecured
-JWT.  The JOSE Header is:</t>
+JWT. The JOSE Header is:</t>
 
 <figure><artwork><![CDATA[
 {"typ":"secevent+jwt","alg":"none"}
@@ -457,39 +442,43 @@ eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 <t>The example JWT Claims Set is encoded as follows:</t>
 
 <figure><artwork><![CDATA[
-eyJqdGkiOiI0ZDM1NTllYzY3NTA0YWFiYTY1ZDQwYjAzNjNmYWFkOCIsImlhdCI6MTQ1
-ODQ5NjQwNCwiaXNzIjoiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tIiwiYXVkIjpbImh0
-dHBzOi8vc2NpbS5leGFtcGxlLmNvbS9GZWVkcy85OGQ1MjQ2MWZhNWJiYzg3OTU5M2I3
-NzU0IiwiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzVkNzYwNDUxNmIxZDA4
-NjQxZDc2NzZlZTciXSwiZXZlbnRzIjp7InVybjppZXRmOnBhcmFtczpzY2ltOmV2ZW50
-OmNyZWF0ZSI6eyJyZWYiOiJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNlcnMvNDRm
-NjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsImF0dHJpYnV0ZXMiOlsiaWQiLCJuYW1lIiwi
-dXNlck5hbWUiLCJwYXNzd29yZCIsImVtYWlscyJdfX19
+ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
+YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
+LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
+ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
+LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
+bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
+dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
+cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
+aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
+fQo=
 ]]></artwork></figure>
 
-<t>The encoded JWS signature is the empty string.  Concatenating the
+<t>The encoded JWS signature is the empty string. Concatenating the
 parts yields:</t>
 
 <figure title="Example Unsecured Security Event Token" anchor="figset"><artwork><![CDATA[
 eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-eyJqdGkiOiI0ZDM1NTllYzY3NTA0YWFiYTY1ZDQwYjAzNjNmYWFkOCIsImlhdCI6MTQ1
-ODQ5NjQwNCwiaXNzIjoiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tIiwiYXVkIjpbImh0
-dHBzOi8vc2NpbS5leGFtcGxlLmNvbS9GZWVkcy85OGQ1MjQ2MWZhNWJiYzg3OTU5M2I3
-NzU0IiwiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzVkNzYwNDUxNmIxZDA4
-NjQxZDc2NzZlZTciXSwiZXZlbnRzIjp7InVybjppZXRmOnBhcmFtczpzY2ltOmV2ZW50
-OmNyZWF0ZSI6eyJyZWYiOiJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNlcnMvNDRm
-NjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsImF0dHJpYnV0ZXMiOlsiaWQiLCJuYW1lIiwi
-dXNlck5hbWUiLCJwYXNzd29yZCIsImVtYWlscyJdfX19.
+ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
+YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
+LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
+ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
+LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
+bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
+dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
+cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
+aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
+fQo=.
 ]]></artwork></figure>
 
 <t>For the purpose of a simpler example in Figure 5, an unsecured token
-was shown.  When SETs are not signed or encrypted, the Event Receiver
+was shown. When SETs are not signed or encrypted, the Event Receiver
 MUST employ other mechanisms such as TLS and HTTP to provide
 integrity, confidentiality, and issuer validation, as needed by the
 application.</t>
 
 <t>When validation (i.e. auditing), or additional transmission security
-is required, JWS signing and/or JWE encryption MAY be used.  To
+is required, JWS signing and/or JWE encryption MAY be used. To
 create and or validate a signed and/or encrypted SET, follow the
 instructions in Section 7 of <xref target="RFC7519"></xref>.</t>
 
@@ -498,23 +487,23 @@ instructions in Section 7 of <xref target="RFC7519"></xref>.</t>
 <section anchor="profile-req" title="Requirements for SET Profiles">
 <t>Profiling Specifications for SETs define the syntax and semantics of
 SETs conforming to that SET profile and rules for validating those
-SETs.  The syntax defined by profiling specifications includes what
+SETs. The syntax defined by profiling specifications includes what
 claims and event payload values are used by SETs utilizing the
 profile.</t>
 
 <t>Defining the semantics of the SET contents for SETs utilizing the
-profile is equally important.  Possibly most important is defining
+profile is equally important. Possibly most important is defining
 the procedures used to validate the SET issuer and to obtain the keys
 controlled by the issuer that were used for cryptographic operations
-used in the JWT representing the SET.  For instance, some profiles
+used in the JWT representing the SET. For instance, some profiles
 may define an algorithm for retrieving the SET issuer’s keys that
-uses the “iss” claim value as its input.  Likewise, if the profile
+uses the “iss” claim value as its input. Likewise, if the profile
 allows (or requires) that the JWT be unsecured, the means by which
 the integrity of the JWT is ensured MUST be specified.</t>
 
 <t>Profiling Specifications MUST define how the event Subject is
 identified in the SET, as well as how to differentiate between the
-event Subject’s Issuer and the SET Issuer, if applicable.  It is NOT
+event Subject’s Issuer and the SET Issuer, if applicable. It is NOT
 RECOMMENDED for Profiling Specifications to use the “sub” claim in
 cases in which the Subject is not globally unique and has a different
 Issuer from the SET itself.</t>
@@ -527,13 +516,13 @@ that the SET is both syntactically and semantically valid.</t>
 <section anchor="security" title="Security Considerations">
 
 <section anchor="c-and-i" title="Confidentiality and Integrity">
-<t>SETs may often contain sensitive information.  Therefore, methods for
+<t>SETs may often contain sensitive information. Therefore, methods for
 distribution of events SHOULD require the use of a transport-layer
-security mechanism when distributing events.  Parties MUST support
+security mechanism when distributing events. Parties MUST support
 TLS 1.2 <xref target="RFC5246"></xref> and MAY support additional transport-layer
-mechanisms meeting its security requirements.  When using TLS, the
+mechanisms meeting its security requirements. When using TLS, the
 client MUST perform a TLS/SSL server certificate check, per
-<xref target="RFC6125"></xref>.  Implementation security considerations for TLS can be
+<xref target="RFC6125"></xref>. Implementation security considerations for TLS can be
 found in “Recommendations for Secure Use of TLS and DTLS” <xref target="RFC7525"></xref>.</t>
 
 <t>Security Events distributed through third-parties or that carry
@@ -550,7 +539,7 @@ authenticated and validated by the Event Receiver.</t>
 In addition to confidentiality and integrity (discussed above),
 implementers and Profiling Specifications MUST consider the
 consequences of delivery mechanisms that are not secure and/or not
-assured.  For example, while a SET may be end-to-end secured using
+assured. For example, while a SET may be end-to-end secured using
 JWE encrypted SETs, without TLS there is no assurance that the
 correct endpoint received the SET and that it could be successfully
 processed.</t>
@@ -558,21 +547,21 @@ processed.</t>
 </section>
 <section anchor="sequencing" title="Sequencing">
 <t>As defined in this specification, there is no defined way to order
-multiple SETs in a sequence.  Depending on the type and nature of SET
-event, order may or may not matter.  For example, in provisioning,
+multiple SETs in a sequence. Depending on the type and nature of SET
+event, order may or may not matter. For example, in provisioning,
 event order is critical – an object could not be modified before it
-was created.  In other SET types, such as a token revocation, the
-order of SETs for revoked tokens does not matter.  If however, the
+was created. In other SET types, such as a token revocation, the
+order of SETs for revoked tokens does not matter. If however, the
 event was described as a log-in or logged-out status for a user
 subject, then order becomes important.</t>
 
 <t>Profiling Specifications and implementers SHOULD take caution when
-using timestamps such as “iat” to define order.  Distributed systems
+using timestamps such as “iat” to define order. Distributed systems
 will have some amount of clock-skew and thus time by itself will not
 guarantee order.</t>
 
 <t>Specifications profiling SET SHOULD define a mechanism for detecting
-order or sequence of events.  For example, the “txn” claim could
+order or sequence of events. For example, the “txn” claim could
 contain an ordered value (e.g., a counter) that the issuer defines.</t>
 
 </section>
@@ -584,11 +573,11 @@ Receiver in advance or well behind the process that caused the event.
 For example, a user having been required to logout and then log back
 in again, may cause a logout SET to be issued that may arrive at the
 same time as the user-agent accesses a web site having just logged-
-in.  If timing is not handled properly, the effect would be to
-erroneously treat the new user session as logged out.  Profiling
+in. If timing is not handled properly, the effect would be to
+erroneously treat the new user session as logged out. Profiling
 Specifications SHOULD be careful to anticipate timing and subject
-selection information.  For example, it might be more appropriate to
-cancel a “session” rather than a “user”.  Alternatively, the
+selection information. For example, it might be more appropriate to
+cancel a “session” rather than a “user”. Alternatively, the
 specification could use timestamps that allows new sessions to be
 started immediately after a stated logout event time.</t>
 
@@ -601,13 +590,13 @@ mistakenly or intentionally used in a context requiring an ID Token.
 If a SET could otherwise be interpreted as a valid ID Token (because
 it includes the required claims for an ID Token and valid issuer and
 audience claim values for an ID Token) then that SET profile MUST
-require that the “exp” claim not be present in the SET.  Because
+require that the “exp” claim not be present in the SET. Because
 “exp” is a required claim in ID Tokens, valid ID Token
 implementations will reject such a SET if presented as if it were an
 ID Token.</t>
 
 <t>Excluding “exp” from SETs that could otherwise be confused with ID
-Tokens is actually defense in depth.  In any OpenID Connect contexts
+Tokens is actually defense in depth. In any OpenID Connect contexts
 in which an attacker could attempt to substitute a SET for an ID
 Token, the SET would actually already be rejected as an ID Token
 because it would not contain the correct “nonce” claim value for the
@@ -647,11 +636,11 @@ value.</t>
 </section>
 <section anchor="not-other-jwts" title="Distinguishing SETs from other kinds of JWTs">
 <t>JWTs are now being used in application areas beyond the identity
-applications in which they first appeared.  For instance, the Session
+applications in which they first appeared. For instance, the Session
 Initiation Protocol (SIP) Via Header Field <xref target="RFC8055"></xref> and Personal
 Assertion Token (PASSporT) <xref target="I-D.ietf-stir-passport"></xref> specifications
 both define JWT profiles that use mostly or completely different sets
-of claims than are used by ID Tokens.  If it would otherwise be
+of claims than are used by ID Tokens. If it would otherwise be
 possible for an attacker to substitute a SET for one of these (or
 other) kinds of JWTs, then the SET profile must be defined in such a
 way that any substituted SET will result in its rejection when
@@ -659,26 +648,26 @@ validated as the intended kind of JWT.</t>
 
 <t>The most direct way to prevent confusion is to employ explicit
 typing, as described in Section 2.2, and modify applicable token
-validation systems to use the “typ” header parameter value.  This
+validation systems to use the “typ” header parameter value. This
 approach can be employed for new systems but may not be applicable to
 existing systems.</t>
 
 <t>Another way to ensure that a SET is not confused with another kind of
 JWT is to have the JWT validation logic reject JWTs containing an
-“events” claim unless the JWT is intended to be a SET.  This approach
+“events” claim unless the JWT is intended to be a SET. This approach
 can be employed for new systems but may not be applicable to existing
 systems.</t>
 
 <t>For many use cases, the simplest way to prevent substitution is
 requiring that the SET not include claims that are required for the
-kind of JWT that might be the target of an attack.  For example, for
+kind of JWT that might be the target of an attack. For example, for
 <xref target="RFC8055"></xref>, the “sip_callid” claim could be omitted and for
 <xref target="I-D.ietf-stir-passport"></xref>, the “orig” claim could be omitted.</t>
 
 <t>In many contexts, simple measures such as these will accomplish the
-task, should confusion otherwise even be possible.  Note that this
+task, should confusion otherwise even be possible. Note that this
 topic is being explored in a more general fashion in JSON Web Token
-Best Current Practices <xref target="I-D.sheffer-oauth-jwt-bcp"></xref>.  The proposed
+Best Current Practices <xref target="I-D.sheffer-oauth-jwt-bcp"></xref>. The proposed
 best practices in that draft may also be applicable for particular
 SET profiles and use cases.</t>
 
@@ -698,7 +687,7 @@ Transmitters and Receivers MUST have the appropriate legal agreements
 and user consent or terms of service in place.</t>
 
 <t>The propagation of subject identifiers can be perceived as personally
-identifiable information.  Where possible, Event Transmitters and
+identifiable information. Where possible, Event Transmitters and
 Receivers SHOULD devise approaches that prevent propagation – for
 example, the passing of a hash value that requires the Event Receiver
 to know the subject.</t>
@@ -1129,265 +1118,263 @@ specification.</t>
   </back>
 
 <!-- ##markdown-source:
-H4sIAOmNCloAA+19aW/bSLbo9/oVhAK8sftKsuR4iX0xeOOOk24H8dKxEycO
-ggFFliTGFKlmUXaUoOe337PVQkpKumfw8L7coIGWudRy6uwbe72eqrM618fR
-tU4WVVYvoxcPuqijm/JeF9HW9YubbRWPRpV+OI6MTjTe7NV4U6VlUsQzeDWt
-4nHdq7JkGhdF3Gs+1hsMVBrX8NjuYHjYGw57wz2VwIVJWS2Po6wYlyqbV8dR
-XS1MvTsYHA12lYorHfs1qceyup9U5WLuF6Hu9RIup8fRWVHrqtB17xTXoZSp
-4yL9Z5yXBUy61EbNs+PoY10m3ciUVV3psYFfyxn++ARTLeppWR2rqKci+JcV
-5jg66Uc/x8n9LC7oGm/zBDY30nmuG/fKahIX2de4zsoCnpnFX0u+oWdxlh9H
-Fiz/iOlWPylnjamu+tGvC9iOn+dqmuX+WnP8yypOch2OP4en+1N4+h/LeFqW
-PD78U0VZzeCtBw1bi85OLk76r25v+s/zOJuZY3oE/8npv7q+vIhu9UjOnZ/y
-D8XVRNfH0bSu58c7O4+Pj/0sLuI+rG0nNiabFDM4EbPz+bG2c53rNItvlnO9
-OhfdiujeX55hhu/2ann3zcvnu8Ph0TH/fHr07EB+7u/u2Z8Hw919+/Nwzz57
-uD/0P90DhwfDw2OFKBmCrnfaz3Q97pk6q3pzWM0csMjeMVM9HuuqVyIa9QAA
-vVEyx5uXc12cnfafl5VmCMju+Xr0vCwKndQR3o+G/YFaA4USHs3SPqD2jpnr
-xMiFXsLvwv8r3Rv+c9Cf1rNcCTwGfufPnj6zGwOy8jvf9z8P/M9DB4S9Pfn5
-bLBPz5p4lvNsu/1BYzcnxugKUdNEQHTRVVUCnZW5iQCEUT3V0eXJ9dm1Zy7u
-+eg8ru4X8+h1XEwW8UQDqzk5f70dvYMZlOr1elE8MjVge61uppmJEADZOEuI
-DqJUj7NCG5phHePqRo9ToLtoFi+jkVZpBkNlo0Wt0+gBcC+O5rLQyCzgsdhE
-v97cACVGNxsGVMQJW6uAQcZZLstoUdAWENu2XUYSF7iMco6vxXm+jBCjYTEA
-sx0AlC6SajmH1cEKTiKYCTZoElgxjB1HwM9qjegflWM1BohE46qc0aRzXeGS
-EFXhJgwXZcYsNII+rqMM/gPeWKSwwjIyU2Cq0WNWTxVwRuAr0QxxrwJ+Cq9X
-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
-0tjMLERYduCPTjQFqcD+UQBQ7Q1H9gC3qA/FDLMKW6HlM35kQejMdYthaJAg
-HOkg7ccpn1JVZbfIPo4AQMrKRWcVZLV/B41Yn1HLKsd9RkUEVKOJLOtKs77m
-fSzEuWjvLcvyCO+4QtIulfgaFYgpv8vGIXaQA4yzL1S4SmEwYbxwFUzQrvLQ
-ZlKiNXue1GlgwUq9oE0UszWUXDOcBH9uxMYAL3+YOxzUaCK3oGJf1suJzfjs
-Q67TxaezelE38lst86eDInSXvHzWhdWoTJcuW9LVl2woPqV1BskLXHOUhQnr
-xFgVCjL0kFlyty94X71N9KNuFDZ5Jnbl9WuzP4q/HutSW7x1G/ET68HqfUFC
-+fYaL/5e+nR//0gnB4f7g704HsUH++neYDR4evB0HMfpszVe/L3B3r+VP7E5
-a+FPpU/86PUfZU/8xcwHqnjUPsiGoc9xx7e++M9yMGgE53GHFX3EjIpu1EHZ
-jv9Hs/RCfttQLf6mWjHT2RwMEE2xGQZgkmZ0wigAl4S4ALqYqxwUIM2AaGa2
-MDaJDEyCmlglWdWIm7FRoL40otXfQ2c2MTByzWvxmZQcGlwUhNtgSyORio5y
-ef0i+pVFReaSf4inHTfZV7cT5xO4WJSF7jA81M8g3g/2FlXORSUiUnGfJbAb
-r8++vXnZe+Z1DFcchawjXMEy03lqV6GXrwb6/Ul2mb36end7kaezd4v0ef17
-+vS37PXzV9PRLwneW4x29/OzYsArosST9eSNXlmujkF4SIa1n+v39Jd7GO9s
-cHd6Pry4yfMPXz88vbg5GXy4fZl9uPkwvDv97fHD55OvF58vZnDt/vL5mTmb
-5dP0+dnB+c1vQ3V5+tv+xeffHi+eP2bx+4uvZ5/LLP71zSD59fzg9fLo64fd
-vH49e7f34Xb4OPrl7eLD7lF9lj1mH96/uz/7PB+dzaYDlf7689fL7NlDsnsx
-H13v5/qXl3Xyy5f89eziYXR99Mvd7bv7ZPls//KX34bnn3/bPb+9m17cvso+
-fJ08vbx5u3++e/ZUXXx9O8CRfzT768Fdfnf75uvrr+/uL75+eLw4ffvlYnb2
-5e70ZE/BVuAHrOMrPHSTZO+vH7O793f5qHgDW5sfnhXvlqPP8/nd+zezy+Ln
-aTKDlX6d00SXs3e7d7f7A3U5u1je3b4c3F2fHQCQ4fcHPLQy/fXNY/K1fHj9
-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
+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
+/2uKAmmdXqiZy0FSP6OYbE6F4gCdGobYzQvOuWrysahBgMl0CG3F88pQff7n
+YxNqg7duAjSi/BnB7aX8bq7wu+4kz3d3D3S8t7872AnDKNzbTXYG0eD53vNR
+GCYvVvhddwY7/2K0eynI/Cej3Wve/2m027p2nWfXk7CHP4xbU3GaNisBIvuX
+o+YIHeMlRUh+whB4N+igAor/ollxKb9NcA1/UylP1fm8wncr7rqm15bpmXEJ
+nbacsG+DnWJqsA+XdBEimOm8Muk+oNHVxCbJHELEBBk/Aw7nRxZ/hMusIWKU
+kdfi8t04jjPPCbHBDEIK5YD31c1p8JqlRGrTNIifHTZZV7cTZmO4mBe57jA4
+1C8g2Pd25mXGGf8iTHGbBbAaVyzx/vZl74VTLmzdCrINfwWLVGeJWYVevBno
+D0fpVfrm2/3dZZZMf50nx/VvyfO36fnxm0n0KsZ782h7NzvLB7wiShFYTdro
+SOPSBQSHpMCauZ6K8dnxm9+SVw8w5lF6+ertt8vb97v3dxfbl9/eP12+ejn5
+OD3dvrx7O7h4dfZ08e3jt/vpy8n9yTg9P6J3Z+rjh7f48tfLk/c7lycP25cn
+RwO6Oc2+xYuzPXioSF6/e4q/FY/nzy+/hHeD+f2HyST68Et1f7P7JdoepEpG
+myR3ONgv0XF6BH8fpeHrd4P49cXe+eLg28ftrD6f/rrz8W74FL16P/+4fVCf
+D+6z+7t3386/Peyo+5P3i8uTj1/vp6fDj9M3X65O4t3L24dvH7/Ezy9v38qS
+YeDpZJC8/uXbVfriMd6+nEU3u5l+9bKOX33N1Pn08jG6OXh1f/frQ7x4Mbw/
+ibcvTt4OL27v04u7t09XJx8H8C9sJN6+v3v//GwMg74cVLDi/8IV33+4z1SU
+0zb2zTbwYpS/GyWvs6f7G4LJMJ7u7IV3vw7uv8yePn6Ag/1wsUeruZ3Roavk
+ZPYlnv46SV69d0vP32T36R8C6uOvHy4zFecXj5cn76aXX04HF9N30yvYxv3J
+/eTjF4DTbTy8+PLy4ermrDIr/fgBAD7N0uTDu4xO72WVqvAOce8ojaYva1h+
+Rcvf/nVx6/6GLVx+S7YPFvfH9HcW3b2cRa8v0g9vYeWvB/+lRm+Lv3nYKjj5
+5u6Ga75IDqd+4mFFenoftQRUD0XD5chOCVT2r5BN//9w//9w//8v7vcbmWB6
+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
+38ggQ6GrfgAA
 
 -->
 
