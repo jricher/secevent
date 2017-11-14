@@ -195,8 +195,8 @@ Internet-Draft               secevent-token                November 2017
    The following definitions are used with SETs:
 
    Security Event Token (SET)
-      A SET is a JWT [RFC7519] that is distributed to one or more
-      registered Event Receivers.
+      A SET is a JWT [RFC7519] that contains an event payload describing
+      a security event.
 
    Event Transmitter
       A service provider that delivers SETs to other providers known as
@@ -214,9 +214,9 @@ Internet-Draft               secevent-token                November 2017
       [RFC7519]), a web resource, an entity such as an IP address, or
       the issuer itself that a SET might reference.
 
-   Profiling Specification A specification that uses the SET Token
-   specification to define one or more event types and the associated
-   claims included.
+   Profiling Specification
+      A specification that uses the SET Token specification to define
+      one or more event types and the associated claims included.
 
 
 
@@ -228,18 +228,18 @@ Internet-Draft               secevent-token                November 2017
 
 2.  The Security Event Token (SET)
 
-   A SET is a data structure that consists of an "event payload"
-   describing a security event, wrapped in an "envelope" providing
-   metadata and context for the security event.  The SET envelope is a
-   JWT as defined in [RFC7519], consisting of a JSON object containing a
-   set of claims.  The event payload is a JSON object contained within
-   the SET envelope, itself containing claims that contain information
-   about the event: the type of event, the subject of the event, and
+   A SET is a data structure that encodes an "event payload" describing
+   a security event, wrapped in an "envelope" providing metadata and
+   context for the security event.  The SET envelope is a JWT Claims Set
+   as defined in [RFC7519], consisting of a JSON object containing a set
+   of claims.  The event payload is a JSON object contained within the
+   SET envelope, itself containing claims that express information about
+   the event, e.g. the type of event, the subject of the event, and
    other information defined in a Profiling Specification.
 
-   This specification defines claims to be used in envelopes and claims
-   to be used in event payloads, however Profiling Specifications MAY
-   define additional claims for use in SETs.  It is RECOMMENDED that
+   This specification defines a core set of claims for use in SET
+   envelopes and event payloads, however Profiling Specifications MAY
+   define additional claims of both types.  It is RECOMMENDED that
    Profiling Specifications define claims to be used in the event
    payload rather than the envelope.  If a Profiling Specification does
    define envelope claims, those claims SHOULD be registered in the JWT
@@ -285,14 +285,16 @@ Internet-Draft               secevent-token                November 2017
       A unique identifier for an event, as defined by Section 4.1.7 of
       [RFC7519].  This claim is REQUIRED.
 
-   This specification defines the following new claims for use in SETs:
+   This specification defines the following new claims for use in the
+   SET envelope:
 
    event
       A JSON object known as the "event payload", whose contents
       identify the type of event contained within the SET and contain
       additional information defined as part of an event type definition
-      in a Profiling Specification.  This specification defines the
-      following claims for use in event payloads:
+      in a Profiling Specification.
+      This specification defines the following claims for use in event
+      payloads:
 
       event_type
          A string containing a URI that uniquely identifies an event
@@ -304,12 +306,6 @@ Internet-Draft               secevent-token                November 2017
          This object SHOULD NOT contain more information than is
          necessary to enable the receiver to identify the subject.  This
          claim is RECOMMENDED.
-
-      The event payload MAY contain additional claims, such as those
-      defined as part of the event type definition in a Profiling
-      Specification.  The format and meaning of these claims is out of
-      scope of this specification.  Implementations SHOULD ignore any
-      claims in the event payload that they do not understand.
 
    toe
       A number identifying the date and time at which the event is
@@ -327,8 +323,12 @@ Internet-Draft               secevent-token                November 2017
       SETs to the same originating event or stateful change.  This claim
       is OPTIONAL.
 
-   The following is a non-normative example showing a SET containing a
-   hypothetical event with two additional claims in the payload.
+   Both the SET envelope and event payload MAY contain additional
+   claims, such as those defined in a Profiling Specification.  The
+   format and meaning of these claims is out of scope of this
+   specification.  Implementations SHOULD ignore any claims in the SET
+   envelope or event payload that they do not understand.
+
 
 
 
@@ -338,16 +338,19 @@ Backman & Hunt            Expires May 18, 2018                  [Page 6]
 Internet-Draft               secevent-token                November 2017
 
 
+   The following is a non-normative example showing a SET envelope
+   expressing a hypothetical event with two additional claims in the
+   event payload:
+
    {
      "jti": "3d0c3cf797584bd193bd0fb1bd4e7d30",
-     "typ": "secevent+jwt",
      "iss": "https://transmitter.example.com",
      "aud": [ "https://receiver.example.com" ],
      "iat": 1458496025,
      "toe": 1458492425,
      "txn": "5bb4ddd2-3e77-4e0b-a406-03c8fdc287c2",
      "event": {
-           "event_type": "https://secevent.example.com/example_event",
+       "event_type": "https://secevent.example.com/example_event",
        "sub": {
          "email": "user@example.com"
        },
@@ -380,12 +383,9 @@ Internet-Draft               secevent-token                November 2017
 
 2.3.  Security Event Token Construction
 
-   A SET is a JWT [RFC7519] that is constructed by building a JSON
-   structure that constitutes an event object which is then used as the
-   body of a JWT.
+   A SET is a JWT, and therefore it's construction follows that
+   described in [RFC7519].
 
-   While this specification uses JWT to convey a SET, implementers SHALL
-   NOT use SETs to convey authentication or authorization assertions.
 
 
 
@@ -394,11 +394,11 @@ Backman & Hunt            Expires May 18, 2018                  [Page 7]
 Internet-Draft               secevent-token                November 2017
 
 
-   When transmitted, the above JSON body must be converted into a JWT as
-   per [RFC7519].
+   While this specification uses JWT to convey a SET, implementers SHALL
+   NOT use SETs to convey authentication or authorization assertions.
 
-   The following is an example of a SCIM Event expressed as an unsecured
-   JWT.  The JOSE Header is:
+   The following is the example JWT Claims Set from Figure 1, expressed
+   as an unsigned JWT.  The JOSE Header is:
 
    {"typ":"secevent+jwt","alg":"none"}
 
@@ -421,7 +421,7 @@ Internet-Draft               secevent-token                November 2017
    fQo=
 
    The encoded JWS signature is the empty string.  Concatenating the
-   parts yields:
+   parts yields the following complete JWT:
 
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
    ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
@@ -459,9 +459,9 @@ Internet-Draft               secevent-token                November 2017
 
    Profiling Specifications for SETs define the syntax and semantics of
    SETs conforming to that SET profile and rules for validating those
-   SETs.  The syntax defined by profiling specifications includes what
-   claims and event payload values are used by SETs utilizing the
-   profile.
+   SETs.  The syntax defined by Profiling Specifications includes what
+   SET envelope and event payload claims are used by SETs expressing and
+   event defined by the profile.
 
    Defining the semantics of the SET contents for SETs utilizing the
    profile is equally important.  Possibly most important is defining
@@ -476,9 +476,9 @@ Internet-Draft               secevent-token                November 2017
    Profiling Specifications MUST define how the event Subject is
    identified in the SET, as well as how to differentiate between the
    event Subject's Issuer and the SET Issuer, if applicable.  It is NOT
-   RECOMMENDED for Profiling Specifications to use the "sub" claim in
-   cases in which the Subject is not globally unique and has a different
-   Issuer from the SET itself.
+   RECOMMENDED for Profiling Specifications to use the "sub" claim
+   defined in [RFC7519] in cases in which the Subject is not globally
+   unique and has a different Issuer from the SET itself.
 
    Profiling Specifications MUST clearly specify the steps that a
    recipient of a SET utilizing that profile MUST perform to validate
@@ -701,15 +701,15 @@ Internet-Draft               secevent-token                November 2017
 
 6.1.  JSON Web Token Claims Registration
 
-   This specification registers the "events", "toe", and "txn" claims in
+   This specification registers the "event", "toe", and "txn" claims in
    the IANA "JSON Web Token Claims" registry [IANA.JWT.Claims]
    established by [RFC7519].
 
 6.1.1.  Registry Contents
 
-   o  Claim Name: "events"
+   o  Claim Name: "event"
 
-   o  Claim Description: Security Event URI
+   o  Claim Description: Security Event Payload
 
    o  Change Controller: IESG
 
@@ -804,11 +804,11 @@ Internet-Draft               secevent-token                November 2017
 7.1.  Normative References
 
    [IANA.JWT.Claims]
-              "JSON Web Token Claims", n.d.,
+              IANA, "JSON Web Token Claims", n.d.,
               <http://www.iana.org/assignments/jwt>.
 
    [IANA.MediaTypes]
-              "Media Types", n.d.,
+              IANA, "Media Types", n.d.,
               <http://www.iana.org/assignments/media-types>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -856,10 +856,6 @@ Internet-Draft               secevent-token                November 2017
               (DTLS)", BCP 195, RFC 7525, DOI 10.17487/RFC7525, May
               2015, <https://www.rfc-editor.org/info/rfc7525>.
 
-   [RFC7617]  Reschke, J., "The 'Basic' HTTP Authentication Scheme",
-              RFC 7617, DOI 10.17487/RFC7617, September 2015,
-              <https://www.rfc-editor.org/info/rfc7617>.
-
 7.2.  Informative References
 
    [I-D.ietf-stir-passport]
@@ -886,9 +882,13 @@ Internet-Draft               secevent-token                November 2017
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <https://www.rfc-editor.org/info/rfc6838>.
 
-   [RFC7009]  Lodderstedt, T., Ed., Dronia, S., and M. Scurtescu, "OAuth
-              2.0 Token Revocation", RFC 7009, DOI 10.17487/RFC7009,
-              August 2013, <https://www.rfc-editor.org/info/rfc7009>.
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/info/rfc7515>.
+
+   [RFC7516]  Jones, M. and J. Hildebrand, "JSON Web Encryption (JWE)",
+              RFC 7516, DOI 10.17487/RFC7516, May 2015,
+              <https://www.rfc-editor.org/info/rfc7516>.
 
 
 
@@ -898,35 +898,14 @@ Backman & Hunt            Expires May 18, 2018                 [Page 16]
 Internet-Draft               secevent-token                November 2017
 
 
-   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
-              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
-              2015, <https://www.rfc-editor.org/info/rfc7515>.
-
-   [RFC7516]  Jones, M. and J. Hildebrand, "JSON Web Encryption (JWE)",
-              RFC 7516, DOI 10.17487/RFC7516, May 2015,
-              <https://www.rfc-editor.org/info/rfc7516>.
-
-   [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
-              DOI 10.17487/RFC7517, May 2015, <https://www.rfc-
-              editor.org/info/rfc7517>.
-
-   [RFC7644]  Hunt, P., Ed., Grizzle, K., Ansari, M., Wahlstroem, E.,
-              and C. Mortimore, "System for Cross-domain Identity
-              Management: Protocol", RFC 7644, DOI 10.17487/RFC7644,
-              September 2015, <https://www.rfc-editor.org/info/rfc7644>.
-
    [RFC8055]  Holmberg, C. and Y. Jiang, "Session Initiation Protocol
               (SIP) Via Header Field Parameter to Indicate Received
               Realm", RFC 8055, DOI 10.17487/RFC8055, January 2017,
               <https://www.rfc-editor.org/info/rfc8055>.
 
-   [saml-core-2.0]
-              "Assertions and Protocols for the OASIS Security Assertion
-              Markup Language (SAML) V2.0", n.d..
-
 Appendix A.  Acknowledgments
 
-   The editors would like to thank the participants in the IETF secevent
+   The editors would like to thank the participants on the IETF secevent
    mailing list and related working groups for their support of this
    specification.
 
@@ -942,6 +921,27 @@ Authors' Addresses
    Oracle
 
    Email: phil.hunt@yahoo.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
