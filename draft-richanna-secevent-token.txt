@@ -76,21 +76,22 @@ Table of Contents
      2.4.  Security Event Token Construction . . . . . . . . . . . .  10
    3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  11
    4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  13
+     4.1.  Extending Events  . . . . . . . . . . . . . . . . . . . .  14
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
      5.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  14
-     5.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  14
-     5.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  15
+     5.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  15
      5.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  15
-     5.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  15
+     5.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  16
      5.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  16
-     5.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  16
-   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  17
+     5.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  17
+   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  18
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
      7.1.  SET Subject Identifier Types Registry . . . . . . . . . .  18
      7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  18
        7.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
-     7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  18
-       7.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
+     7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  19
+       7.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  19
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
@@ -105,7 +106,6 @@ Table of Contents
    order to provide a self-contained token that can be optionally signed
    using JSON Web Signature (JWS) [RFC7515] and/or encrypted using JSON
    Web Encryption (JWE) [RFC7516].
-
 
 
 
@@ -737,6 +737,29 @@ Internet-Draft               secevent-token                November 2017
    recipient of a SET utilizing that profile MUST perform to validate
    that the SET is both syntactically and semantically valid.
 
+4.1.  Extending Events
+
+   As needs change and new use cases develop, it may be desirable to
+   augment existing event definitions with new claims.  To enable this,
+   Profiling Specifications MAY define extensions to existing event
+   types.  An event extension consists of a set of one or more event
+   payload claim definitions that provide the extra information
+   expressed by the extension, and a set of URIs that identify the event
+   types to which the event extension may be applied.  /* ed.: Is it
+   necessary to identify which event extensions are being used on an
+   event?  Is "duck typing" good enough here? */
+
+   Event extensions SHOULD be defined in documents that are produced
+   through the same standardization process as the documents that define
+   the event types being extended.  For example, if an event type is
+   defined in an RFC produced by an IETF working group, event extensions
+   that apply to that event SHOULD be defined by that same working
+   group.  This helps to minimize the possibility of redundant or
+   conflicting event extensions, and ensure that event extension
+   creators have the proper context for the events they are extending.
+   /* ed.: Guidance on avoiding name conflict with extension claims: put
+   it here, or in an implementation considerations section? */
+
 5.  Security Considerations
 
 5.1.  Confidentiality and Integrity
@@ -753,6 +776,15 @@ Internet-Draft               secevent-token                November 2017
    Security Events distributed through third-parties or that carry
    personally identifiable information, SHOULD be encrypted using JWE
    [RFC7516] or secured for confidentiality by other means.
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 14]
+
+Internet-Draft               secevent-token                November 2017
+
 
    Unless integrity of the JWT is ensured by other means, it MUST be
    signed using JWS [RFC7515] so that individual events can be
@@ -777,15 +809,6 @@ Internet-Draft               secevent-token                November 2017
    event order is critical - an object could not be modified before it
    was created.  In other SET types, such as a token revocation, the
    order of SETs for revoked tokens does not matter.  If however, the
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 14]
-
-Internet-Draft               secevent-token                November 2017
-
-
    event was described as a log-in or logged-out status for a user
    subject, then order becomes important.
 
@@ -811,6 +834,14 @@ Internet-Draft               secevent-token                November 2017
    erroneously treat the new user session as logged out.  Profiling
    Specifications SHOULD be careful to anticipate timing and subject
    selection information.  For example, it might be more appropriate to
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 15]
+
+Internet-Draft               secevent-token                November 2017
+
+
    cancel a "session" rather than a "user".  Alternatively, the
    specification could use timestamps that allows new sessions to be
    started immediately after a stated logout event time.
@@ -834,14 +865,6 @@ Internet-Draft               secevent-token                November 2017
    in which an attacker could attempt to substitute a SET for an ID
    Token, the SET would actually already be rejected as an ID Token
    because it would not contain the correct "nonce" claim value for the
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 15]
-
-Internet-Draft               secevent-token                November 2017
-
-
    ID Token to be accepted in contexts for which substitution is
    possible.
 
@@ -867,6 +890,14 @@ Internet-Draft               secevent-token                November 2017
       between the Event Receiver and the protected resource that is the
       audience of an access token.
 
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 16]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Modify access token validation systems to check for the presence
       of the "events" claim as a means to detect security event tokens.
       This is particularly useful if the same endpoint may receive both
@@ -888,15 +919,6 @@ Internet-Draft               secevent-token                November 2017
    other) kinds of JWTs, then the SET profile must be defined in such a
    way that any substituted SET will result in its rejection when
    validated as the intended kind of JWT.
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 16]
-
-Internet-Draft               secevent-token                November 2017
-
 
    The most direct way to prevent confusion is to employ explicit
    typing, as described in Section 2.2, and modify applicable token
@@ -923,6 +945,15 @@ Internet-Draft               secevent-token                November 2017
    best practices in that draft may also be applicable for particular
    SET profiles and use cases.
 
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 17]
+
+Internet-Draft               secevent-token                November 2017
+
+
 6.  Privacy Considerations
 
    If a SET needs to be retained for audit purposes, JWS MAY be used to
@@ -942,17 +973,6 @@ Internet-Draft               secevent-token                November 2017
    Receivers SHOULD devise approaches that prevent propagation - for
    example, the passing of a hash value that requires the Event Receiver
    to know the subject.
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 17]
-
-Internet-Draft               secevent-token                November 2017
-
 
 7.  IANA Considerations
 
@@ -983,6 +1003,13 @@ Internet-Draft               secevent-token                November 2017
 
    o  Change Controller: IESG
 
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 18]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
    o  Claim Name: "txn"
@@ -1001,14 +1028,6 @@ Internet-Draft               secevent-token                November 2017
    [RFC2046] in the "Media Types" registry [IANA.MediaTypes] in the
    manner described in [RFC6838], which can be used to indicate that the
    content is a SET.
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 18]
-
-Internet-Draft               secevent-token                November 2017
-
 
    o  Type name: application
 
@@ -1039,6 +1058,14 @@ Internet-Draft               secevent-token                November 2017
 
    o  File extension(s): n/a
 
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 19]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Macintosh file type code(s): n/a
 
    o  Person & email address to contact for further information: Michael
@@ -1053,18 +1080,6 @@ Internet-Draft               secevent-token                November 2017
    o  Change controller: IESG
 
    o  Provisional registration?  No
-
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 19]
-
-Internet-Draft               secevent-token                November 2017
-
 
 8.  References
 
@@ -1097,6 +1112,16 @@ Internet-Draft               secevent-token                November 2017
               DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
               editor.org/info/rfc5246>.
 
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 20]
+
+Internet-Draft               secevent-token                November 2017
+
+
    [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
               DOI 10.17487/RFC5322, October 2008, <https://www.rfc-
               editor.org/info/rfc5322>.
@@ -1111,16 +1136,6 @@ Internet-Draft               secevent-token                November 2017
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 20]
-
-Internet-Draft               secevent-token                November 2017
-
 
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
@@ -1153,6 +1168,16 @@ Internet-Draft               secevent-token                November 2017
               DOI 10.17487/RFC2046, November 1996, <https://www.rfc-
               editor.org/info/rfc2046>.
 
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 21]
+
+Internet-Draft               secevent-token                November 2017
+
+
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
@@ -1170,13 +1195,6 @@ Internet-Draft               secevent-token                November 2017
               (SIP) Via Header Field Parameter to Indicate Received
               Realm", RFC 8055, DOI 10.17487/RFC8055, January 2017,
               <https://www.rfc-editor.org/info/rfc8055>.
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 21]
-
-Internet-Draft               secevent-token                November 2017
-
 
 Appendix A.  Acknowledgments
 
@@ -1196,24 +1214,6 @@ Authors' Addresses
    Oracle
 
    Email: phil.hunt@yahoo.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

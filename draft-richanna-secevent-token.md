@@ -580,6 +580,28 @@ Profiling Specifications MUST clearly specify the steps that a
 recipient of a SET utilizing that profile MUST perform to validate
 that the SET is both syntactically and semantically valid.
 
+Extending Events {#extensions}
+----------------
+As needs change and new use cases develop, it may be desirable to augment
+existing event definitions with new claims. To enable this, Profiling
+Specifications MAY define extensions to existing event types. An event
+extension consists of a set of one or more event payload claim definitions
+that provide the extra information expressed by the extension, and a set of
+URIs that identify the event types to which the event extension may be
+applied.
+/* ed.: Is it necessary to identify which event extensions are being used on
+an event? Is "duck typing" good enough here? */
+
+Event extensions SHOULD be defined in documents that are produced through
+the same standardization process as the documents that define the event
+types being extended. For example, if an event type is defined in an RFC
+produced by an IETF working group, event extensions that apply to that event
+SHOULD be defined by that same working group. This helps to minimize the
+possibility of redundant or conflicting event extensions, and ensure that
+event extension creators have the proper context for the events they are
+extending.
+/* ed.: Guidance on avoiding name conflict with extension claims: put it
+here, or in an implementation considerations section? */
 
 Security Considerations {#security}
 =======================
