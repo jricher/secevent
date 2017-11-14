@@ -67,29 +67,29 @@ Table of Contents
      1.1.  Notational Conventions  . . . . . . . . . . . . . . . . .   4
      1.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  The Security Event Token (SET)  . . . . . . . . . . . . . . .   5
-     2.1.  Core SET Claims . . . . . . . . . . . . . . . . . . . . .   8
-     2.2.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .   9
-     2.3.  Security Event Token Construction . . . . . . . . . . . .  10
-   3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  11
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-     4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  12
-     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  13
-     4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  13
-     4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  14
-     4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  15
-   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  15
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-     6.1.  JSON Web Token Claims Registration  . . . . . . . . . . .  16
-       6.1.1.  Registry Contents . . . . . . . . . . . . . . . . . .  16
-     6.2.  Media Type Registration . . . . . . . . . . . . . . . . .  17
-       6.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  17
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
+     2.1.  SET Claims  . . . . . . . . . . . . . . . . . . . . . . .   5
+     2.2.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .   7
+     2.3.  Security Event Token Construction . . . . . . . . . . . .   7
+   3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .   9
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+     4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .   9
+     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  10
+     4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  10
+     4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  10
+     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  11
+     4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  11
+     4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  12
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  13
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+     6.1.  JSON Web Token Claims Registration  . . . . . . . . . . .  13
+       6.1.1.  Registry Contents . . . . . . . . . . . . . . . . . .  13
+     6.2.  Media Type Registration . . . . . . . . . . . . . . . . .  14
+       6.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  14
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  16
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -228,52 +228,52 @@ Internet-Draft               secevent-token                November 2017
 
 2.  The Security Event Token (SET)
 
-   A SET is a data structure (in the form of a JWT [RFC7519])
-   representing one or more related security events about a Subject.
+   A SET is a data structure that consists of an "event payload"
+   describing a security event, wrapped in an "envelope" providing
+   metadata and context for the security event.  The SET envelope is a
+   JWT as defined in [RFC7519], consisting of a JSON object containing a
+   set of claims.  The event payload is a JSON object contained within
+   the SET envelope, itself containing claims that contain information
+   about the event: the type of event, the subject of the event, and
+   other information defined in a Profiling Specification.
 
-   The schema and structure of a SET follows the JWT [RFC7519]
-   specification.  A SET has the following structure:
+   This specification defines claims to be used in envelopes and claims
+   to be used in event payloads, however Profiling Specifications MAY
+   define additional claims for use in SETs.  It is RECOMMENDED that
+   Profiling Specifications define claims to be used in the event
+   payload rather than the envelope.  If a Profiling Specification does
+   define envelope claims, those claims SHOULD be registered in the JWT
+   Token Claims Registry [IANA.JWT.Claims] or have Public Claim Names as
+   defined in Section 4.2 of [RFC7519].
 
-   o  An outer JSON object that acts as the SET "envelope".  The
-      envelope contains a set of name/value pairs called the JWT Claims
-      Set, typically common to every SET or common to a number of
-      different Events within a single Profiling Specification or a
-      related series of specifications.  Claims in the envelope (the
-      outer JSON structure) SHOULD be registered in the JWT Token Claims
-      Registry [IANA.JWT.Claims] or be Public Claims or Private Claims
-      as also defined in [RFC7519].
+2.1.  SET Claims
 
-   o  Envelope claims that are profiled and defined in this
-      specification are used to validate a SET and declare the contents
-      of the event data included in the SET.  The claim "events"
-      identifies the event types expressed that are related to the
-      Security Subject and MAY also include event-specific data.
+   This specification profiles the following claims defined in [RFC7519]
+   for use in the SET envelope:
 
-   o  Each JSON member of the "events" object is a name and value pair.
-      The JSON attribute name is a URI String value that expresses an
-      event type, and the corresponding value is a JSON object known as
-      the event "payload".  The payload JSON object contains claims
-      typically unique to the event's URI type value and are not
-      registered as JWT claims.  These claims are defined by their
-      associated Profiling Specification.  An event with no payload
-      claims SHALL be represented as the empty JSON object ("{}").  In
-      many cases, one event URI expresses the primary event URI, while
-      other events might be considered extensions that MAY be used to do
-      things such as:
+   iss
+      A case-sensitive string identifying the principal that issued the
+      SET, as defined by Section 4.1.1 of [RFC7519].  This claim is
+      REQUIRED.
 
-   o  A categorization event type to provide classification information
-      (e.g., threat type or level).
+   aud
+      A case-sensitive string or array of case-sensitive strings
+      identifying the audience for the SET, as defined by Section 4.1.3
+      of [RFC7519].  This claim is RECOMMENDED.
 
-   o  An enhancement of an existing specifications the arise over time.
+   exp
+      As defined by Section 4.1.4 of [RFC7519], this claim is the time
+      after which the JWT MUST NOT be accepted for processing.  In the
+      context of a SET however, this notion does not apply since a SET
+      reflects something that has already been processed and is
+      historical in nature.  Use of this claim is NOT RECOMMENDED.
 
-   o  An extension needed to link a potential series of events.
+   iat
+      A value identifying the time at which the SET was issued, as
+      defined by Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
 
-   o  Localized specific purpose event URI used between a particular
-      Event Transmitter and Receiver.
+   jti
 
-   The following is a non-normative example showing the JWT Claims Set
-   for a hypothetical SCIM password reset SET.  This example shows an
-   additional events value ("https://example.com/scim/event/
 
 
 
@@ -282,53 +282,53 @@ Backman & Hunt            Expires May 18, 2018                  [Page 5]
 Internet-Draft               secevent-token                November 2017
 
 
-   passwordResetExt") used to convey additional information - in this
-   case, the current count of reset attempts:
+      A unique identifier for an event, as defined by Section 4.1.7 of
+      [RFC7519].  This claim is REQUIRED.
 
-   {
-     "jti": "3d0c3cf797584bd193bd0fb1bd4e7d30",
-     "iat": 1458496025,
-     "iss": "https://scim.example.com",
-     "aud": [
-       "https://jhub.example.com/Feeds/98d52461fa5bbc879593b7754",
-       "https://jhub.example.com/Feeds/5d7604516b1d08641d7676ee7"
-     ],
-     "sub": "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
-     "events": {
-       "urn:ietf:params:scim:event:passwordReset":
-         { "id":"44f6142df96bd6ab61e7521d9"},
-       "https://example.com/scim/event/passwordResetExt":
-         { "resetAttempts":5}
-     }
-   }
+   This specification defines the following new claims for use in SETs:
 
-                Figure 1: Example SCIM Password Reset Event
+   event
+      A JSON object known as the "event payload", whose contents
+      identify the type of event contained within the SET and contain
+      additional information defined as part of an event type definition
+      in a Profiling Specification.  This specification defines the
+      following claims for use in event payloads:
 
-   The event in the figure above expresses hypothetical password reset
-   event for SCIM [RFC7644].  The JWT consists of:
+      event_type
+         A string containing a URI that uniquely identifies an event
+         type defined by a Profiling Specification.  This claim is
+         REQUIRED.
 
-   o  An "events" claim specifying the hypothetical SCIM URN
-      ("urn:ietf:params:scim:event:passwordReset") for a password reset,
-      and a local schema, "https://example.com/scim/event/
-      passwordResetExt", that is used to provide additional event
-      information such as the current count of resets.
+      sub
+         A JSON object whose contents identify the subject of the event.
+         This object SHOULD NOT contain more information than is
+         necessary to enable the receiver to identify the subject.  This
+         claim is RECOMMENDED.
 
-   o  An "iss" claim, denoting the Event Transmitter.
+      The event payload MAY contain additional claims, such as those
+      defined as part of the event type definition in a Profiling
+      Specification.  The format and meaning of these claims is out of
+      scope of this specification.  Implementations SHOULD ignore any
+      claims in the event payload that they do not understand.
 
-   o  The "sub" claim specifies the SCIM resource URI that was affected.
+   toe
+      A number identifying the date and time at which the event is
+      believed to have occurred or will occur in the future.  Its value
+      MUST take the form of a NumericDate value, as defined in Section 2
+      of [RFC7519].  This claim is RECOMMENDED.  Profiling
+      Specifications MAY indicate ways to determine the event time when
+      the "toe" claim is omitted (such as using the value of the "iat"
+      claim).
 
-   o  The "aud" claim specifies the intended audiences for the event.
-      The syntax of the "aud" claim is defined in Section 4.1.3
-      [RFC7519].
+   txn
+      A string value that represents a unique transaction identifier.
+      In cases where multiple SETs are issued containing different
+      events, the transaction identifier MAY be used to correlate the
+      SETs to the same originating event or stateful change.  This claim
+      is OPTIONAL.
 
-   In this example, the SCIM event indicates that a password has been
-   updated and the current password reset count is 5.  Notice that the
-   value for "resetAttempts" is actually part of its own JSON object
-   associated with its own event URI attribute.
-
-   Here is another example JWT Claims Set for a security event token,
-   this one for a Logout Token:
-
+   The following is a non-normative example showing a SET containing a
+   hypothetical event with two additional claims in the payload.
 
 
 
@@ -339,172 +339,44 @@ Internet-Draft               secevent-token                November 2017
 
 
    {
-      "iss": "https://server.example.com",
-      "sub": "248289761001",
-      "aud": "s6BhdRkqt3",
-      "iat": 1471566154,
-      "jti": "bWJq",
-      "sid": "08a5019c-17e1-4977-8f42-65a12843ea02",
-      "events": {
-        "http://schemas.openid.net/event/backchannel-logout": {}
-      }
-   }
-
-            Figure 2: Example OpenID Back-Channel Logout Event
-
-   Note that the above SET has an empty JSON object and uses the JWT
-   registered claims "sub" and "sid" to identify the subject that was
-   logged-out.
-
-   In the following example JWT Claims Set, a fictional medical service
-   collects consent for medical actions and notifies other parties.  The
-   individual for whom consent is identified was originally
-   authenticated via OpenID Connect.  In this case, the issuer of the
-   security event is an application rather than the OpenID provider:
-
-   {
-     "jti": "fb4e75b5411e4e19b6c0fe87950f7749",
+     "jti": "3d0c3cf797584bd193bd0fb1bd4e7d30",
+     "typ": "secevent+jwt",
+     "iss": "https://transmitter.example.com",
+     "aud": [ "https://receiver.example.com" ],
      "iat": 1458496025,
-     "iss": "https://my.examplemed.com",
-     "aud": [
-       "https://rp.example.com"
-     ],
-     "events": {
-       "https://openid.net/heart/specs/consent.html":{
-         "iss":"https://connect.example.com",
-         "sub": "248289761001",
-         "consentUri":[
-           "https://terms.examplemed.com/labdisclosure.html#Agree"
-         ]
-       }
+     "toe": 1458492425,
+     "txn": "5bb4ddd2-3e77-4e0b-a406-03c8fdc287c2",
+     "event": {
+           "event_type": "https://secevent.example.com/example_event",
+       "sub": {
+         "email": "user@example.com"
+       },
+       "claim_1": "foo",
+       "claim_2": "bar"
      }
    }
 
-                      Figure 3: Example Consent Event
+            Figure 1: Example SET With Event Claims In Payload
 
-   In the above example, the attribute "iss" contained within the
-   payload for the event "https://openid.net/heart/specs/consent.html"
-   refers to the issuer of the Security Subject ("sub") rather than the
-   event issuer "https://my.examplemed.com".  They are distinct from the
-
-
-
-Backman & Hunt            Expires May 18, 2018                  [Page 7]
-
-Internet-Draft               secevent-token                November 2017
-
-
-   top level value of "iss", which always refers to the issuer of the
-   event - a medical consent service that is a relying party to the
-   OpenID Provider.
-
-2.1.  Core SET Claims
-
-   The following are claims that are based on [RFC7519] claim
-   definitions and are profiled for use in an event token:
-
-   jti
-      As defined by Section 4.1.7 [RFC7519] contains a unique identifier
-      for an event.  The identifier SHOULD be unique within a particular
-      event feed and MAY be used by clients to track whether a
-      particular event has already been received.  This claim is
-      REQUIRED.
-
-   iss
-      A single valued String containing the URI of the service provider
-      publishing the SET (the issuer).  This claim is REQUIRED.  Note
-      that when a SET is expressing an event about a Security Subject
-      for which the SET issuer is not the issuer of the Security
-      Subject, the conflict SHALL be resolved by including the Security
-      Subject "iss" value within the event "payload" (see "events"
-      claim).
-
-   aud
-      The syntax of the claim is as defined in Section 4.1.3 [RFC7519].
-      This claim contains one or more audience identifiers for the SET.
-      This claim is RECOMMENDED.
-
-   iat
-      As defined by Section 4.1.6 [RFC7519], a value containing a
-      NumericDate, which represents when the event was issued.  Unless
-      otherwise specified, the value SHOULD be interpreted as equivalent
-      to the actual time of the event.  This claim is REQUIRED.
-
-   toe
-      A number whose value is a Numeric Data ( see Section 2 [RFC7519]).
-      The value is the date and time in which the event is believed to
-      have occurred in the past or will occur in the future.  This claim
-      is RECOMMENDED.  Note that some profiles may choose to omit "toe"
-      and convey event time information with the "iat"claim or another
-      claim.
-
-   sub
-      As defined by Section 4.1.2 [RFC7519], a String or URI value
-      representing the principal or the subject of the SET.  This is
-      usually the entity whose "state" was changed.  For example, an IP
-
-
-
-Backman & Hunt            Expires May 18, 2018                  [Page 8]
-
-Internet-Draft               secevent-token                November 2017
-
-
-      Address was added to a black list.  A URI representing a user
-      resource that was modified.  A token identifier for a revoked
-      token.  If used, the Profiling Specification SHOULD define the
-      content and format semantics for the value.  This claim is
-      OPTIONAL, as the principal for any given profile may already be
-      identified without the inclusion of a subject claim.  Note that
-      some SET profiles MAY choose to convey event subject information
-      in the event payload (either using the "sub" member name or
-      another name), particularly if the subject information is relative
-      to issuer information that is also conveyed in the event payload,
-      which may be the case for some identity SET profiles.
-
-   exp
-      As defined by [RFC7519], this claim is time on which the JWT MUST
-      NOT be accepted for processing.  In the context of a SET however,
-      this notion does not apply since a SET reflects something that has
-      already been processed and is historical in nature.  While some
-      specifications MAY have a need for this claim, its use in general
-      cases is NOT RECOMMENDED.
-
-   The following are new claims defined by this specification:
-
-   event  A JSON object containing an "event_type" member whose value is
-      a URI representing a type of event defined in a Profiling
-      Specification.  The object MAY otherwise be empty, or MAY contain
-      additional members as described by the Profiling Specification.
-
-   txn  An OPTIONAL String value that represents a unique transaction
-      identifier.  In cases where multiple SETs are issued based on
-      different event URIs, the transaction identifier MAY be used to
-      correlate SETs to the same originating event or stateful change.
+   The payload in this example contains the following: * An "event_type"
+   claim whose value is the URI identifying the hypothetical event type.
+   * A "sub" claim whose value identifies a subject via email address.
+   * Two claims "claim_1" and "claim_2" that are defined by the
+   hypothetical event type's Profiling Specification.
 
 2.2.  Explicit Typing of SETs
 
    This specification registers the "application/secevent+jwt" media
-   type, which can be used to indicate that the content is a SET.  SETs
-   MAY include this media type in the "typ" header parameter of the JWT
-   representing the SET to explicitly declare that the JWT is a SET.
-   This MUST be included if the SET could be used in an application
-   context in which it could be confused with other kinds of JWTs.
+   type.  SETs MAY include this media type in the "typ" header parameter
+   of the JWT containing the SET to explicitly declare that the JWT is a
+   SET.  This MUST be included if the SET could be used in an
+   application context in which it could be confused with other kinds of
+   JWTs.  Profiling Specifications MAY declare that this is REQUIRED for
+   SETs containing events defined by the Profiling Specification.
 
    Per the definition of "typ" in Section 4.1.9 of [RFC7515], it is
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                  [Page 9]
-
-Internet-Draft               secevent-token                November 2017
-
 
 2.3.  Security Event Token Construction
 
@@ -515,26 +387,12 @@ Internet-Draft               secevent-token                November 2017
    While this specification uses JWT to convey a SET, implementers SHALL
    NOT use SETs to convey authentication or authorization assertions.
 
-   The following is an example JWT Claims Set for a security event token
-   (which has been formatted for readability):
 
-  {
-    "jti": "4d3559ec67504aaba65d40b0363faad8",
-    "iat": 1458496404,
-    "iss": "https://scim.example.com",
-    "aud": [
-      "https://scim.example.com/Feeds/98d52461fa5bbc879593b7754",
-      "https://scim.example.com/Feeds/5d7604516b1d08641d7676ee7"
-    ],
 
-    "event": {
-      "event_type": "urn:ietf:params:scim:event:create",
-      "ref": "https://scim.example.com/Users/44f6142df96bd6ab61e7521d9",
-      "attributes": ["id", "name", "userName", "password", "emails"]
-    }
-  }
+Backman & Hunt            Expires May 18, 2018                  [Page 7]
+
+Internet-Draft               secevent-token                November 2017
 
-                      Figure 4: Example Event Claims
 
    When transmitted, the above JSON body must be converted into a JWT as
    per [RFC7519].
@@ -550,17 +408,6 @@ Internet-Draft               secevent-token                November 2017
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 
    The example JWT Claims Set is encoded as follows:
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 10]
-
-Internet-Draft               secevent-token                November 2017
-
 
    ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
    YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
@@ -588,13 +435,20 @@ Internet-Draft               secevent-token                November 2017
    aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
    fQo=.
 
-             Figure 5: Example Unsecured Security Event Token
+             Figure 2: Example Unsecured Security Event Token
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
    MUST employ other mechanisms such as TLS and HTTP to provide
    integrity, confidentiality, and issuer validation, as needed by the
    application.
+
+
+
+Backman & Hunt            Expires May 18, 2018                  [Page 8]
+
+Internet-Draft               secevent-token                November 2017
+
 
    When validation (i.e. auditing), or additional transmission security
    is required, JWS signing and/or JWE encryption MAY be used.  To
@@ -608,15 +462,6 @@ Internet-Draft               secevent-token                November 2017
    SETs.  The syntax defined by profiling specifications includes what
    claims and event payload values are used by SETs utilizing the
    profile.
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 11]
-
-Internet-Draft               secevent-token                November 2017
-
 
    Defining the semantics of the SET contents for SETs utilizing the
    profile is equally important.  Possibly most important is defining
@@ -652,6 +497,15 @@ Internet-Draft               secevent-token                November 2017
    [RFC6125].  Implementation security considerations for TLS can be
    found in "Recommendations for Secure Use of TLS and DTLS" [RFC7525].
 
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                  [Page 9]
+
+Internet-Draft               secevent-token                November 2017
+
+
    Security Events distributed through third-parties or that carry
    personally identifiable information, SHOULD be encrypted using JWE
    [RFC7516] or secured for confidentiality by other means.
@@ -666,14 +520,6 @@ Internet-Draft               secevent-token                November 2017
    In addition to confidentiality and integrity (discussed above),
    implementers and Profiling Specifications MUST consider the
    consequences of delivery mechanisms that are not secure and/or not
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 12]
-
-Internet-Draft               secevent-token                November 2017
-
-
    assured.  For example, while a SET may be end-to-end secured using
    JWE encrypted SETs, without TLS there is no assurance that the
    correct endpoint received the SET and that it could be successfully
@@ -708,6 +554,14 @@ Internet-Draft               secevent-token                November 2017
    For example, a user having been required to logout and then log back
    in again, may cause a logout SET to be issued that may arrive at the
    same time as the user-agent accesses a web site having just logged-
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 10]
+
+Internet-Draft               secevent-token                November 2017
+
+
    in.  If timing is not handled properly, the effect would be to
    erroneously treat the new user session as logged out.  Profiling
    Specifications SHOULD be careful to anticipate timing and subject
@@ -722,14 +576,6 @@ Internet-Draft               secevent-token                November 2017
    implementations MUST be ignored", there is a consideration that a SET
    token might be confused with ID Token [OpenID.Core] if a SET is
    mistakenly or intentionally used in a context requiring an ID Token.
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 13]
-
-Internet-Draft               secevent-token                November 2017
-
-
    If a SET could otherwise be interpreted as a valid ID Token (because
    it includes the required claims for an ID Token and valid issuer and
    audience claim values for an ID Token) then that SET profile MUST
@@ -764,6 +610,14 @@ Internet-Draft               secevent-token                November 2017
    o  Prohibit use of the "exp" claim, as is done to prevent ID Token
       confusion.
 
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Where possible, use a separate "aud" claim value to distinguish
       between the Event Receiver and the protected resource that is the
       audience of an access token.
@@ -776,15 +630,6 @@ Internet-Draft               secevent-token                November 2017
    o  Employ explicit typing, as described in Section 2.2, and modify
       access token validation systems to use the "typ" header parameter
       value.
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 14]
-
-Internet-Draft               secevent-token                November 2017
-
 
 4.7.  Distinguishing SETs from other kinds of JWTs
 
@@ -821,6 +666,14 @@ Internet-Draft               secevent-token                November 2017
    task, should confusion otherwise even be possible.  Note that this
    topic is being explored in a more general fashion in JSON Web Token
    Best Current Practices [I-D.sheffer-oauth-jwt-bcp].  The proposed
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 12]
+
+Internet-Draft               secevent-token                November 2017
+
+
    best practices in that draft may also be applicable for particular
    SET profiles and use cases.
 
@@ -832,15 +685,6 @@ Internet-Draft               secevent-token                November 2017
    Event Transmitters SHOULD attempt to specialize feeds so that the
    content is targeted to the specific business and protocol needs of an
    Event Receiver.
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 15]
-
-Internet-Draft               secevent-token                November 2017
-
 
    When sharing personally identifiable information or information that
    is otherwise considered confidential to affected users, Event
@@ -879,6 +723,13 @@ Internet-Draft               secevent-token                November 2017
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 13]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Claim Name: "txn"
 
    o  Claim Description: Transaction Identifier
@@ -886,17 +737,6 @@ Internet-Draft               secevent-token                November 2017
    o  Change Controller: IESG
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 16]
-
-Internet-Draft               secevent-token                November 2017
-
 
 6.2.  Media Type Registration
 
@@ -938,6 +778,14 @@ Internet-Draft               secevent-token                November 2017
 
    o  Macintosh file type code(s): n/a
 
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 14]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  Person & email address to contact for further information: Michael
       B.  Jones, mbj@microsoft.com
 
@@ -946,13 +794,6 @@ Internet-Draft               secevent-token                November 2017
    o  Restrictions on usage: none
 
    o  Author: Michael B.  Jones, mbj@microsoft.com
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 17]
-
-Internet-Draft               secevent-token                November 2017
-
 
    o  Change controller: IESG
 
@@ -992,6 +833,15 @@ Internet-Draft               secevent-token                November 2017
               Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
               2011, <https://www.rfc-editor.org/info/rfc6125>.
 
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 15]
+
+Internet-Draft               secevent-token                November 2017
+
+
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
@@ -999,16 +849,6 @@ Internet-Draft               secevent-token                November 2017
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
               <https://www.rfc-editor.org/info/rfc7519>.
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 18]
-
-Internet-Draft               secevent-token                November 2017
-
 
    [RFC7525]  Sheffer, Y., Holz, R., and P. Saint-Andre,
               "Recommendations for Secure Use of Transport Layer
@@ -1050,6 +890,14 @@ Internet-Draft               secevent-token                November 2017
               2.0 Token Revocation", RFC 7009, DOI 10.17487/RFC7009,
               August 2013, <https://www.rfc-editor.org/info/rfc7009>.
 
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 16]
+
+Internet-Draft               secevent-token                November 2017
+
+
    [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
               Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
               2015, <https://www.rfc-editor.org/info/rfc7515>.
@@ -1057,14 +905,6 @@ Internet-Draft               secevent-token                November 2017
    [RFC7516]  Jones, M. and J. Hildebrand, "JSON Web Encryption (JWE)",
               RFC 7516, DOI 10.17487/RFC7516, May 2015,
               <https://www.rfc-editor.org/info/rfc7516>.
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 19]
-
-Internet-Draft               secevent-token                November 2017
-
 
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015, <https://www.rfc-
@@ -1109,12 +949,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 20]
+Backman & Hunt            Expires May 18, 2018                 [Page 17]

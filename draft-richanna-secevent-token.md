@@ -367,7 +367,7 @@ cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
 aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
 fQo=.
 ~~~
-{: #figset title="Example Unsecured Security Event Token"}
+{: #figsetencoded title="Example Unsecured Security Event Token"}
 
 For the purpose of a simpler example in Figure 5, an unsecured token
 was shown. When SETs are not signed or encrypted, the Event Receiver
