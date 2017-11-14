@@ -25,6 +25,25 @@ author:
     organization: Oracle
     email: phil.hunt@yahoo.com
     
+ -
+    ins: W. Denniss
+    name: William Denniss
+    organization: Google
+    email: wdenniss@google.com
+
+ -
+    ins: M. Ansari
+    name: Morteza Ansari
+    organization: Cisco
+    email: morteza.ansari@cisco.com
+
+ -
+    ins: M. Jones
+    name: Michael B. Jones
+    organization: Microsoft
+    email: mbj@microsoft.com
+    uri: http://self-issued.info/
+
 normative:
   IANA.JWT.Claims:
     title: JSON Web Token Claims
