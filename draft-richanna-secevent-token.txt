@@ -74,27 +74,28 @@ Table of Contents
        2.2.3.  Issuer and Subject Subject Identifier Type  . . . . .   9
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .   9
      2.4.  Security Event Token Construction . . . . . . . . . . . .  10
-   3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  11
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-     4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  12
-     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  13
-     4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  14
-     4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  14
-   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  15
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-     6.1.  SET Subject Identifier Types Registry . . . . . . . . . .  16
-     6.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  16
-       6.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  16
-     6.3.  Media Type Registration . . . . . . . . . . . . . . . . .  16
-       6.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  16
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
+   3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  11
+   4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  13
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+     5.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  14
+     5.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  15
+     5.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  15
+     5.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  16
+     5.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  16
+   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  17
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
+     7.1.  SET Subject Identifier Types Registry . . . . . . . . . .  18
+     7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  18
+       7.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
+     7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  18
+       7.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 1.  Introduction
 
@@ -104,7 +105,6 @@ Table of Contents
    order to provide a self-contained token that can be optionally signed
    using JSON Web Signature (JWS) [RFC7515] and/or encrypted using JSON
    Web Encryption (JWE) [RFC7516].
-
 
 
 
@@ -385,7 +385,7 @@ Internet-Draft               secevent-token                November 2017
    one or more claims about a subject that when taken together
    collectively identify that subject.  Subject Identifier Types MUST be
    registered in the IANA "SET Subject Identifier Types" registry
-   established by Section 6.1.
+   established by Section 7.1.
 
 
 
@@ -400,7 +400,7 @@ Internet-Draft               secevent-token                November 2017
    Subject Identifier MUST be defined by the Subject Identifier Type.
 
    The Subject Identifier Types defined below are registered in the IANA
-   "SET Subject Identifier Types" registry established by Section 6.1.
+   "SET Subject Identifier Types" registry established by Section 7.1.
 
 2.2.1.  Email Subject Identifier Type
 
@@ -588,7 +588,119 @@ Internet-Draft               secevent-token                November 2017
    create and or validate a signed and/or encrypted SET, follow the
    instructions in Section 7 of [RFC7519].
 
-3.  Requirements for SET Profiles
+3.  Related Events
+
+   In order to accommodate use cases that require communicating multiple
+   related security events to an Event Receiver, this section defines
+   the "Related Events" event type.  A Related Events event is
+   essentially a container for two or more events that are related to
+   one another, in that they are all related to the same "real world"
+   event or state change.  The Related Events event SHOULD NOT be used
+   to combine unrelated events into a single set, and MUST NOT be used
+   as a general purpose batch transmission mechanism.  Profiling
+   Specifications and/or implementers who desire an event grouping
+   mechanism with these or other semantics are encouraged to profile
+   this specification and define additional event types for those use
+   cases.  /* ed.: Trying to minimize ambiguity around semantics of
+   event grouping. */
+
+   The URN for the Related Events event is
+   "urn:ietf:secevents:related_events".
+
+   The Related Events event has a single additional event payload claim:
+
+   events
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
+      An array of event payloads, as defined in this document.
+
+   For all purposes, the Related Events event's envelope is considered
+   the envelope for all events described in the "events" payload claim.
+   SETs containing a Related Events event MUST comply with the
+   requirements set by the Profiling Specifications for every event
+   described in the "events" payload claim.  If two or more events'
+   requirements contradict one another, those events MUST NOT be
+   combined within the same Related Events event.  /* ed.: Cutting down
+   on opportunities for confusing, impossible SETs. */
+
+   All events described in the "events" claim MUST express their
+   subjects in such a way as to not conflict with the other events.
+   They do not have to identify their subjects in the same way; two
+   events that support disjoint sets of Subject Identifier Types but
+   specify their subject using the "sub" event payload claim defined in
+   Section 2.1 can coexist within a Related Events event, as the subject
+   for each event would reside within the respective event's event
+   payload.  However, if both events specified their subject using the
+   "sub" envelope claim, they would be in conflict with one another, as
+   it would not be possible to assign a value to the "sub" envelope
+   claim that satisfies the requirements of both events' Profiling
+   Specifications.  /* ed.: This is just a specific case of above
+   paragraph, but sub has been a sticking point so calling it out seems
+   like a good idea. */
+
+   The "sub" event payload claim MUST NOT be used with the Related
+   Events event.  /* ed.: Trying to avoid complicated "find the subject"
+   logic */
+
+   The following is a non-normative example of a SET containing a
+   Related Events event:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 12]
+
+Internet-Draft               secevent-token                November 2017
+
+
+   {
+     "jti": "1c0038c2-02db-40de-ad50-122a64724166",
+     "iss": "https://transmitter.example.com",
+     "aud": [ "https://receiver.example.com" ],
+     "iat": 1510666261,
+     "toe": 1510662661,
+     "txn": "0d3c97f4-82d3-4fb8-ac67-09c62a8fcda2",
+     "event": {
+       "event_type": "urn:ietf:secevent:related_events",
+       "sub": {
+         "identifier_type": "urn:ietf:params:secevent:subject:email",
+         "email": "user@example.com"
+       },
+       "events": [
+         {
+           "event_type": "http://specs.example.com/set_profile/event_1"
+         },
+         {
+           "event_type": "http://specs.example.com/set_profile/event_2"
+         }
+       ]
+     }
+   }
+
+          Figure 6: Example SET Containing A Related Events Event
+
+4.  Requirements for SET Profiles
 
    Profiling Specifications for SETs define the syntax and semantics of
    SETs conforming to that SET profile and rules for validating those
@@ -613,7 +725,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 11]
+Backman & Hunt            Expires May 18, 2018                 [Page 13]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -625,9 +737,9 @@ Internet-Draft               secevent-token                November 2017
    recipient of a SET utilizing that profile MUST perform to validate
    that the SET is both syntactically and semantically valid.
 
-4.  Security Considerations
+5.  Security Considerations
 
-4.1.  Confidentiality and Integrity
+5.1.  Confidentiality and Integrity
 
    SETs may often contain sensitive information.  Therefore, methods for
    distribution of events SHOULD require the use of a transport-layer
@@ -646,7 +758,7 @@ Internet-Draft               secevent-token                November 2017
    signed using JWS [RFC7515] so that individual events can be
    authenticated and validated by the Event Receiver.
 
-4.2.  Delivery
+5.2.  Delivery
 
    This specification does not define a delivery mechanism by itself.
    In addition to confidentiality and integrity (discussed above),
@@ -657,7 +769,7 @@ Internet-Draft               secevent-token                November 2017
    correct endpoint received the SET and that it could be successfully
    processed.
 
-4.3.  Sequencing
+5.3.  Sequencing
 
    As defined in this specification, there is no defined way to order
    multiple SETs in a sequence.  Depending on the type and nature of SET
@@ -669,7 +781,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 12]
+Backman & Hunt            Expires May 18, 2018                 [Page 14]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -686,7 +798,7 @@ Internet-Draft               secevent-token                November 2017
    order or sequence of events.  For example, the "txn" claim could
    contain an ordered value (e.g., a counter) that the issuer defines.
 
-4.4.  Timing Issues
+5.4.  Timing Issues
 
    When SETs are delivered asynchronously and/or out-of-band with
    respect to the original action that incurred the security event, it
@@ -703,7 +815,7 @@ Internet-Draft               secevent-token                November 2017
    specification could use timestamps that allows new sessions to be
    started immediately after a stated logout event time.
 
-4.5.  Distinguishing SETs from ID Tokens
+5.5.  Distinguishing SETs from ID Tokens
 
    Because [RFC7519] states that "all claims that are not understood by
    implementations MUST be ignored", there is a consideration that a SET
@@ -725,7 +837,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 13]
+Backman & Hunt            Expires May 18, 2018                 [Page 15]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -737,7 +849,7 @@ Internet-Draft               secevent-token                November 2017
    will not achieve disambiguation between ID Tokens and SETs, as the ID
    Token validation rules do not use the "typ" header parameter value.
 
-4.6.  Distinguishing SETs from Access Tokens
+5.6.  Distinguishing SETs from Access Tokens
 
    OAuth 2.0 [RFC6749] defines access tokens as being opaque.
    Nonetheless, some implementations implement access tokens as JWTs.
@@ -764,7 +876,7 @@ Internet-Draft               secevent-token                November 2017
       access token validation systems to use the "typ" header parameter
       value.
 
-4.7.  Distinguishing SETs from other kinds of JWTs
+5.7.  Distinguishing SETs from other kinds of JWTs
 
    JWTs are now being used in application areas beyond the identity
    applications in which they first appeared.  For instance, the Session
@@ -781,7 +893,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 14]
+Backman & Hunt            Expires May 18, 2018                 [Page 16]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -811,7 +923,7 @@ Internet-Draft               secevent-token                November 2017
    best practices in that draft may also be applicable for particular
    SET profiles and use cases.
 
-5.  Privacy Considerations
+6.  Privacy Considerations
 
    If a SET needs to be retained for audit purposes, JWS MAY be used to
    provide verification of its authenticity.
@@ -837,25 +949,25 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 15]
+Backman & Hunt            Expires May 18, 2018                 [Page 17]
 
 Internet-Draft               secevent-token                November 2017
 
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-6.1.  SET Subject Identifier Types Registry
+7.1.  SET Subject Identifier Types Registry
 
    This section establishes the IANA "SET Subject Identifier Types"
    registry // TODO
 
-6.2.  JSON Web Token Claims Registration
+7.2.  JSON Web Token Claims Registration
 
    This specification registers the "event", "toe", and "txn" claims in
    the IANA "JSON Web Token Claims" registry [IANA.JWT.Claims]
    established by [RFC7519].
 
-6.2.1.  Registry Contents
+7.2.1.  Registry Contents
 
    o  Claim Name: "event"
 
@@ -881,9 +993,9 @@ Internet-Draft               secevent-token                November 2017
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
-6.3.  Media Type Registration
+7.3.  Media Type Registration
 
-6.3.1.  Registry Contents
+7.3.1.  Registry Contents
 
    This section registers the "application/secevent+jwt" media type
    [RFC2046] in the "Media Types" registry [IANA.MediaTypes] in the
@@ -893,7 +1005,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 16]
+Backman & Hunt            Expires May 18, 2018                 [Page 18]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -949,14 +1061,14 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 17]
+Backman & Hunt            Expires May 18, 2018                 [Page 19]
 
 Internet-Draft               secevent-token                November 2017
 
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [E.164]    International Telecommunication Union, "The international
               public telecommunication numbering plan", 2010,
@@ -1005,7 +1117,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 18]
+Backman & Hunt            Expires May 18, 2018                 [Page 20]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1020,7 +1132,7 @@ Internet-Draft               secevent-token                November 2017
               (DTLS)", BCP 195, RFC 7525, DOI 10.17487/RFC7525, May
               2015, <https://www.rfc-editor.org/info/rfc7525>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [I-D.ietf-stir-passport]
               Wendt, C. and J. Peterson, "Personal Assertion Token
@@ -1061,7 +1173,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 19]
+Backman & Hunt            Expires May 18, 2018                 [Page 21]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1117,4 +1229,4 @@ Authors' Addresses
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 20]
+Backman & Hunt            Expires May 18, 2018                 [Page 22]

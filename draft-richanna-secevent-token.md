@@ -471,6 +471,86 @@ is required, JWS signing and/or JWE encryption MAY be used.  To
 create and or validate a signed and/or encrypted SET, follow the
 instructions in Section 7 of [RFC7519].
 
+Related Events {#related-events}
+==============
+In order to accommodate use cases that require communicating multiple
+related security events to an Event Receiver, this section defines the
+"Related Events" event type. A Related Events event is essentially a
+container for two or more events that are related to one another, in
+that they are all related to the same "real world" event or state
+change. The Related Events event SHOULD NOT be used to combine
+unrelated events into a single set, and MUST NOT be used as a general
+purpose batch transmission mechanism. Profiling Specifications and/or
+implementers who desire an event grouping mechanism with these or
+other semantics are encouraged to profile this specification and
+define additional event types for those use cases.
+/* ed.: Trying to minimize ambiguity around semantics of event grouping. */
+
+The URN for the Related Events event is "urn:ietf:secevents:related_events".
+
+The Related Events event has a single additional event payload claim:
+
+{: vspace="0"}
+events
+: An array of event payloads, as defined in this document.
+
+For all purposes, the Related Events event's envelope is considered the
+envelope for all events described in the "events" payload claim. SETs
+containing a Related Events event MUST comply with the requirements set by
+the Profiling Specifications for every event described in the "events"
+payload claim. If two or more events' requirements contradict one another,
+those events MUST NOT be combined within the same Related Events event.
+/* ed.: Cutting down on opportunities for confusing, impossible SETs. */
+
+All events described in the "events" claim MUST express their subjects in
+such a way as to not conflict with the other events. They do not have to
+identify their subjects in the same way; two events that support disjoint
+sets of Subject Identifier Types but specify their subject using the "sub"
+event payload claim defined in [](#claims) can coexist within a Related
+Events event, as the subject for each event would reside within the
+respective event's event payload. However, if both events specified their
+subject using the "sub" envelope claim, they would be in conflict with one
+another, as it would not be possible to assign a value to the "sub" envelope
+claim that satisfies the requirements of both events' Profiling
+Specifications.
+/* ed.: This is just a specific case of above paragraph, but sub has been a
+sticking point so calling it out seems like a good idea. */
+
+The "sub" event payload claim MUST NOT be used with the Related Events
+event. 
+/* ed.: Trying to avoid complicated "find the subject" logic */
+
+The following is a non-normative example of a SET containing a Related
+Events event:
+
+~~~
+{
+  "jti": "1c0038c2-02db-40de-ad50-122a64724166",
+  "iss": "https://transmitter.example.com",
+  "aud": [ "https://receiver.example.com" ],
+  "iat": 1510666261,
+  "toe": 1510662661,
+  "txn": "0d3c97f4-82d3-4fb8-ac67-09c62a8fcda2",
+  "event": {
+    "event_type": "urn:ietf:secevent:related_events",
+    "sub": {
+      "identifier_type": "urn:ietf:params:secevent:subject:email",
+      "email": "user@example.com"
+    },
+    "events": [
+      {
+        "event_type": "http://specs.example.com/set_profile/event_1"
+      },
+      {
+        "event_type": "http://specs.example.com/set_profile/event_2"
+      }
+    ]
+  }
+}
+~~~
+{: #figrelated title="Example SET Containing A Related Events Event"}
+
+
 Requirements for SET Profiles {#profile-req}
 =============================
 Profiling Specifications for SETs define the syntax and semantics of
