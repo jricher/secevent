@@ -68,28 +68,33 @@ Table of Contents
      1.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  The Security Event Token (SET)  . . . . . . . . . . . . . . .   5
      2.1.  SET Claims  . . . . . . . . . . . . . . . . . . . . . . .   5
-     2.2.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .   7
-     2.3.  Security Event Token Construction . . . . . . . . . . . .   7
-   3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .   9
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-     4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .   9
-     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  10
-     4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  10
-     4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  10
-     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  11
-     4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  11
-     4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  12
-   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  13
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  JSON Web Token Claims Registration  . . . . . . . . . . .  13
-       6.1.1.  Registry Contents . . . . . . . . . . . . . . . . . .  13
-     6.2.  Media Type Registration . . . . . . . . . . . . . . . . .  14
-       6.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  14
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  16
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+     2.2.  Subject Identifiers . . . . . . . . . . . . . . . . . . .   7
+       2.2.1.  Email Subject Identifier Type . . . . . . . . . . . .   8
+       2.2.2.  Phone Subject Identifier Type . . . . . . . . . . . .   8
+       2.2.3.  Issuer and Subject Subject Identifier Type  . . . . .   9
+     2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .   9
+     2.4.  Security Event Token Construction . . . . . . . . . . . .  10
+   3.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  11
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
+     4.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  12
+     4.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  13
+     4.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  13
+     4.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  14
+     4.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  14
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  15
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+     6.1.  SET Subject Identifier Types Registry . . . . . . . . . .  16
+     6.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  16
+       6.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  16
+     6.3.  Media Type Registration . . . . . . . . . . . . . . . . .  16
+       6.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  16
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  19
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -100,12 +105,7 @@ Table of Contents
    using JSON Web Signature (JWS) [RFC7515] and/or encrypted using JSON
    Web Encryption (JWE) [RFC7516].
 
-   This specification profiles the use of JWT for the purpose of issuing
-   security event tokens (SETs).  This specification defines a base
-   format upon which profiling specifications define actual events and
-   their meanings.  Unless otherwise specified, this specification uses
-   non-normative example events intended to demonstrate how events may
-   be constructed.
+
 
 
 
@@ -113,6 +113,13 @@ Backman & Hunt            Expires May 18, 2018                  [Page 2]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   This specification profiles the use of JWT for the purpose of issuing
+   security event tokens (SETs).  This specification defines a base
+   format upon which profiling specifications define actual events and
+   their meanings.  Unless otherwise specified, this specification uses
+   non-normative example events intended to demonstrate how events may
+   be constructed.
 
    This specification is scoped to security and identity related events.
    While security event tokens may be used for other purposes, the
@@ -154,13 +161,6 @@ Internet-Draft               secevent-token                November 2017
    associated with the previous user.  Or, the Event Receiver may not
    have any relationship with the subject, and no action is taken.
 
-   While Event Receivers will often take actions upon receiving SETs,
-   security events cannot be assumed to be commands or requests.  The
-   intent of this specification is to define a way of exchanging
-   statements of fact that Event Receivers may interpret for their own
-   purposes.  As such, SETs have no capability for error signaling other
-   to ensure the validation of a received SET.
-
 
 
 
@@ -169,6 +169,13 @@ Backman & Hunt            Expires May 18, 2018                  [Page 3]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   While Event Receivers will often take actions upon receiving SETs,
+   security events cannot be assumed to be commands or requests.  The
+   intent of this specification is to define a way of exchanging
+   statements of fact that Event Receivers may interpret for their own
+   purposes.  As such, SETs have no capability for error signaling other
+   to ensure the validation of a received SET.
 
 1.1.  Notational Conventions
 
@@ -211,13 +218,6 @@ Internet-Draft               secevent-token                November 2017
    Subject
       A SET describes an event or state change that has occurred about a
       Subject.  A Subject may be a principal (e.g., Section 4.1.2
-      [RFC7519]), a web resource, an entity such as an IP address, or
-      the issuer itself that a SET might reference.
-
-   Profiling Specification
-      A specification that uses the SET Token specification to define
-      one or more event types and the associated claims included.
-
 
 
 
@@ -225,6 +225,13 @@ Backman & Hunt            Expires May 18, 2018                  [Page 4]
 
 Internet-Draft               secevent-token                November 2017
 
+
+      [RFC7519]), a web resource, an entity such as an IP address, or
+      the issuer itself that a SET might reference.
+
+   Profiling Specification
+      A specification that uses the SET Token specification to define
+      one or more event types and the associated claims included.
 
 2.  The Security Event Token (SET)
 
@@ -268,13 +275,6 @@ Internet-Draft               secevent-token                November 2017
       reflects something that has already been processed and is
       historical in nature.  Use of this claim is NOT RECOMMENDED.
 
-   iat
-      A value identifying the time at which the SET was issued, as
-      defined by Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
-
-   jti
-
-
 
 
 Backman & Hunt            Expires May 18, 2018                  [Page 5]
@@ -282,6 +282,11 @@ Backman & Hunt            Expires May 18, 2018                  [Page 5]
 Internet-Draft               secevent-token                November 2017
 
 
+   iat
+      A value identifying the time at which the SET was issued, as
+      defined by Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
+
+   jti
       A unique identifier for an event, as defined by Section 4.1.7 of
       [RFC7519].  This claim is REQUIRED.
 
@@ -302,10 +307,8 @@ Internet-Draft               secevent-token                November 2017
          REQUIRED.
 
       sub
-         A JSON object whose contents identify the subject of the event.
-         This object SHOULD NOT contain more information than is
-         necessary to enable the receiver to identify the subject.  This
-         claim is RECOMMENDED.
+         A Subject Identifier that identifies the subject of the event.
+         (See: Section 2.2) This claim is RECOMMENDED.
 
    toe
       A number identifying the date and time at which the event is
@@ -326,9 +329,6 @@ Internet-Draft               secevent-token                November 2017
    Both the SET envelope and event payload MAY contain additional
    claims, such as those defined in a Profiling Specification.  The
    format and meaning of these claims is out of scope of this
-   specification.  Implementations SHOULD ignore any claims in the SET
-   envelope or event payload that they do not understand.
-
 
 
 
@@ -337,6 +337,9 @@ Backman & Hunt            Expires May 18, 2018                  [Page 6]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   specification.  Implementations SHOULD ignore any claims in the SET
+   envelope or event payload that they do not understand.
 
    The following is a non-normative example showing a SET envelope
    expressing a hypothetical event with two additional claims in the
@@ -352,6 +355,7 @@ Internet-Draft               secevent-token                November 2017
      "event": {
        "event_type": "https://secevent.example.com/example_event",
        "sub": {
+         "identifier_type": "urn:ietf:params:secevent:subject:email",
          "email": "user@example.com"
        },
        "claim_1": "foo",
@@ -361,13 +365,122 @@ Internet-Draft               secevent-token                November 2017
 
             Figure 1: Example SET With Event Claims In Payload
 
-   The payload in this example contains the following: * An "event_type"
-   claim whose value is the URI identifying the hypothetical event type.
-   * A "sub" claim whose value identifies a subject via email address.
-   * Two claims "claim_1" and "claim_2" that are defined by the
-   hypothetical event type's Profiling Specification.
+   The payload in this example contains the following:
 
-2.2.  Explicit Typing of SETs
+   o  An "event_type" claim whose value is the URI identifying the
+      hypothetical event type.
+
+   o  A "sub" claim whose value identifies a subject via email address.
+
+   o  Two claims "claim_1" and "claim_2" that are defined by the
+      hypothetical event type's Profiling Specification.
+
+2.2.  Subject Identifiers
+
+   In many cases, it is necessary to explicitly identify the subject of
+   the security even within a SET.  The Subject Identifier provides a
+   common syntax for expressing subject identity within a SET.  A
+   Subject Identifier is a JSON object representing an instance of a
+   Subject Identifier Type.  A Subject Identifier Type defines a set of
+   one or more claims about a subject that when taken together
+   collectively identify that subject.  Subject Identifier Types MUST be
+   registered in the IANA "SET Subject Identifier Types" registry
+   established by Section 6.1.
+
+
+
+Backman & Hunt            Expires May 18, 2018                  [Page 7]
+
+Internet-Draft               secevent-token                November 2017
+
+
+   A Subject Identifier MUST contain an "identifier_type" claim, whose
+   value is the URN identifying the Subject Identifier Type being
+   represented by the Subject Identifier.  All other claims within the
+   Subject Identifier MUST be defined by the Subject Identifier Type.
+
+   The Subject Identifier Types defined below are registered in the IANA
+   "SET Subject Identifier Types" registry established by Section 6.1.
+
+2.2.1.  Email Subject Identifier Type
+
+   The "Email" Subject Identifier Type contains a single claim:
+
+   email
+      A string containing an email address.  Its value SHOULD conform to
+      [RFC5322].  This claim is REQUIRED.
+
+   The following is a non-normative example of a Subject Identifier
+   representing an instance of the Email Subject Identifier Type:
+
+   {
+     "identifier_type": "urn:ietf:params:secevent:subject:email",
+     "email": "user@example.com"
+   }
+
+        Figure 2: An Instance of the Email Subject Identifier Type
+
+2.2.2.  Phone Subject Identifier Type
+
+   The "Phone" Subject Identifier Type contains a single claim:
+
+   phone_number
+      A string containing a phone number.  It SHOULD be formatted
+      according to [E.164].  This claim is REQUIRED.
+
+   The following is a non-normative example of a Subject Identifier
+   representing an instance of the Phone Subject Identifier Type:
+
+   {
+     "identifier_type": "urn:ietf:params:secevent:subject:phone",
+     "phone_number": "+1 206 555 0123"
+   }
+
+        Figure 3: An Instance of the Phone Subject Identifier Type
+
+
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                  [Page 8]
+
+Internet-Draft               secevent-token                November 2017
+
+
+2.2.3.  Issuer and Subject Subject Identifier Type
+
+   The "Issuer and Subject" Subject Identifier Type contains two claims:
+
+   iss
+      A case-sensitive string identifying the principal who is
+      responsible for assignment of the identifier in the "sub" claim.
+      This claim MUST adhere to the format of the "iss" claim defined by
+      Section 4.1.1 of [RFC7519].  This claim is REQUIRED.
+
+   sub
+      A case-sensitive string containing an identifier that identifies a
+      subject within the context of the principal identified by the
+      "iss" claim.  This claim MUST adhere to the format of the "sub"
+      claim defined by Section 4.1.2 of [RFC7519].  This claim is
+      REQUIRED.
+
+   The following is a non-normative example of a Subject Identifier
+   representing an instance of the Issuer and Subject Subject Identifier
+   Type:
+
+   {
+     "identifier_type": "urn:ietf:params:secevent:subject:iss-sub",
+     "iss": "http://id.example.com",
+     "sub": "example.user.1234"
+   }
+
+    Figure 4: An Instance of the Issuer and Subject Subject Identifier
+                                   Type
+
+2.3.  Explicit Typing of SETs
 
    This specification registers the "application/secevent+jwt" media
    type.  SETs MAY include this media type in the "typ" header parameter
@@ -381,18 +494,22 @@ Internet-Draft               secevent-token                November 2017
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
 
-2.3.  Security Event Token Construction
-
-   A SET is a JWT, and therefore it's construction follows that
-   described in [RFC7519].
 
 
 
 
-Backman & Hunt            Expires May 18, 2018                  [Page 7]
+
+
+
+Backman & Hunt            Expires May 18, 2018                  [Page 9]
 
 Internet-Draft               secevent-token                November 2017
 
+
+2.4.  Security Event Token Construction
+
+   A SET is a JWT, and therefore it's construction follows that
+   described in [RFC7519].
 
    While this specification uses JWT to convey a SET, implementers SHALL
    NOT use SETs to convey authentication or authorization assertions.
@@ -409,46 +526,62 @@ Internet-Draft               secevent-token                November 2017
 
    The example JWT Claims Set is encoded as follows:
 
-   ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
-   YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
-   LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
-   ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
-   LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
-   bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
-   dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
-   cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
-   aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
-   fQo=
+   ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
+   ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
+   ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
+   dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
+   ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
+   dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
+   ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
+   bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
+   YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
+   LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
+   ICAgICB9CiAgIH0=
 
    The encoded JWS signature is the empty string.  Concatenating the
    parts yields the following complete JWT:
 
-   eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-   ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
-   YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
-   LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
-   ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
-   LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
-   bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
-   dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
-   cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
-   aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
-   fQo=.
 
-             Figure 2: Example Unsecured Security Event Token
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 10]
+
+Internet-Draft               secevent-token                November 2017
+
+
+   eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
+   ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
+   ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
+   ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
+   dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
+   ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
+   dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
+   ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
+   bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
+   YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
+   LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
+   ICAgICB9CiAgIH0=.
+
+             Figure 5: Example Unsecured Security Event Token
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
    MUST employ other mechanisms such as TLS and HTTP to provide
    integrity, confidentiality, and issuer validation, as needed by the
    application.
-
-
-
-Backman & Hunt            Expires May 18, 2018                  [Page 8]
-
-Internet-Draft               secevent-token                November 2017
-
 
    When validation (i.e. auditing), or additional transmission security
    is required, JWS signing and/or JWE encryption MAY be used.  To
@@ -477,6 +610,14 @@ Internet-Draft               secevent-token                November 2017
    identified in the SET, as well as how to differentiate between the
    event Subject's Issuer and the SET Issuer, if applicable.  It is NOT
    RECOMMENDED for Profiling Specifications to use the "sub" claim
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
    defined in [RFC7519] in cases in which the Subject is not globally
    unique and has a different Issuer from the SET itself.
 
@@ -496,15 +637,6 @@ Internet-Draft               secevent-token                November 2017
    client MUST perform a TLS/SSL server certificate check, per
    [RFC6125].  Implementation security considerations for TLS can be
    found in "Recommendations for Secure Use of TLS and DTLS" [RFC7525].
-
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                  [Page 9]
-
-Internet-Draft               secevent-token                November 2017
-
 
    Security Events distributed through third-parties or that carry
    personally identifiable information, SHOULD be encrypted using JWE
@@ -533,6 +665,15 @@ Internet-Draft               secevent-token                November 2017
    event order is critical - an object could not be modified before it
    was created.  In other SET types, such as a token revocation, the
    order of SETs for revoked tokens does not matter.  If however, the
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 12]
+
+Internet-Draft               secevent-token                November 2017
+
+
    event was described as a log-in or logged-out status for a user
    subject, then order becomes important.
 
@@ -554,14 +695,6 @@ Internet-Draft               secevent-token                November 2017
    For example, a user having been required to logout and then log back
    in again, may cause a logout SET to be issued that may arrive at the
    same time as the user-agent accesses a web site having just logged-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 10]
-
-Internet-Draft               secevent-token                November 2017
-
-
    in.  If timing is not handled properly, the effect would be to
    erroneously treat the new user session as logged out.  Profiling
    Specifications SHOULD be careful to anticipate timing and subject
@@ -589,6 +722,14 @@ Internet-Draft               secevent-token                November 2017
    in which an attacker could attempt to substitute a SET for an ID
    Token, the SET would actually already be rejected as an ID Token
    because it would not contain the correct "nonce" claim value for the
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 13]
+
+Internet-Draft               secevent-token                November 2017
+
+
    ID Token to be accepted in contexts for which substitution is
    possible.
 
@@ -609,14 +750,6 @@ Internet-Draft               secevent-token                November 2017
 
    o  Prohibit use of the "exp" claim, as is done to prevent ID Token
       confusion.
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 11]
-
-Internet-Draft               secevent-token                November 2017
-
 
    o  Where possible, use a separate "aud" claim value to distinguish
       between the Event Receiver and the protected resource that is the
@@ -644,6 +777,15 @@ Internet-Draft               secevent-token                November 2017
    way that any substituted SET will result in its rejection when
    validated as the intended kind of JWT.
 
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 14]
+
+Internet-Draft               secevent-token                November 2017
+
+
    The most direct way to prevent confusion is to employ explicit
    typing, as described in Section 2.2, and modify applicable token
    validation systems to use the "typ" header parameter value.  This
@@ -666,14 +808,6 @@ Internet-Draft               secevent-token                November 2017
    task, should confusion otherwise even be possible.  Note that this
    topic is being explored in a more general fashion in JSON Web Token
    Best Current Practices [I-D.sheffer-oauth-jwt-bcp].  The proposed
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 12]
-
-Internet-Draft               secevent-token                November 2017
-
-
    best practices in that draft may also be applicable for particular
    SET profiles and use cases.
 
@@ -697,15 +831,31 @@ Internet-Draft               secevent-token                November 2017
    example, the passing of a hash value that requires the Event Receiver
    to know the subject.
 
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 15]
+
+Internet-Draft               secevent-token                November 2017
+
+
 6.  IANA Considerations
 
-6.1.  JSON Web Token Claims Registration
+6.1.  SET Subject Identifier Types Registry
+
+   This section establishes the IANA "SET Subject Identifier Types"
+   registry // TODO
+
+6.2.  JSON Web Token Claims Registration
 
    This specification registers the "event", "toe", and "txn" claims in
    the IANA "JSON Web Token Claims" registry [IANA.JWT.Claims]
    established by [RFC7519].
 
-6.1.1.  Registry Contents
+6.2.1.  Registry Contents
 
    o  Claim Name: "event"
 
@@ -723,13 +873,6 @@ Internet-Draft               secevent-token                November 2017
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 13]
-
-Internet-Draft               secevent-token                November 2017
-
-
    o  Claim Name: "txn"
 
    o  Claim Description: Transaction Identifier
@@ -738,14 +881,22 @@ Internet-Draft               secevent-token                November 2017
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
-6.2.  Media Type Registration
+6.3.  Media Type Registration
 
-6.2.1.  Registry Contents
+6.3.1.  Registry Contents
 
    This section registers the "application/secevent+jwt" media type
    [RFC2046] in the "Media Types" registry [IANA.MediaTypes] in the
    manner described in [RFC6838], which can be used to indicate that the
    content is a SET.
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 16]
+
+Internet-Draft               secevent-token                November 2017
+
 
    o  Type name: application
 
@@ -778,14 +929,6 @@ Internet-Draft               secevent-token                November 2017
 
    o  Macintosh file type code(s): n/a
 
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 14]
-
-Internet-Draft               secevent-token                November 2017
-
-
    o  Person & email address to contact for further information: Michael
       B.  Jones, mbj@microsoft.com
 
@@ -799,9 +942,25 @@ Internet-Draft               secevent-token                November 2017
 
    o  Provisional registration?  No
 
+
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 17]
+
+Internet-Draft               secevent-token                November 2017
+
+
 7.  References
 
 7.1.  Normative References
+
+   [E.164]    International Telecommunication Union, "The international
+              public telecommunication numbering plan", 2010,
+              <http://www.itu.int/rec/T-REC-E.164-201011-I/en>.
 
    [IANA.JWT.Claims]
               IANA, "JSON Web Token Claims", n.d.,
@@ -826,6 +985,10 @@ Internet-Draft               secevent-token                November 2017
               DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
               editor.org/info/rfc5246>.
 
+   [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
+              DOI 10.17487/RFC5322, October 2008, <https://www.rfc-
+              editor.org/info/rfc5322>.
+
    [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
               Verification of Domain-Based Application Service Identity
               within Internet Public Key Infrastructure Using X.509
@@ -833,18 +996,19 @@ Internet-Draft               secevent-token                November 2017
               Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
               2011, <https://www.rfc-editor.org/info/rfc6125>.
 
-
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 15]
-
-Internet-Draft               secevent-token                November 2017
-
-
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
+
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 18]
+
+Internet-Draft               secevent-token                November 2017
+
 
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
@@ -890,18 +1054,17 @@ Internet-Draft               secevent-token                November 2017
               RFC 7516, DOI 10.17487/RFC7516, May 2015,
               <https://www.rfc-editor.org/info/rfc7516>.
 
-
-
-
-Backman & Hunt            Expires May 18, 2018                 [Page 16]
-
-Internet-Draft               secevent-token                November 2017
-
-
    [RFC8055]  Holmberg, C. and Y. Jiang, "Session Initiation Protocol
               (SIP) Via Header Field Parameter to Indicate Received
               Realm", RFC 8055, DOI 10.17487/RFC8055, January 2017,
               <https://www.rfc-editor.org/info/rfc8055>.
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 19]
+
+Internet-Draft               secevent-token                November 2017
+
 
 Appendix A.  Acknowledgments
 
@@ -949,4 +1112,9 @@ Authors' Addresses
 
 
 
-Backman & Hunt            Expires May 18, 2018                 [Page 17]
+
+
+
+
+
+Backman & Hunt            Expires May 18, 2018                 [Page 20]

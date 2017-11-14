@@ -41,10 +41,18 @@ normative:
   RFC2119:
   RFC3986:
   RFC5246:
+  RFC5322:
   RFC6125:
   RFC6749:
   RFC7519:
   RFC7525:
+  E.164:
+    title: The international public telecommunication numbering plan
+    target: http://www.itu.int/rec/T-REC-E.164-201011-I/en
+    author:
+      -
+        org: International Telecommunication Union
+    date: 2010
 informative:
   I-D.ietf-stir-passport:
   I-D.sheffer-oauth-jwt-bcp:
@@ -241,9 +249,8 @@ This specification defines the following claims for use in event payloads:
 defined by a Profiling Specification.  This claim is REQUIRED.
 
   sub
-  : A JSON object whose contents identify the subject of the event.  This
-object SHOULD NOT contain more information than is necessary to enable the
-receiver to identify the subject.  This claim is RECOMMENDED.
+  : A Subject Identifier that identifies the subject of the event.  (See:
+[](#subject)) This claim is RECOMMENDED.
 
 toe
 : A number identifying the date and time at which the event is believed to
@@ -279,6 +286,7 @@ a hypothetical event with two additional claims in the event payload:
   "event": {
     "event_type": "https://secevent.example.com/example_event",
     "sub": {
+      "identifier_type": "urn:ietf:params:secevent:subject:email",
       "email": "user@example.com"
     },
     "claim_1": "foo",
@@ -289,11 +297,97 @@ a hypothetical event with two additional claims in the event payload:
 {: #figset title="Example SET With Event Claims In Payload"}
 
 The payload in this example contains the following:
+
 * An "event_type" claim whose value is the URI identifying the
 hypothetical event type.
 * A "sub" claim whose value identifies a subject via email address.
 * Two claims "claim_1" and "claim_2" that are defined by the hypothetical 
 event type's Profiling Specification.
+
+Subject Identifiers {#subject}
+-------------------
+In many cases, it is necessary to explicitly identify the subject of the
+security even within a SET.  The Subject Identifier provides a common
+syntax for expressing subject identity within a SET.  A Subject Identifier
+is a JSON object representing an instance of a Subject Identifier Type.  A
+Subject Identifier Type defines a set of one or more claims about a subject
+that when taken together collectively identify that subject.  Subject
+Identifier Types MUST be registered in the IANA "SET Subject Identifier
+Types" registry established by [](#iana-sit).
+
+A Subject Identifier MUST contain an "identifier_type" claim, whose value is
+the URN identifying the Subject Identifier Type being represented by the
+Subject Identifier.  All other claims within the Subject Identifier MUST be
+defined by the Subject Identifier Type.
+
+The Subject Identifier Types defined below are registered in the IANA "SET
+Subject Identifier Types" registry established by [](#iana-sit).
+
+### Email Subject Identifier Type
+The "Email" Subject Identifier Type contains a single claim:
+
+{: vspace="0"}
+email
+: A string containing an email address.  Its value SHOULD conform to
+[RFC5322].  This claim is REQUIRED.
+
+The following is a non-normative example of a Subject Identifier
+representing an instance of the Email Subject Identifier Type:
+
+~~~
+{
+  "identifier_type": "urn:ietf:params:secevent:subject:email",
+  "email": "user@example.com"
+}
+~~~
+{: #figemail title="An Instance of the Email Subject Identifier Type"}
+
+### Phone Subject Identifier Type
+The "Phone" Subject Identifier Type contains a single claim:
+
+{: vspace="0"}
+phone_number
+: A string containing a phone number.  It SHOULD be formatted according to
+[E.164].  This claim is REQUIRED.
+
+The following is a non-normative example of a Subject Identifier
+representing an instance of the Phone Subject Identifier Type:
+
+~~~
+{
+  "identifier_type": "urn:ietf:params:secevent:subject:phone",
+  "phone_number": "+1 206 555 0123"
+}
+~~~
+{: #figphone title="An Instance of the Phone Subject Identifier Type"}
+
+### Issuer and Subject Subject Identifier Type
+The "Issuer and Subject" Subject Identifier Type contains two claims:
+
+{: vspace="0"}
+iss
+: A case-sensitive string identifying the principal who is responsible for
+assignment of the identifier in the "sub" claim.  This claim MUST adhere to
+the format of the "iss" claim defined by Section 4.1.1 of [RFC7519].  This
+claim is REQUIRED.
+
+sub
+: A case-sensitive string containing an identifier that identifies a subject
+within the context of the principal identified by the "iss" claim.  This
+claim MUST adhere to the format of the "sub" claim defined by Section 4.1.2
+of [RFC7519].  This claim is REQUIRED.
+
+The following is a non-normative example of a Subject Identifier
+representing an instance of the Issuer and Subject Subject Identifier Type:
+
+~~~
+{
+  "identifier_type": "urn:ietf:params:secevent:subject:iss-sub",
+  "iss": "http://id.example.com",
+  "sub": "example.user.1234"
+}
+~~~
+{: #figisssub title="An Instance of the Issuer and Subject Subject Identifier Type"}
 
 Explicit Typing of SETs {#set-type}
 -----------------------
@@ -334,16 +428,17 @@ eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 The example JWT Claims Set is encoded as follows:
 
 ~~~
-ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
-YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
-LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
-ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
-LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
-bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
-dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
-cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
-aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
-fQo=
+ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
+ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
+ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
+dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
+ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
+dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
+ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
+bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
+YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
+LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
+ICAgICB9CiAgIH0=
 ~~~
 
 The encoded JWS signature is the empty string.  Concatenating the
@@ -351,16 +446,17 @@ parts yields the following complete JWT:
 
 ~~~
 eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-ewogICJqdGkiOiAiNGQzNTU5ZWM2NzUwNGFhYmE2NWQ0MGIwMzYzZmFhZDgiLAogICJp
-YXQiOiAxNDU4NDk2NDA0LAogImlzcyI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20i
-LAogICJhdWQiOiBbCiAgICAiaHR0cHM6Ly9zY2ltLmV4YW1wbGUuY29tL0ZlZWRzLzk4
-ZDUyNDYxZmE1YmJjODc5NTkzYjc3NTQiLAogICAgImh0dHBzOi8vc2NpbS5leGFtcGxl
-LmNvbS9GZWVkcy81ZDc2MDQ1MTZiMWQwODY0MWQ3Njc2ZWU3IgogIF0sCiAKICAiZXZl
-bnQiOiB7CiAgICAiZXZlbnRfdHlwZSI6ICJ1cm46aWV0ZjpwYXJhbXM6c2NpbTpldmVu
-dDpjcmVhdGUiLAogICAgInJlZiI6ICJodHRwczovL3NjaW0uZXhhbXBsZS5jb20vVXNl
-cnMvNDRmNjE0MmRmOTZiZDZhYjYxZTc1MjFkOSIsCiAgICAiYXR0cmlidXRlcyI6IFsi
-aWQiLCAibmFtZSIsICJ1c2VyTmFtZSIsICJwYXNzd29yZCIsICJlbWFpbHMiXQogIH0K
-fQo=.
+ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
+ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
+ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
+dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
+ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
+dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
+ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
+bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
+YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
+LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
+ICAgICB9CiAgIH0=.
 ~~~
 {: #figsetencoded title="Example Unsecured Security Event Token"}
 
@@ -588,6 +684,11 @@ to know the subject.
 
 IANA Considerations {#iana}
 ===================
+
+SET Subject Identifier Types Registry {#iana-sit}
+-------------------------------------
+This section establishes the IANA "SET Subject Identifier Types" registry
+// TODO
 
 JSON Web Token Claims Registration {#iana-claims}
 ----------------------------------
