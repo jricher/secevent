@@ -16,7 +16,7 @@ Expires: May 18, 2018                                             Oracle
 
 
                        Security Event Token (SET)
-                    draft-richanna-secevent-token-00
+                    draft-richanna-secevent-token-01
 
 Abstract
 
@@ -366,13 +366,13 @@ Internet-Draft               secevent-token                November 2017
      "iss": "https://transmitter.example.com",
      "aud": [ "https://receiver.example.com" ],
      "iat": 1458496025,
-     "event_time": 1458492425,
      "event": {
        "event_type": "https://secevent.example.com/example_event",
        "event_subject": {
          "identifier_type": "urn:ietf:params:secevent:subject:email",
          "email": "user@example.com"
        },
+       "event_time": 1458492425,
        "claim_1": "foo",
        "claim_2": "bar"
      }
@@ -396,6 +396,9 @@ Internet-Draft               secevent-token                November 2017
 
    o  An "event_subject" claim whose value identifies a subject via
       email address.
+
+   o  An "event_time" claim whose value is the time at which the event
+      occured.
 
    o  Two claims "claim_1" and "claim_2" that are defined by the
       hypothetical event type's Profiling Specification.
@@ -438,9 +441,6 @@ Internet-Draft               secevent-token                November 2017
 
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Implicit Subject Identifier Type:
-
-
-
 
 
 
@@ -691,13 +691,13 @@ Internet-Draft               secevent-token                November 2017
      "iss": "https://transmitter.example.com",
      "aud": [ "https://receiver.example.com" ],
      "iat": 1510666261,
-     "event_time": 1510662661,
      "event": {
        "event_type": "urn:ietf:secevent:related_events",
-       "sub": {
+       "event_subject": {
          "identifier_type": "urn:ietf:params:secevent:subject:email",
          "email": "user@example.com"
        },
+       "event_time": 1510662661,
        "events": [
          {
            "event_type": "http://specs.example.com/set_profile/event_1"
@@ -996,9 +996,9 @@ Internet-Draft               secevent-token                November 2017
 
 7.2.  JSON Web Token Claims Registration
 
-   This specification registers the "event" and "event_time" claims in
-   the IANA "JSON Web Token Claims" registry [IANA.JWT.Claims]
-   established by [RFC7519].
+   This specification registers the "event" claim in the IANA "JSON Web
+   Token Claims" registry [IANA.JWT.Claims] established by [RFC7519].
+
 
 
 
@@ -1015,14 +1015,6 @@ Internet-Draft               secevent-token                November 2017
    o  Claim Name: "event"
 
    o  Claim Description: Security Event Payload
-
-   o  Change Controller: IESG
-
-   o  Specification Document(s): Section 2.1 of [[ this specification ]]
-
-   o  Claim Name: "event_time"
-
-   o  Claim Description: Time Of Event
 
    o  Change Controller: IESG
 
@@ -1058,14 +1050,6 @@ Internet-Draft               secevent-token                November 2017
 
    o  Applications that use this media type: TBD
 
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 19]
-
-Internet-Draft               secevent-token                November 2017
-
-
    o  Fragment identifier considerations: n/a
 
    o  Additional information:
@@ -1073,6 +1057,14 @@ Internet-Draft               secevent-token                November 2017
    o  Magic number(s): n/a
 
    o  File extension(s): n/a
+
+
+
+
+Backman, et al.           Expires May 18, 2018                 [Page 19]
+
+Internet-Draft               secevent-token                November 2017
+
 
    o  Macintosh file type code(s): n/a
 
@@ -1115,17 +1107,20 @@ Internet-Draft               secevent-token                November 2017
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/info/rfc3986>.
 
+   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.2", RFC 5246,
+              DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
+              editor.org/info/rfc5246>.
+
+
+
+
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 20]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
-              (TLS) Protocol Version 1.2", RFC 5246,
-              DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
-              editor.org/info/rfc5246>.
 
    [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
               DOI 10.17487/RFC5322, October 2008, <https://www.rfc-
@@ -1168,6 +1163,11 @@ Internet-Draft               secevent-token                November 2017
               "OpenID Connect Core 1.0", n.d.,
               <http://openid.net/specs/openid-connect-core-1_0.html>.
 
+   [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) Part Two: Media Types", RFC 2046,
+              DOI 10.17487/RFC2046, November 1996, <https://www.rfc-
+              editor.org/info/rfc2046>.
+
 
 
 
@@ -1177,11 +1177,6 @@ Backman, et al.           Expires May 18, 2018                 [Page 21]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
-              Extensions (MIME) Part Two: Media Types", RFC 2046,
-              DOI 10.17487/RFC2046, November 1996, <https://www.rfc-
-              editor.org/info/rfc2046>.
 
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
@@ -1227,6 +1222,11 @@ Authors' Addresses
    Email: wdenniss@google.com
 
 
+   Morteza Ansari
+   Cisco
+
+   Email: morteza.ansari@cisco.com
+
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 22]
@@ -1234,17 +1234,17 @@ Backman, et al.           Expires May 18, 2018                 [Page 22]
 Internet-Draft               secevent-token                November 2017
 
 
-   Morteza Ansari
-   Cisco
-
-   Email: morteza.ansari@cisco.com
-
-
    Michael B. Jones
    Microsoft
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
+
+
+
+
+
+
 
 
 

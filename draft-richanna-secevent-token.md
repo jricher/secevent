@@ -1,7 +1,7 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-richanna-secevent-token-00
+docname: draft-richanna-secevent-token-01
 date: 2017-11-14
 category: info
 ipr: trust200902
@@ -282,14 +282,14 @@ state change.
   : A Subject Identifier that identifies the subject of the event.  (See:
 [](#subject)) This claim is REQUIRED.
 
-event_time
-: A number identifying the date and time at which the event is believed to
-have occurred or will occur in the future.  Its value MUST take the form of
-a NumericDate value, as defined in Section 2 of [RFC7519].  This claim is
-OPTIONAL, however if it is not present then the recipient MUST interpret
-that to mean that no event time is being asserted, either because there is
-no specific event time, the transmitter does not wish to share it, or the
-transmitter does not know its value.
+  event_time
+  : A number identifying the date and time at which the event is believed to
+  have occurred or will occur in the future.  Its value MUST take the form
+  of a NumericDate value, as defined in Section 2 of [RFC7519].  This claim
+  is OPTIONAL, however if it is not present then the recipient MUST
+  interpret that to mean that no event time is being asserted, either
+  because there is no specific event time, the transmitter does not wish to
+  share it, or the transmitter does not know its value.
 
 Both the SET envelope and event payload MAY contain additional claims, such
 as those defined in a Profiling Specification.  The format and meaning of
@@ -306,13 +306,13 @@ a hypothetical event with two additional claims in the event payload:
   "iss": "https://transmitter.example.com",
   "aud": [ "https://receiver.example.com" ],
   "iat": 1458496025,
-  "event_time": 1458492425,
   "event": {
     "event_type": "https://secevent.example.com/example_event",
     "event_subject": {
       "identifier_type": "urn:ietf:params:secevent:subject:email",
       "email": "user@example.com"
     },
+    "event_time": 1458492425,
     "claim_1": "foo",
     "claim_2": "bar"
   }
@@ -326,6 +326,7 @@ The payload in this example contains the following:
 hypothetical event type.
 * An "event_subject" claim whose value identifies a subject via email
 address.
+* An "event_time" claim whose value is the time at which the event occured.
 * Two claims "claim_1" and "claim_2" that are defined by the hypothetical 
 event type's Profiling Specification.
 
@@ -580,13 +581,13 @@ Events event:
   "iss": "https://transmitter.example.com",
   "aud": [ "https://receiver.example.com" ],
   "iat": 1510666261,
-  "event_time": 1510662661,
   "event": {
     "event_type": "urn:ietf:secevent:related_events",
-    "sub": {
+    "event_subject": {
       "identifier_type": "urn:ietf:params:secevent:subject:email",
       "email": "user@example.com"
     },
+    "event_time": 1510662661,
     "events": [
       {
         "event_type": "http://specs.example.com/set_profile/event_1"
@@ -843,17 +844,12 @@ This section establishes the IANA "SET Subject Identifier Types" registry
 
 JSON Web Token Claims Registration {#iana-claims}
 ----------------------------------
-This specification registers the "event" and "event_time" claims in the IANA
-"JSON Web Token Claims" registry [IANA.JWT.Claims] established by [RFC7519].
+This specification registers the "event" claim in the IANA "JSON Web Token
+Claims" registry [IANA.JWT.Claims] established by [RFC7519].
 
 ### Registry Contents
 *  Claim Name: "event"
 *  Claim Description: Security Event Payload
-*  Change Controller: IESG
-*  Specification Document(s): Section 2.1 of [[ this specification ]]
-
-*  Claim Name: "event_time"
-*  Claim Description: Time Of Event
 *  Change Controller: IESG
 *  Specification Document(s): Section 2.1 of [[ this specification ]]
 
