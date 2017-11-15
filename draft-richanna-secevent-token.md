@@ -19,11 +19,6 @@ author:
     name: Annabelle Backman
     organization: Amazon
     email: richanna@amazon.com
- -
-    ins: P. Hunt
-    name: Phil Hunt
-    organization: Oracle
-    email: phil.hunt@yahoo.com
     
  -
     ins: W. Denniss

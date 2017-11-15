@@ -4,10 +4,8 @@
 
 secevent                                                      A. Backman
 Internet-Draft                                                    Amazon
-Intended status: Informational                                   P. Hunt
-Expires: May 18, 2018                                             Oracle
-                                                              W. Denniss
-                                                                  Google
+Intended status: Informational                                W. Denniss
+Expires: May 18, 2018                                             Google
                                                                M. Ansari
                                                                    Cisco
                                                                 M. Jones
@@ -49,7 +47,9 @@ Copyright Notice
    Copyright (c) 2017 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
 
 
 
@@ -58,9 +58,6 @@ Backman, et al.           Expires May 18, 2018                  [Page 1]
 Internet-Draft               secevent-token                November 2017
 
 
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -105,6 +102,9 @@ Table of Contents
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+
+
+
 
 
 
@@ -1215,16 +1215,16 @@ Authors' Addresses
    Email: richanna@amazon.com
 
 
-   Phil Hunt
-   Oracle
-
-   Email: phil.hunt@yahoo.com
-
-
    William Denniss
    Google
 
    Email: wdenniss@google.com
+
+
+   Morteza Ansari
+   Cisco
+
+   Email: morteza.ansari@cisco.com
 
 
 
@@ -1234,17 +1234,17 @@ Backman, et al.           Expires May 18, 2018                 [Page 22]
 Internet-Draft               secevent-token                November 2017
 
 
-   Morteza Ansari
-   Cisco
-
-   Email: morteza.ansari@cisco.com
-
-
    Michael B. Jones
    Microsoft
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
+
+
+
+
+
+
 
 
 
