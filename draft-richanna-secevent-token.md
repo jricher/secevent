@@ -332,51 +332,47 @@ event type's Profiling Specification.
 
 Subject Identifiers {#subject}
 -------------------
-In many cases, it is necessary to explicitly identify the subject of the
-security event within a SET.  The Subject Identifier provides a common
-syntax for expressing subject identity within a SET.  A Subject Identifier
-is a JSON object representing an instance of a Subject Identifier Type.  A
-Subject Identifier Type defines a set of one or more claims about a subject
-that when taken together collectively identify that subject.  Subject
-Identifier Types MUST be registered in the IANA "SET Subject Identifier
-Types" registry established by [](#iana-sit).
+The Subject Identifier provides a common syntax for expressing the subject
+of a security event.  A Subject Identifier is a JSON object representing an
+instance of a Subject Identifier Type.  A Subject Identifier Type defines a
+way of identifying the subject of an event. Typically this is done by
+defining a set of one or more claims about a subject that when taken
+together collectively identify that subject.  Each Subject Identifier Type
+MUST have a name which MUST be registered in the IANA "SET Subject
+Identifier Types" registry established by [](#iana-sit).
 
 A Subject Identifier MUST contain an "identifier_type" claim, whose value is
-the URN identifying the Subject Identifier Type being represented by the
-Subject Identifier.  All other claims within the Subject Identifier MUST be
-defined by the Subject Identifier Type.
+a string containing the name of the Subject Identifier's Subject Identifier
+Type.  All other claims within the Subject Identifier MUST be defined by the
+Subject Identifier Type.
 
-The Subject Identifier Types defined below are registered in the IANA "SET
-Subject Identifier Types" registry established by [](#iana-sit).
+The names of the Subject Identifier Types defined below are registered in
+the IANA "SET Subject Identifier Types" registry established by [](#iana-sit).
 
-### Implicit Identifier Type
-The "Implicit" Subject Identifier Type contains a single claim:
+### Implicit Subject Identifier Type
+The "Implicit" Subject Identifier Type indicates that the recipient is to be
+determined implicitly, either from other claims in the SET envelope or event
+payload, or through some other context.  For example, there may be event
+types for which the only logical subject is the transmitter itself, in which
+case the subject is implicitly known from the "iss" claim in the SET
+envelope.
 
-{: vspace="0"}
-implicit
-: A boolean value. The value of this claim must be true. This claim is
-REQUIRED.
-
-Recipients MUST interpret the presence of this Subject Identifier Type as
-meaning that the actual subject can be determined implicitly, either through
-other claims in the SET envelope or event payload, or through other some
-other context. For example, there may be event types for which the only
-logical subject is the transmitter itself, in which case the subject is
-implicitly known from the "iss" claim in the SET envelope.
+The Implicit Subject Identifier Type has the name "implicit".  This type
+contains no additional claims.
 
 The following is a non-normative example of a Subject Identifier
 representing an instance of the Implicit Subject Identifier Type:
 
 ~~~
 {
-  "identifier_type": "urn:ietf:params:secevent:subject:implicit",
-  "implicit": true
+  "identifier_type": "implicit"
 }
 ~~~
 {: #figimplicit title="An Instance of the Implicit Subject Identifier Type"}
 
 ### Email Subject Identifier Type
-The "Email" Subject Identifier Type contains a single claim:
+The "Email" Subject Identifier Type identifies a subject by email address.
+It has the name "email", and contains a single additional claim:
 
 {: vspace="0"}
 email
@@ -388,14 +384,15 @@ representing an instance of the Email Subject Identifier Type:
 
 ~~~
 {
-  "identifier_type": "urn:ietf:params:secevent:subject:email",
+  "identifier_type": "email",
   "email": "user@example.com"
 }
 ~~~
 {: #figemail title="An Instance of the Email Subject Identifier Type"}
 
-### Phone Subject Identifier Type
-The "Phone" Subject Identifier Type contains a single claim:
+### Phone Number Subject Identifier Type
+The "Phone Number" Subject Identifier Type identifies a subject by phone
+number. It has the name "phone_number", and contains a single claim:
 
 {: vspace="0"}
 phone_number
@@ -403,38 +400,38 @@ phone_number
 [E.164].  This claim is REQUIRED.
 
 The following is a non-normative example of a Subject Identifier
-representing an instance of the Phone Subject Identifier Type:
+representing an instance of the Phone Number Subject Identifier Type:
 
 ~~~
 {
-  "identifier_type": "urn:ietf:params:secevent:subject:phone",
+  "identifier_type": "phone_number",
   "phone_number": "+1 206 555 0123"
 }
 ~~~
-{: #figphone title="An Instance of the Phone Subject Identifier Type"}
+{: #figphone title="An Instance of the Phone Number Subject Identifier Type"}
 
 ### Issuer and Subject Subject Identifier Type
-The "Issuer and Subject" Subject Identifier Type contains two claims:
+The "Issuer and Subject" Subject Identifier Type identifies a subject by an
+issuer and subject pair.  It has the name "iss-sub", and contains two
+claims:
 
 {: vspace="0"}
 iss
 : A case-sensitive string identifying the principal who is responsible for
-assignment of the identifier in the "sub" claim.  This claim MUST adhere to
-the format of the "iss" claim defined by Section 4.1.1 of [RFC7519].  This
-claim is REQUIRED.
+assignment of the identifier in the "sub" claim, as defined by Section 4.1.1
+of [RFC7519].  This claim is REQUIRED.
 
 sub
 : A case-sensitive string containing an identifier that identifies a subject
-within the context of the principal identified by the "iss" claim.  This
-claim MUST adhere to the format of the "sub" claim defined by Section 4.1.2
-of [RFC7519].  This claim is REQUIRED.
+within the context of the principal identified by the "iss" claim, as
+defined by Section 4.1.2 of [RFC7519].  This claim is REQUIRED.
 
 The following is a non-normative example of a Subject Identifier
 representing an instance of the Issuer and Subject Subject Identifier Type:
 
 ~~~
 {
-  "identifier_type": "urn:ietf:params:secevent:subject:iss-sub",
+  "identifier_type": "iss-sub",
   "iss": "http://id.example.com",
   "sub": "example.user.1234"
 }
@@ -480,17 +477,15 @@ eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 The example JWT Claims Set is encoded as follows:
 
 ~~~
-ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
-ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
-ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
-dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
-ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
-dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
-ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
-bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
-YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
-LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
-ICAgICB9CiAgIH0=
+ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
+ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
+ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
+MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
+cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
+ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
+DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
+ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
+CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=
 ~~~
 
 The encoded JWS signature is the empty string.  Concatenating the
@@ -498,17 +493,15 @@ parts yields the following complete JWT:
 
 ~~~
 eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
-ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
-ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
-dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
-ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
-dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
-ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
-bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
-YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
-LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
-ICAgICB9CiAgIH0=.
+ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
+ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
+ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
+MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
+cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
+ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
+DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
+ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
+CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=.
 ~~~
 {: #figsetencoded title="Example Unsecured Security Event Token"}
 
@@ -538,7 +531,8 @@ other semantics are encouraged to profile this specification and
 define additional event types for those use cases.
 /* ed.: Trying to minimize ambiguity around semantics of event grouping. */
 
-The URN for the Related Events event is "urn:ietf:secevents:related_events".
+The event type for the Related Events event is the URN
+"urn:ietf:secevents:related_events".
 
 The Related Events event has a single additional event payload claim:
 
@@ -584,7 +578,7 @@ Events event:
   "event": {
     "event_type": "urn:ietf:secevent:related_events",
     "event_subject": {
-      "identifier_type": "urn:ietf:params:secevent:subject:email",
+      "identifier_type": "email",
       "email": "user@example.com"
     },
     "event_time": 1510662661,

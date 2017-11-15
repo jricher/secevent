@@ -76,27 +76,27 @@ Table of Contents
    2.  The Security Event Token (SET)  . . . . . . . . . . . . . . .   5
      2.1.  SET Claims  . . . . . . . . . . . . . . . . . . . . . . .   5
      2.2.  Subject Identifiers . . . . . . . . . . . . . . . . . . .   8
-       2.2.1.  Implicit Identifier Type  . . . . . . . . . . . . . .   8
+       2.2.1.  Implicit Subject Identifier Type  . . . . . . . . . .   8
        2.2.2.  Email Subject Identifier Type . . . . . . . . . . . .   9
-       2.2.3.  Phone Subject Identifier Type . . . . . . . . . . . .   9
-       2.2.4.  Issuer and Subject Subject Identifier Type  . . . . .   9
+       2.2.3.  Phone Number Subject Identifier Type  . . . . . . . .   9
+       2.2.4.  Issuer and Subject Subject Identifier Type  . . . . .  10
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .  10
-     2.4.  Security Event Token Construction . . . . . . . . . . . .  10
+     2.4.  Security Event Token Construction . . . . . . . . . . . .  11
    3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  12
    4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  13
      4.1.  Extending Events  . . . . . . . . . . . . . . . . . . . .  14
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-     5.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  14
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+     5.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  15
      5.2.  Delivery  . . . . . . . . . . . . . . . . . . . . . . . .  15
      5.3.  Sequencing  . . . . . . . . . . . . . . . . . . . . . . .  15
      5.4.  Timing Issues . . . . . . . . . . . . . . . . . . . . . .  16
      5.5.  Distinguishing SETs from ID Tokens  . . . . . . . . . . .  16
-     5.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  16
+     5.6.  Distinguishing SETs from Access Tokens  . . . . . . . . .  17
      5.7.  Distinguishing SETs from other kinds of JWTs  . . . . . .  17
    6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  18
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
      7.1.  SET Subject Identifier Types Registry . . . . . . . . . .  18
-     7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  18
+     7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  19
        7.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  19
      7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  19
        7.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  19
@@ -405,42 +405,42 @@ Internet-Draft               secevent-token                November 2017
 
 2.2.  Subject Identifiers
 
-   In many cases, it is necessary to explicitly identify the subject of
-   the security event within a SET.  The Subject Identifier provides a
-   common syntax for expressing subject identity within a SET.  A
-   Subject Identifier is a JSON object representing an instance of a
-   Subject Identifier Type.  A Subject Identifier Type defines a set of
-   one or more claims about a subject that when taken together
-   collectively identify that subject.  Subject Identifier Types MUST be
+   The Subject Identifier provides a common syntax for expressing the
+   subject of a security event.  A Subject Identifier is a JSON object
+   representing an instance of a Subject Identifier Type.  A Subject
+   Identifier Type defines a way of identifying the subject of an event.
+   Typically this is done by defining a set of one or more claims about
+   a subject that when taken together collectively identify that
+   subject.  Each Subject Identifier Type MUST have a name which MUST be
    registered in the IANA "SET Subject Identifier Types" registry
    established by Section 7.1.
 
    A Subject Identifier MUST contain an "identifier_type" claim, whose
-   value is the URN identifying the Subject Identifier Type being
-   represented by the Subject Identifier.  All other claims within the
-   Subject Identifier MUST be defined by the Subject Identifier Type.
+   value is a string containing the name of the Subject Identifier's
+   Subject Identifier Type.  All other claims within the Subject
+   Identifier MUST be defined by the Subject Identifier Type.
 
-   The Subject Identifier Types defined below are registered in the IANA
-   "SET Subject Identifier Types" registry established by Section 7.1.
+   The names of the Subject Identifier Types defined below are
+   registered in the IANA "SET Subject Identifier Types" registry
+   established by Section 7.1.
 
-2.2.1.  Implicit Identifier Type
+2.2.1.  Implicit Subject Identifier Type
 
-   The "Implicit" Subject Identifier Type contains a single claim:
+   The "Implicit" Subject Identifier Type indicates that the recipient
+   is to be determined implicitly, either from other claims in the SET
+   envelope or event payload, or through some other context.  For
+   example, there may be event types for which the only logical subject
+   is the transmitter itself, in which case the subject is implicitly
+   known from the "iss" claim in the SET envelope.
 
-   implicit
-      A boolean value.  The value of this claim must be true.  This
-      claim is REQUIRED.
-
-   Recipients MUST interpret the presence of this Subject Identifier
-   Type as meaning that the actual subject can be determined implicitly,
-   either through other claims in the SET envelope or event payload, or
-   through other some other context.  For example, there may be event
-   types for which the only logical subject is the transmitter itself,
-   in which case the subject is implicitly known from the "iss" claim in
-   the SET envelope.
+   The Implicit Subject Identifier Type has the name "implicit".  This
+   type contains no additional claims.
 
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Implicit Subject Identifier Type:
+
+
+
 
 
 
@@ -451,15 +451,16 @@ Internet-Draft               secevent-token                November 2017
 
 
    {
-     "identifier_type": "urn:ietf:params:secevent:subject:implicit",
-     "implicit": true
+     "identifier_type": "implicit"
    }
 
        Figure 2: An Instance of the Implicit Subject Identifier Type
 
 2.2.2.  Email Subject Identifier Type
 
-   The "Email" Subject Identifier Type contains a single claim:
+   The "Email" Subject Identifier Type identifies a subject by email
+   address.  It has the name "email", and contains a single additional
+   claim:
 
    email
       A string containing an email address.  Its value SHOULD conform to
@@ -469,35 +470,34 @@ Internet-Draft               secevent-token                November 2017
    representing an instance of the Email Subject Identifier Type:
 
    {
-     "identifier_type": "urn:ietf:params:secevent:subject:email",
+     "identifier_type": "email",
      "email": "user@example.com"
    }
 
         Figure 3: An Instance of the Email Subject Identifier Type
 
-2.2.3.  Phone Subject Identifier Type
+2.2.3.  Phone Number Subject Identifier Type
 
-   The "Phone" Subject Identifier Type contains a single claim:
+   The "Phone Number" Subject Identifier Type identifies a subject by
+   phone number.  It has the name "phone_number", and contains a single
+   claim:
 
    phone_number
       A string containing a phone number.  It SHOULD be formatted
       according to [E.164].  This claim is REQUIRED.
 
    The following is a non-normative example of a Subject Identifier
-   representing an instance of the Phone Subject Identifier Type:
+   representing an instance of the Phone Number Subject Identifier Type:
 
    {
-     "identifier_type": "urn:ietf:params:secevent:subject:phone",
+     "identifier_type": "phone_number",
      "phone_number": "+1 206 555 0123"
    }
 
-        Figure 4: An Instance of the Phone Subject Identifier Type
+     Figure 4: An Instance of the Phone Number Subject Identifier Type
 
-2.2.4.  Issuer and Subject Subject Identifier Type
 
-   The "Issuer and Subject" Subject Identifier Type contains two claims:
 
-   iss
 
 
 
@@ -506,24 +506,29 @@ Backman, et al.           Expires May 18, 2018                  [Page 9]
 Internet-Draft               secevent-token                November 2017
 
 
+2.2.4.  Issuer and Subject Subject Identifier Type
+
+   The "Issuer and Subject" Subject Identifier Type identifies a subject
+   by an issuer and subject pair.  It has the name "iss-sub", and
+   contains two claims:
+
+   iss
       A case-sensitive string identifying the principal who is
-      responsible for assignment of the identifier in the "sub" claim.
-      This claim MUST adhere to the format of the "iss" claim defined by
-      Section 4.1.1 of [RFC7519].  This claim is REQUIRED.
+      responsible for assignment of the identifier in the "sub" claim,
+      as defined by Section 4.1.1 of [RFC7519].  This claim is REQUIRED.
 
    sub
       A case-sensitive string containing an identifier that identifies a
       subject within the context of the principal identified by the
-      "iss" claim.  This claim MUST adhere to the format of the "sub"
-      claim defined by Section 4.1.2 of [RFC7519].  This claim is
-      REQUIRED.
+      "iss" claim, as defined by Section 4.1.2 of [RFC7519].  This claim
+      is REQUIRED.
 
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Issuer and Subject Subject Identifier
    Type:
 
    {
-     "identifier_type": "urn:ietf:params:secevent:subject:iss-sub",
+     "identifier_type": "iss-sub",
      "iss": "http://id.example.com",
      "sub": "example.user.1234"
    }
@@ -545,13 +550,8 @@ Internet-Draft               secevent-token                November 2017
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
 
-2.4.  Security Event Token Construction
 
-   A SET is a JWT, and therefore it's construction follows that
-   described in [RFC7519].
 
-   While this specification uses JWT to convey a SET, implementers SHALL
-   NOT use SETs to convey authentication or authorization assertions.
 
 
 
@@ -561,6 +561,14 @@ Backman, et al.           Expires May 18, 2018                 [Page 10]
 
 Internet-Draft               secevent-token                November 2017
 
+
+2.4.  Security Event Token Construction
+
+   A SET is a JWT, and therefore it's construction follows that
+   described in [RFC7519].
+
+   While this specification uses JWT to convey a SET, implementers SHALL
+   NOT use SETs to convey authentication or authorization assertions.
 
    The following is the example JWT Claims Set from Figure 1, expressed
    as an unsigned JWT.  The JOSE Header is:
@@ -574,42 +582,34 @@ Internet-Draft               secevent-token                November 2017
 
    The example JWT Claims Set is encoded as follows:
 
-   ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
-   ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
-   ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
-   dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
-   ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
-   dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
-   ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
-   bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
-   YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
-   LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
-   ICAgICB9CiAgIH0=
+   ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
+   ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
+   ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
+   MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
+   cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
+   ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
+   DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
+   ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
+   CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=
 
    The encoded JWS signature is the empty string.  Concatenating the
    parts yields the following complete JWT:
 
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-   ewogICAgICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAog
-   ICAgICJpc3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgICAg
-   ImF1ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgICAgImlh
-   dCI6IDE0NTg0OTYwMjUsCiAgICAgInRvZSI6IDE0NTg0OTI0MjUsCiAgICAgInR4biI6
-   ICI1YmI0ZGRkMi0zZTc3LTRlMGItYTQwNi0wM2M4ZmRjMjg3YzIiLAogICAgICJldmVu
-   dCI6IHsKICAgICAgICJldmVudF90eXBlIjogImh0dHBzOi8vc2VjZXZlbnQuZXhhbXBs
-   ZS5jb20vZXhhbXBsZV9ldmVudCIsCiAgICAgICAic3ViIjogewogICAgICAgICAiaWRl
-   bnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVudDpzdWJqZWN0OmVt
-   YWlsIiwKICAgICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iCiAgICAgICB9
-   LAogICAgICAgImNsYWltXzEiOiAiZm9vIiwKICAgICAgICJjbGFpbV8yIjogImJhciIK
-   ICAgICB9CiAgIH0=.
+   ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
+   ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
+   ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
+   MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
+   cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
+   ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
+   DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
+   ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
+   CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=.
 
              Figure 6: Example Unsecured Security Event Token
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
-   MUST employ other mechanisms such as TLS and HTTP to provide
-   integrity, confidentiality, and issuer validation, as needed by the
-   application.
-
 
 
 
@@ -617,6 +617,10 @@ Backman, et al.           Expires May 18, 2018                 [Page 11]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   MUST employ other mechanisms such as TLS and HTTP to provide
+   integrity, confidentiality, and issuer validation, as needed by the
+   application.
 
    When validation (i.e. auditing), or additional transmission security
    is required, JWS signing and/or JWE encryption MAY be used.  To
@@ -639,7 +643,7 @@ Internet-Draft               secevent-token                November 2017
    cases.  /* ed.: Trying to minimize ambiguity around semantics of
    event grouping. */
 
-   The URN for the Related Events event is
+   The event type for the Related Events event is the URN
    "urn:ietf:secevents:related_events".
 
    The Related Events event has a single additional event payload claim:
@@ -662,10 +666,6 @@ Internet-Draft               secevent-token                November 2017
    events that support disjoint sets of Subject Identifier Types but
    specify their subject using the "sub" event payload claim defined in
    Section 2.1 can coexist within a Related Events event, as the subject
-   for each event would reside within the respective event's event
-   payload.  However, if both events specified their subject using the
-   "sub" envelope claim, they would be in conflict with one another, as
-   it would not be possible to assign a value to the "sub" envelope
 
 
 
@@ -674,6 +674,10 @@ Backman, et al.           Expires May 18, 2018                 [Page 12]
 Internet-Draft               secevent-token                November 2017
 
 
+   for each event would reside within the respective event's event
+   payload.  However, if both events specified their subject using the
+   "sub" envelope claim, they would be in conflict with one another, as
+   it would not be possible to assign a value to the "sub" envelope
    claim that satisfies the requirements of both events' Profiling
    Specifications.  /* ed.: This is just a specific case of above
    paragraph, but sub has been a sticking point so calling it out seems
@@ -694,7 +698,7 @@ Internet-Draft               secevent-token                November 2017
      "event": {
        "event_type": "urn:ietf:secevent:related_events",
        "event_subject": {
-         "identifier_type": "urn:ietf:params:secevent:subject:email",
+         "identifier_type": "email",
          "email": "user@example.com"
        },
        "event_time": 1510662661,
@@ -719,10 +723,6 @@ Internet-Draft               secevent-token                November 2017
    SET envelope and event payload claims are used by SETs expressing and
    event defined by the profile.
 
-   Defining the semantics of the SET contents for SETs utilizing the
-   profile is equally important.  Possibly most important is defining
-   the procedures used to validate the SET issuer and to obtain the keys
-
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 13]
@@ -730,6 +730,9 @@ Backman, et al.           Expires May 18, 2018                 [Page 13]
 Internet-Draft               secevent-token                November 2017
 
 
+   Defining the semantics of the SET contents for SETs utilizing the
+   profile is equally important.  Possibly most important is defining
+   the procedures used to validate the SET issuer and to obtain the keys
    controlled by the issuer that were used for cryptographic operations
    used in the JWT representing the SET.  For instance, some profiles
    may define an algorithm for retrieving the SET issuer's keys that
@@ -771,13 +774,10 @@ Internet-Draft               secevent-token                November 2017
    /* ed.: Guidance on avoiding name conflict with extension claims: put
    it here, or in an implementation considerations section? */
 
-5.  Security Considerations
 
-5.1.  Confidentiality and Integrity
 
-   SETs may often contain sensitive information.  Therefore, methods for
-   distribution of events SHOULD require the use of a transport-layer
-   security mechanism when distributing events.  Parties MUST support
+
+
 
 
 
@@ -786,6 +786,13 @@ Backman, et al.           Expires May 18, 2018                 [Page 14]
 Internet-Draft               secevent-token                November 2017
 
 
+5.  Security Considerations
+
+5.1.  Confidentiality and Integrity
+
+   SETs may often contain sensitive information.  Therefore, methods for
+   distribution of events SHOULD require the use of a transport-layer
+   security mechanism when distributing events.  Parties MUST support
    TLS 1.2 [RFC5246] and MAY support additional transport-layer
    mechanisms meeting its security requirements.  When using TLS, the
    client MUST perform a TLS/SSL server certificate check, per
@@ -827,13 +834,6 @@ Internet-Draft               secevent-token                November 2017
    will have some amount of clock-skew and thus time by itself will not
    guarantee order.
 
-   Specifications profiling SET SHOULD define a mechanism for detecting
-   order or sequence of events.
-
-
-
-
-
 
 
 
@@ -841,6 +841,9 @@ Backman, et al.           Expires May 18, 2018                 [Page 15]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   Specifications profiling SET SHOULD define a mechanism for detecting
+   order or sequence of events.
 
 5.4.  Timing Issues
 
@@ -885,11 +888,8 @@ Internet-Draft               secevent-token                November 2017
    will not achieve disambiguation between ID Tokens and SETs, as the ID
    Token validation rules do not use the "typ" header parameter value.
 
-5.6.  Distinguishing SETs from Access Tokens
 
-   OAuth 2.0 [RFC6749] defines access tokens as being opaque.
-   Nonetheless, some implementations implement access tokens as JWTs.
-   Because the structure of these JWTs is implementation-specific,
+
 
 
 
@@ -898,6 +898,11 @@ Backman, et al.           Expires May 18, 2018                 [Page 16]
 Internet-Draft               secevent-token                November 2017
 
 
+5.6.  Distinguishing SETs from Access Tokens
+
+   OAuth 2.0 [RFC6749] defines access tokens as being opaque.
+   Nonetheless, some implementations implement access tokens as JWTs.
+   Because the structure of these JWTs is implementation-specific,
    ensuring that a SET cannot be confused with such an access token is
    therefore likewise, in general, implementation specific.
    Nonetheless, it is recommended that SET profiles employ the following
@@ -941,11 +946,6 @@ Internet-Draft               secevent-token                November 2017
 
    Another way to ensure that a SET is not confused with another kind of
    JWT is to have the JWT validation logic reject JWTs containing an
-   "events" claim unless the JWT is intended to be a SET.  This approach
-   can be employed for new systems but may not be applicable to existing
-   systems.
-
-
 
 
 
@@ -953,6 +953,10 @@ Backman, et al.           Expires May 18, 2018                 [Page 17]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   "events" claim unless the JWT is intended to be a SET.  This approach
+   can be employed for new systems but may not be applicable to existing
+   systems.
 
    For many use cases, the simplest way to prevent substitution is
    requiring that the SET not include claims that are required for the
@@ -994,10 +998,6 @@ Internet-Draft               secevent-token                November 2017
    This section establishes the IANA "SET Subject Identifier Types"
    registry // TODO
 
-7.2.  JSON Web Token Claims Registration
-
-   This specification registers the "event" claim in the IANA "JSON Web
-   Token Claims" registry [IANA.JWT.Claims] established by [RFC7519].
 
 
 
@@ -1009,6 +1009,11 @@ Backman, et al.           Expires May 18, 2018                 [Page 18]
 
 Internet-Draft               secevent-token                November 2017
 
+
+7.2.  JSON Web Token Claims Registration
+
+   This specification registers the "event" claim in the IANA "JSON Web
+   Token Claims" registry [IANA.JWT.Claims] established by [RFC7519].
 
 7.2.1.  Registry Contents
 
@@ -1054,17 +1059,16 @@ Internet-Draft               secevent-token                November 2017
 
    o  Additional information:
 
-   o  Magic number(s): n/a
-
-   o  File extension(s): n/a
-
-
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 19]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   o  Magic number(s): n/a
+
+   o  File extension(s): n/a
 
    o  Macintosh file type code(s): n/a
 
@@ -1107,10 +1111,6 @@ Internet-Draft               secevent-token                November 2017
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/info/rfc3986>.
 
-   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
-              (TLS) Protocol Version 1.2", RFC 5246,
-              DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
-              editor.org/info/rfc5246>.
 
 
 
@@ -1121,6 +1121,11 @@ Backman, et al.           Expires May 18, 2018                 [Page 20]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.2", RFC 5246,
+              DOI 10.17487/RFC5246, August 2008, <https://www.rfc-
+              editor.org/info/rfc5246>.
 
    [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
               DOI 10.17487/RFC5322, October 2008, <https://www.rfc-
@@ -1163,11 +1168,6 @@ Internet-Draft               secevent-token                November 2017
               "OpenID Connect Core 1.0", n.d.,
               <http://openid.net/specs/openid-connect-core-1_0.html>.
 
-   [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
-              Extensions (MIME) Part Two: Media Types", RFC 2046,
-              DOI 10.17487/RFC2046, November 1996, <https://www.rfc-
-              editor.org/info/rfc2046>.
-
 
 
 
@@ -1177,6 +1177,11 @@ Backman, et al.           Expires May 18, 2018                 [Page 21]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) Part Two: Media Types", RFC 2046,
+              DOI 10.17487/RFC2046, November 1996, <https://www.rfc-
+              editor.org/info/rfc2046>.
 
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
@@ -1222,11 +1227,6 @@ Authors' Addresses
    Email: wdenniss@google.com
 
 
-   Morteza Ansari
-   Cisco
-
-   Email: morteza.ansari@cisco.com
-
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 22]
@@ -1234,17 +1234,17 @@ Backman, et al.           Expires May 18, 2018                 [Page 22]
 Internet-Draft               secevent-token                November 2017
 
 
+   Morteza Ansari
+   Cisco
+
+   Email: morteza.ansari@cisco.com
+
+
    Michael B. Jones
    Microsoft
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
-
-
-
-
-
-
 
 
 
