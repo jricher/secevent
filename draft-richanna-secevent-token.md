@@ -260,6 +260,7 @@ event
 : A JSON object known as the "event payload", whose contents identify the
 type of event contained within the SET and contain additional information 
 defined as part of an event type definition in a Profiling Specification.  
+
 This specification defines the following claims for use in event payloads:
 
   {: vspace="0"}
@@ -267,23 +268,28 @@ This specification defines the following claims for use in event payloads:
   : A string containing a URI that uniquely identifies an event type
 defined by a Profiling Specification.  This claim is REQUIRED.
 
-  sub
-  : A Subject Identifier that identifies the subject of the event.  (See:
-[](#subject)) This claim is RECOMMENDED.
+  event_id
+  : A string that identifies a specific "real world" event or state change
+to which this event is related. Recipients MAY use this claim to correlate
+events across different SETs received at different times and/or by different
+systems. The value of this claim MUST be unique with respect to the
+transmitter to a specific "real world" event or state change, however
+recipients MUST NOT interpret a difference in "event_id" values as a
+guarantee that two events are not related to the same "real world" event or
+state change.
 
-toe
+  event_subject
+  : A Subject Identifier that identifies the subject of the event.  (See:
+[](#subject)) This claim is REQUIRED.
+
+event_time
 : A number identifying the date and time at which the event is believed to
 have occurred or will occur in the future.  Its value MUST take the form of
 a NumericDate value, as defined in Section 2 of [RFC7519].  This claim is
-RECOMMENDED.  Profiling Specifications MAY indicate ways to determine the
-event time when the "toe" claim is omitted (such as using the value of the
-"iat" claim).
-
-txn
-: A string value that represents a unique transaction identifier.  In cases
-where multiple SETs are issued containing different events, the
-transaction identifier MAY be used to correlate the SETs to the same
-originating event or stateful change.  This claim is OPTIONAL.
+OPTIONAL, however if it is not present then the recipient MUST interpret
+that to mean that no event time is being asserted, either because there is
+no specific event time, the transmitter does not wish to share it, or the
+transmitter does not know its value.
 
 Both the SET envelope and event payload MAY contain additional claims, such
 as those defined in a Profiling Specification.  The format and meaning of
@@ -300,11 +306,10 @@ a hypothetical event with two additional claims in the event payload:
   "iss": "https://transmitter.example.com",
   "aud": [ "https://receiver.example.com" ],
   "iat": 1458496025,
-  "toe": 1458492425,
-  "txn": "5bb4ddd2-3e77-4e0b-a406-03c8fdc287c2",
+  "event_time": 1458492425,
   "event": {
     "event_type": "https://secevent.example.com/example_event",
-    "sub": {
+    "event_subject": {
       "identifier_type": "urn:ietf:params:secevent:subject:email",
       "email": "user@example.com"
     },
@@ -319,14 +324,15 @@ The payload in this example contains the following:
 
 * An "event_type" claim whose value is the URI identifying the
 hypothetical event type.
-* A "sub" claim whose value identifies a subject via email address.
+* An "event_subject" claim whose value identifies a subject via email
+address.
 * Two claims "claim_1" and "claim_2" that are defined by the hypothetical 
 event type's Profiling Specification.
 
 Subject Identifiers {#subject}
 -------------------
 In many cases, it is necessary to explicitly identify the subject of the
-security even within a SET.  The Subject Identifier provides a common
+security event within a SET.  The Subject Identifier provides a common
 syntax for expressing subject identity within a SET.  A Subject Identifier
 is a JSON object representing an instance of a Subject Identifier Type.  A
 Subject Identifier Type defines a set of one or more claims about a subject
@@ -341,6 +347,32 @@ defined by the Subject Identifier Type.
 
 The Subject Identifier Types defined below are registered in the IANA "SET
 Subject Identifier Types" registry established by [](#iana-sit).
+
+### Implicit Identifier Type
+The "Implicit" Subject Identifier Type contains a single claim:
+
+{: vspace="0"}
+implicit
+: A boolean value. The value of this claim must be true. This claim is
+REQUIRED.
+
+Recipients MUST interpret the presence of this Subject Identifier Type as
+meaning that the actual subject can be determined implicitly, either through
+other claims in the SET envelope or event payload, or through other some
+other context. For example, there may be event types for which the only
+logical subject is the transmitter itself, in which case the subject is
+implicitly known from the "iss" claim in the SET envelope.
+
+The following is a non-normative example of a Subject Identifier
+representing an instance of the Implicit Subject Identifier Type:
+
+~~~
+{
+  "identifier_type": "urn:ietf:params:secevent:subject:implicit",
+  "implicit": true
+}
+~~~
+{: #figimplicit title="An Instance of the Implicit Subject Identifier Type"}
 
 ### Email Subject Identifier Type
 The "Email" Subject Identifier Type contains a single claim:
@@ -548,8 +580,7 @@ Events event:
   "iss": "https://transmitter.example.com",
   "aud": [ "https://receiver.example.com" ],
   "iat": 1510666261,
-  "toe": 1510662661,
-  "txn": "0d3c97f4-82d3-4fb8-ac67-09c62a8fcda2",
+  "event_time": 1510662661,
   "event": {
     "event_type": "urn:ietf:secevent:related_events",
     "sub": {
@@ -672,8 +703,7 @@ will have some amount of clock-skew and thus time by itself will not
 guarantee order.
 
 Specifications profiling SET SHOULD define a mechanism for detecting
-order or sequence of events.  For example, the "txn" claim could
-contain an ordered value (e.g., a counter) that the issuer defines.
+order or sequence of events.
 
 Timing Issues {#timing}
 -------------
@@ -813,9 +843,8 @@ This section establishes the IANA "SET Subject Identifier Types" registry
 
 JSON Web Token Claims Registration {#iana-claims}
 ----------------------------------
-This specification registers the "event", "toe", and "txn" claims in
-the IANA "JSON Web Token Claims" registry [IANA.JWT.Claims]
-established by [RFC7519].
+This specification registers the "event" and "event_time" claims in the IANA
+"JSON Web Token Claims" registry [IANA.JWT.Claims] established by [RFC7519].
 
 ### Registry Contents
 *  Claim Name: "event"
@@ -823,13 +852,8 @@ established by [RFC7519].
 *  Change Controller: IESG
 *  Specification Document(s): Section 2.1 of [[ this specification ]]
 
-*  Claim Name: "toe"
+*  Claim Name: "event_time"
 *  Claim Description: Time Of Event
-*  Change Controller: IESG
-*  Specification Document(s): Section 2.1 of [[ this specification ]]
-
-*  Claim Name: "txn"
-*  Claim Description: Transaction Identifier
 *  Change Controller: IESG
 *  Specification Document(s): Section 2.1 of [[ this specification ]]
 
