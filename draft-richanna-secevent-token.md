@@ -271,7 +271,7 @@ systems. The value of this claim MUST be unique with respect to the
 transmitter to a specific "real world" event or state change, however
 recipients MUST NOT interpret a difference in "event_id" values as a
 guarantee that two events are not related to the same "real world" event or
-state change.
+state change. This claim is OPTIONAL.
 
   event_subject
   : A Subject Identifier that identifies the subject of the event.  (See:
@@ -524,7 +524,6 @@ purpose batch transmission mechanism. Profiling Specifications and/or
 implementers who desire an event grouping mechanism with these or
 other semantics are encouraged to profile this specification and
 define additional event types for those use cases.
-/* ed.: Trying to minimize ambiguity around semantics of event grouping. */
 
 The event type for the Related Events event is the URN
 "urn:ietf:secevents:related_events".
@@ -535,31 +534,14 @@ The Related Events event has a single additional event payload claim:
 events
 : An array of event payloads, as defined in this document.
 
-For all purposes, the Related Events event's envelope is considered the
-envelope for all events described in the "events" payload claim. SETs
-containing a Related Events event MUST comply with the requirements set by
-the Profiling Specifications for every event described in the "events"
-payload claim. If two or more events' requirements contradict one another,
-those events MUST NOT be combined within the same Related Events event.
-/* ed.: Cutting down on opportunities for confusing, impossible SETs. */
-
-All events described in the "events" claim MUST express their subjects in
-such a way as to not conflict with the other events. They do not have to
-identify their subjects in the same way; two events that support disjoint
-sets of Subject Identifier Types but specify their subject using the "sub"
-event payload claim defined in [](#claims) can coexist within a Related
-Events event, as the subject for each event would reside within the
-respective event's event payload. However, if both events specified their
-subject using the "sub" envelope claim, they would be in conflict with one
-another, as it would not be possible to assign a value to the "sub" envelope
-claim that satisfies the requirements of both events' Profiling
-Specifications.
-/* ed.: This is just a specific case of above paragraph, but sub has been a
-sticking point so calling it out seems like a good idea. */
-
-The "sub" event payload claim MUST NOT be used with the Related Events
-event. 
-/* ed.: Trying to avoid complicated "find the subject" logic */
+Processing Related Events {#related-events-proc}
+-------------------------
+Event payloads within the "events" claim can inherit the "event_id",
+"event_subject", and "event_time" claims from the Related Event's event
+payload. Transmitters MAY omit some, all, or none of these claims from an
+event payload within the "events" claim. When a claim is omitted, recipients
+MUST use the value of the corresponding claim in the Related Event event's
+payload.
 
 The following is a non-normative example of a SET containing a Related
 Events event:
@@ -582,7 +564,8 @@ Events event:
         "event_type": "http://specs.example.com/set_profile/event_1"
       },
       {
-        "event_type": "http://specs.example.com/set_profile/event_2"
+        "event_type": "http://specs.example.com/set_profile/event_2",
+        "event_time": 151059061
       }
     ]
   }
@@ -590,6 +573,28 @@ Events event:
 ~~~
 {: #figrelated title="Example SET Containing A Related Events Event"}
 
+The following table demonstrates how event payloads within a Related Events
+event inherit values for omitted claims (For brevity, event types have are
+abbreviated in this table):
+
+~~~
++--------------------+------------+-------------------------------+
+| Event Type         | Event Time | Event Subject                 |
++--------------------+------------+-------------------------------+
+| ...:related_events | 151062661  | {                             |
++--------------------+            |   "identifier_type": "email", |
+| .../event_1        |            |   "email": "user@example.com" |
++--------------------+------------+ }                             |
+| .../event_2        | 151059061  |                               |
++--------------------+------------+-------------------------------+
+~~~
+{: #figomitted title="Example of Event Payloads Inheriting Values for Omitted Claims"}
+
+Since the first related event payload omits the "event_time" claim, it
+inherits the event time from the Related Events event payload. Similarly,
+since both the first and the second related event paylods omit the
+"event_subject" claim, both inherit the event subject from the Related
+Events payload.
 
 Requirements for SET Profiles {#profile-req}
 =============================

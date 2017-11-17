@@ -80,7 +80,8 @@ Table of Contents
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .  10
      2.4.  Security Event Token Construction . . . . . . . . . . . .  11
    3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  12
-   4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  13
+     3.1.  Processing Related Events . . . . . . . . . . . . . . . .  12
+   4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  14
      4.1.  Extending Events  . . . . . . . . . . . . . . . . . . . .  14
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
      5.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  14
@@ -95,14 +96,13 @@ Table of Contents
      7.1.  SET Subject Identifier Types Registry . . . . . . . . . .  18
      7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  18
        7.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
-     7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  18
+     7.3.  Media Type Registration . . . . . . . . . . . . . . . . .  19
        7.3.1.  Registry Contents . . . . . . . . . . . . . . . . . .  19
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
-
 
 
 
@@ -326,7 +326,7 @@ Internet-Draft               secevent-token                November 2017
       "real world" event or state change, however recipients MUST NOT
       interpret a difference in "event_id" values as a guarantee that
       two events are not related to the same "real world" event or state
-      change.
+      change.  This claim is OPTIONAL.
 
    event_subject
 
@@ -640,8 +640,7 @@ Internet-Draft               secevent-token                November 2017
    Specifications and/or implementers who desire an event grouping
    mechanism with these or other semantics are encouraged to profile
    this specification and define additional event types for those use
-   cases.  /* ed.: Trying to minimize ambiguity around semantics of
-   event grouping. */
+   cases.
 
    The event type for the Related Events event is the URN
    "urn:ietf:secevents:related_events".
@@ -651,21 +650,22 @@ Internet-Draft               secevent-token                November 2017
    events
       An array of event payloads, as defined in this document.
 
-   For all purposes, the Related Events event's envelope is considered
-   the envelope for all events described in the "events" payload claim.
-   SETs containing a Related Events event MUST comply with the
-   requirements set by the Profiling Specifications for every event
-   described in the "events" payload claim.  If two or more events'
-   requirements contradict one another, those events MUST NOT be
-   combined within the same Related Events event.  /* ed.: Cutting down
-   on opportunities for confusing, impossible SETs. */
+3.1.  Processing Related Events
 
-   All events described in the "events" claim MUST express their
-   subjects in such a way as to not conflict with the other events.
-   They do not have to identify their subjects in the same way; two
-   events that support disjoint sets of Subject Identifier Types but
-   specify their subject using the "sub" event payload claim defined in
-   Section 2.1 can coexist within a Related Events event, as the subject
+   Event payloads within the "events" claim can inherit the "event_id",
+   "event_subject", and "event_time" claims from the Related Event's
+   event payload.  Transmitters MAY omit some, all, or none of these
+   claims from an event payload within the "events" claim.  When a claim
+   is omitted, recipients MUST use the value of the corresponding claim
+   in the Related Event event's payload.
+
+   The following is a non-normative example of a SET containing a
+   Related Events event:
+
+
+
+
+
 
 
 
@@ -673,22 +673,6 @@ Backman, et al.           Expires May 18, 2018                 [Page 12]
 
 Internet-Draft               secevent-token                November 2017
 
-
-   for each event would reside within the respective event's event
-   payload.  However, if both events specified their subject using the
-   "sub" envelope claim, they would be in conflict with one another, as
-   it would not be possible to assign a value to the "sub" envelope
-   claim that satisfies the requirements of both events' Profiling
-   Specifications.  /* ed.: This is just a specific case of above
-   paragraph, but sub has been a sticking point so calling it out seems
-   like a good idea. */
-
-   The "sub" event payload claim MUST NOT be used with the Related
-   Events event.  /* ed.: Trying to avoid complicated "find the subject"
-   logic */
-
-   The following is a non-normative example of a SET containing a
-   Related Events event:
 
    {
      "jti": "1c0038c2-02db-40de-ad50-122a64724166",
@@ -707,13 +691,44 @@ Internet-Draft               secevent-token                November 2017
            "event_type": "http://specs.example.com/set_profile/event_1"
          },
          {
-           "event_type": "http://specs.example.com/set_profile/event_2"
+           "event_type": "http://specs.example.com/set_profile/event_2",
+           "event_time": 151059061
          }
        ]
      }
    }
 
           Figure 7: Example SET Containing A Related Events Event
+
+   The following table demonstrates how event payloads within a Related
+   Events event inherit values for omitted claims (For brevity, event
+   types have are abbreviated in this table):
+
+   +--------------------+------------+-------------------------------+
+   | Event Type         | Event Time | Event Subject                 |
+   +--------------------+------------+-------------------------------+
+   | ...:related_events | 151062661  | {                             |
+   +--------------------+            |   "identifier_type": "email", |
+   | .../event_1        |            |   "email": "user@example.com" |
+   +--------------------+------------+ }                             |
+   | .../event_2        | 151059061  |                               |
+   +--------------------+------------+-------------------------------+
+
+     Figure 8: Example of Event Payloads Inheriting Values for Omitted
+                                  Claims
+
+   Since the first related event payload omits the "event_time" claim,
+   it inherits the event time from the Related Events event payload.
+   Similarly, since both the first and the second related event paylods
+   omit the "event_subject" claim, both inherit the event subject from
+   the Related Events payload.
+
+
+
+Backman, et al.           Expires May 18, 2018                 [Page 13]
+
+Internet-Draft               secevent-token                November 2017
+
 
 4.  Requirements for SET Profiles
 
@@ -722,13 +737,6 @@ Internet-Draft               secevent-token                November 2017
    SETs.  The syntax defined by Profiling Specifications includes what
    SET envelope and event payload claims are used by SETs expressing and
    event defined by the profile.
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 13]
-
-Internet-Draft               secevent-token                November 2017
-
 
    Defining the semantics of the SET contents for SETs utilizing the
    profile is equally important.  Possibly most important is defining
@@ -770,14 +778,6 @@ Internet-Draft               secevent-token                November 2017
    TLS 1.2 [RFC5246] and MAY support additional transport-layer
    mechanisms meeting its security requirements.  When using TLS, the
    client MUST perform a TLS/SSL server certificate check, per
-   [RFC6125].  Implementation security considerations for TLS can be
-   found in "Recommendations for Secure Use of TLS and DTLS" [RFC7525].
-
-   Security Events distributed through third-parties or that carry
-   personally identifiable information, SHOULD be encrypted using JWE
-   [RFC7516] or secured for confidentiality by other means.
-
-
 
 
 
@@ -785,6 +785,13 @@ Backman, et al.           Expires May 18, 2018                 [Page 14]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   [RFC6125].  Implementation security considerations for TLS can be
+   found in "Recommendations for Secure Use of TLS and DTLS" [RFC7525].
+
+   Security Events distributed through third-parties or that carry
+   personally identifiable information, SHOULD be encrypted using JWE
+   [RFC7516] or secured for confidentiality by other means.
 
    Unless integrity of the JWT is ensured by other means, it MUST be
    signed using JWS [RFC7515] so that individual events can be
@@ -827,13 +834,6 @@ Internet-Draft               secevent-token                November 2017
    is important to consider that a SET might be delivered to an Event
    Receiver in advance or well behind the process that caused the event.
    For example, a user having been required to logout and then log back
-   in again, may cause a logout SET to be issued that may arrive at the
-   same time as the user-agent accesses a web site having just logged-
-   in.  If timing is not handled properly, the effect would be to
-   erroneously treat the new user session as logged out.  Profiling
-   Specifications SHOULD be careful to anticipate timing and subject
-   selection information.  For example, it might be more appropriate to
-   cancel a "session" rather than a "user".  Alternatively, the
 
 
 
@@ -842,6 +842,13 @@ Backman, et al.           Expires May 18, 2018                 [Page 15]
 Internet-Draft               secevent-token                November 2017
 
 
+   in again, may cause a logout SET to be issued that may arrive at the
+   same time as the user-agent accesses a web site having just logged-
+   in.  If timing is not handled properly, the effect would be to
+   erroneously treat the new user session as logged out.  Profiling
+   Specifications SHOULD be careful to anticipate timing and subject
+   selection information.  For example, it might be more appropriate to
+   cancel a "session" rather than a "user".  Alternatively, the
    specification could use timestamps that allows new sessions to be
    started immediately after a stated logout event time.
 
@@ -882,13 +889,6 @@ Internet-Draft               secevent-token                November 2017
    strategies to prevent possible substitutions of SETs for access
    tokens in contexts in which that might be possible:
 
-   o  Prohibit use of the "exp" claim, as is done to prevent ID Token
-      confusion.
-
-   o  Where possible, use a separate "aud" claim value to distinguish
-      between the Event Receiver and the protected resource that is the
-      audience of an access token.
-
 
 
 
@@ -897,6 +897,13 @@ Backman, et al.           Expires May 18, 2018                 [Page 16]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   o  Prohibit use of the "exp" claim, as is done to prevent ID Token
+      confusion.
+
+   o  Where possible, use a separate "aud" claim value to distinguish
+      between the Event Receiver and the protected resource that is the
+      audience of an access token.
 
    o  Modify access token validation systems to check for the presence
       of the "events" claim as a means to detect security event tokens.
@@ -938,13 +945,6 @@ Internet-Draft               secevent-token                November 2017
    [RFC8055], the "sip_callid" claim could be omitted and for
    [I-D.ietf-stir-passport], the "orig" claim could be omitted.
 
-   In many contexts, simple measures such as these will accomplish the
-   task, should confusion otherwise even be possible.  Note that this
-   topic is being explored in a more general fashion in JSON Web Token
-   Best Current Practices [I-D.sheffer-oauth-jwt-bcp].  The proposed
-   best practices in that draft may also be applicable for particular
-   SET profiles and use cases.
-
 
 
 
@@ -953,6 +953,13 @@ Backman, et al.           Expires May 18, 2018                 [Page 17]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   In many contexts, simple measures such as these will accomplish the
+   task, should confusion otherwise even be possible.  Note that this
+   topic is being explored in a more general fashion in JSON Web Token
+   Best Current Practices [I-D.sheffer-oauth-jwt-bcp].  The proposed
+   best practices in that draft may also be applicable for particular
+   SET profiles and use cases.
 
 6.  Privacy Considerations
 
@@ -996,19 +1003,14 @@ Internet-Draft               secevent-token                November 2017
 
    o  Specification Document(s): Section 2.1 of [[ this specification ]]
 
-7.3.  Media Type Registration
-
-
-
-
-
-
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 18]
 
 Internet-Draft               secevent-token                November 2017
 
+
+7.3.  Media Type Registration
 
 7.3.1.  Registry Contents
 
@@ -1057,14 +1059,14 @@ Internet-Draft               secevent-token                November 2017
 
    o  Author: Michael B.  Jones, mbj@microsoft.com
 
-   o  Change controller: IESG
-
 
 
 Backman, et al.           Expires May 18, 2018                 [Page 19]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   o  Change controller: IESG
 
    o  Provisional registration?  No
 
@@ -1110,9 +1112,7 @@ Internet-Draft               secevent-token                November 2017
               Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
               2011, <https://www.rfc-editor.org/info/rfc6125>.
 
-   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
-              RFC 6749, DOI 10.17487/RFC6749, October 2012,
-              <https://www.rfc-editor.org/info/rfc6749>.
+
 
 
 
@@ -1121,6 +1121,10 @@ Backman, et al.           Expires May 18, 2018                 [Page 20]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <https://www.rfc-editor.org/info/rfc6749>.
 
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
@@ -1166,10 +1170,6 @@ Internet-Draft               secevent-token                November 2017
               RFC 7516, DOI 10.17487/RFC7516, May 2015,
               <https://www.rfc-editor.org/info/rfc7516>.
 
-   [RFC8055]  Holmberg, C. and Y. Jiang, "Session Initiation Protocol
-              (SIP) Via Header Field Parameter to Indicate Received
-              Realm", RFC 8055, DOI 10.17487/RFC8055, January 2017,
-              <https://www.rfc-editor.org/info/rfc8055>.
 
 
 
@@ -1177,6 +1177,11 @@ Backman, et al.           Expires May 18, 2018                 [Page 21]
 
 Internet-Draft               secevent-token                November 2017
 
+
+   [RFC8055]  Holmberg, C. and Y. Jiang, "Session Initiation Protocol
+              (SIP) Via Header Field Parameter to Indicate Received
+              Realm", RFC 8055, DOI 10.17487/RFC8055, January 2017,
+              <https://www.rfc-editor.org/info/rfc8055>.
 
 Appendix A.  Acknowledgments
 
@@ -1209,11 +1214,6 @@ Authors' Addresses
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
-
-
-
-
-
 
 
 
