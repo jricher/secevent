@@ -14,7 +14,7 @@ Expires: May 18, 2018                                             Google
 
 
                        Security Event Token (SET)
-                    draft-richanna-secevent-token-01
+                    draft-richanna-secevent-token-02
 
 Abstract
 

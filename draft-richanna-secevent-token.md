@@ -1,7 +1,7 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-richanna-secevent-token-01
+docname: draft-richanna-secevent-token-02
 date: 2017-11-14
 category: info
 ipr: trust200902
