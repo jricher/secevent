@@ -270,8 +270,7 @@ events across different SETs received at different times and/or by different
 systems. The value of this claim MUST be unique with respect to the
 transmitter to a specific "real world" event or state change, however
 recipients MUST NOT interpret a difference in "event_id" values as a
-guarantee that two events are not related to the same "real world" event or
-state change. This claim is OPTIONAL.
+guarantee that two events are not related.  This claim is OPTIONAL.
 
   event_subject
   : A Subject Identifier that identifies the subject of the event.  (See:
@@ -515,15 +514,14 @@ Related Events {#related-events}
 ==============
 In order to accommodate use cases that require communicating multiple
 related security events to an Event Receiver, this section defines the
-"Related Events" event type. A Related Events event is essentially a
-container for two or more events that are related to one another, in
-that they are all related to the same "real world" event or state
-change. The Related Events event SHOULD NOT be used to combine
-unrelated events into a single set, and MUST NOT be used as a general
-purpose batch transmission mechanism. Profiling Specifications and/or
-implementers who desire an event grouping mechanism with these or
-other semantics are encouraged to profile this specification and
-define additional event types for those use cases.
+"Related Events" event type.  A Related Events event is essentially a
+container for two or more events that are related to one another, in that
+they represent or express different aspects of the same event or state
+change.  The Related Events event SHOULD NOT be used to combine unrelated
+events into a single set, and MUST NOT be used as a general purpose batch
+transmission mechanism.  Profiling Specifications that require an event
+grouping mechanism with these or other semantics are encouraged to define
+additional event types for their use cases.
 
 The event type for the Related Events event is the URN
 "urn:ietf:secevents:related_events".
@@ -532,16 +530,18 @@ The Related Events event has a single additional event payload claim:
 
 {: vspace="0"}
 events
-: An array of event payloads, as defined in this document.
+: An array of event payloads, as defined in this document.  These event
+payloads can be referred to as Nested Events for the Related Events event.
+This claim is REQUIRED.
 
 Processing Related Events {#related-events-proc}
 -------------------------
-Event payloads within the "events" claim can inherit the "event_id",
-"event_subject", and "event_time" claims from the Related Event's event
-payload. Transmitters MAY omit some, all, or none of these claims from an
-event payload within the "events" claim. When a claim is omitted, recipients
-MUST use the value of the corresponding claim in the Related Event event's
-payload.
+Nested Events can inherit the "event_id", "event_subject", and "event_time"
+claims from the Related Events payload.  Transmitters MAY omit some, all, or
+none of these claims from a Nested Event.  Transmitters MAY omit claims from
+some Nested Events and include them in others within the same Related Events
+event. When a claim is omitted, recipients MUST use the value of the
+corresponding claim in the Related Event event's payload.
 
 The following is a non-normative example of a SET containing a Related
 Events event:
@@ -558,12 +558,15 @@ Events event:
       "identifier_type": "email",
       "email": "user@example.com"
     },
+    "event_id": "container",
     "event_time": 1510662661,
     "events": [
       {
+        "event_id": "nested_1",
         "event_type": "http://specs.example.com/set_profile/event_1"
       },
       {
+        "event_id": "nested_2",
         "event_type": "http://specs.example.com/set_profile/event_2",
         "event_time": 151059061
       }
@@ -573,28 +576,27 @@ Events event:
 ~~~
 {: #figrelated title="Example SET Containing A Related Events Event"}
 
-The following table demonstrates how event payloads within a Related Events
-event inherit values for omitted claims (For brevity, event types have are
-abbreviated in this table):
+The following table demonstrates how Nested Events inherit values for
+omitted claims:
 
 ~~~
-+--------------------+------------+-------------------------------+
-| Event Type         | Event Time | Event Subject                 |
-+--------------------+------------+-------------------------------+
-| ...:related_events | 151062661  | {                             |
-+--------------------+            |   "identifier_type": "email", |
-| .../event_1        |            |   "email": "user@example.com" |
-+--------------------+------------+ }                             |
-| .../event_2        | 151059061  |                               |
-+--------------------+------------+-------------------------------+
+         +-----------+------------+-------------------------------+         
+         | Event ID  | Event Time | Event Subject                 |
+         +-----------+------------+-------------------------------+
+         | container | 151062661  | {                             |
+         +-----------+            |   "identifier_type": "email", |
+         | nested_1  |            |   "email": "user@example.com" |
+         +-----------+------------+ }                             |
+         | nested_2  | 151059061  |                               |
+         +-----------+------------+-------------------------------+
 ~~~
 {: #figomitted title="Example of Event Payloads Inheriting Values for Omitted Claims"}
 
-Since the first related event payload omits the "event_time" claim, it
-inherits the event time from the Related Events event payload. Similarly,
-since both the first and the second related event paylods omit the
+Since the Nested Event with event ID "nested_1" omits the "event_time"
+claim, it inherits the event time from the Related Events event payload.
+Similarly, since both Nested Events "nested_1" and "nested_2" omit the
 "event_subject" claim, both inherit the event subject from the Related
-Events payload.
+Events event payload.
 
 Requirements for SET Profiles {#profile-req}
 =============================
