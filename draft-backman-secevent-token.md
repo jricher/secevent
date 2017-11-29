@@ -1,7 +1,7 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-backman-secevent-token-01
+docname: draft-backman-secevent-token-02
 date: 2017-11-29
 category: std
 ipr: trust200902
@@ -241,7 +241,9 @@ is NOT RECOMMENDED.
 
 iat
 : A value identifying the time at which the SET was issued, as defined by
-Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
+Section 4.1.6 of [RFC7519].  Since SETs typically describe events that have
+already occurred, this is likely to be different from the value stored in
+the "event_time" payload claim (see below).  This claim is REQUIRED.
 
 jti
 : A unique identifier for an event, as defined by Section 4.1.7 of
