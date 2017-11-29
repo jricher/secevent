@@ -14,7 +14,7 @@ Expires: June 2, 2018                                             Google
 
 
                        Security Event Token (SET)
-                    draft-backman-secevent-token-01
+                    draft-backman-secevent-token-02
 
 Abstract
 
@@ -73,13 +73,12 @@ Table of Contents
    2.  The Security Event Token (SET)  . . . . . . . . . . . . . . .   5
      2.1.  SET Claims  . . . . . . . . . . . . . . . . . . . . . . .   5
      2.2.  Subject Identifiers . . . . . . . . . . . . . . . . . . .   8
-       2.2.1.  Implicit Subject Identifier Type  . . . . . . . . . .   8
-       2.2.2.  Email Subject Identifier Type . . . . . . . . . . . .   9
-       2.2.3.  Phone Number Subject Identifier Type  . . . . . . . .   9
-       2.2.4.  Issuer and Subject Subject Identifier Type  . . . . .  10
+       2.2.1.  Email Subject Identifier Type . . . . . . . . . . . .   8
+       2.2.2.  Phone Number Subject Identifier Type  . . . . . . . .   9
+       2.2.3.  Issuer and Subject Subject Identifier Type  . . . . .   9
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .  10
-     2.4.  Security Event Token Construction . . . . . . . . . . . .  11
-   3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  12
+     2.4.  Security Event Token Construction . . . . . . . . . . . .  10
+   3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  11
      3.1.  Processing Related Events . . . . . . . . . . . . . . . .  12
    4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  14
      4.1.  Extending Events  . . . . . . . . . . . . . . . . . . . .  14
@@ -103,6 +102,7 @@ Table of Contents
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+
 
 
 
@@ -338,12 +338,13 @@ Backman, et al.           Expires June 2, 2018                  [Page 6]
 Internet-Draft               secevent-token                November 2017
 
 
-      Specifications MAY use the JWT "sub" claim to identify the
-      subject, in order to be compatible with one or more other
-      specifications (e.g.  [OpenID.Core]).  Profiling Specifications
-      that do so MUST reference the document that defines the semantics
-      for the "sub" claim that the Profiling Specification is following,
-      and MUST omit the "event_subject" payload claim.
+      Specifications MAY omit this claim if the subject is implicitly
+      known, or if the subject is identified by the JWT "sub" claim, in
+      order to be compatible with one or more other specifications (e.g.
+      [OpenID.Core]).  Profiling Specifications that use the JWT "sub"
+      claim MUST reference the document that defines the semantics for
+      that claim that the Profiling Specification is following, and MUST
+      omit the "event_subject" payload claim.
 
    event_time
       A number identifying the date and time at which the event is
@@ -388,7 +389,6 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-
 Backman, et al.           Expires June 2, 2018                  [Page 7]
 
 Internet-Draft               secevent-token                November 2017
@@ -427,36 +427,7 @@ Internet-Draft               secevent-token                November 2017
    registered in the IANA "SET Subject Identifier Types" registry
    established by Section 7.1.
 
-2.2.1.  Implicit Subject Identifier Type
-
-   The "Implicit" Subject Identifier Type indicates that the recipient
-   is to be determined implicitly, either from other claims in the SET
-   envelope or event payload, or through some other context.  For
-   example, there may be event types for which the only logical subject
-   is the transmitter itself, in which case the subject is implicitly
-   known from the "iss" claim in the SET envelope.
-
-   The Implicit Subject Identifier Type has the name "implicit".  This
-   type contains no additional claims.
-
-   The following is a non-normative example of a Subject Identifier
-   representing an instance of the Implicit Subject Identifier Type:
-
-
-
-
-Backman, et al.           Expires June 2, 2018                  [Page 8]
-
-Internet-Draft               secevent-token                November 2017
-
-
-   {
-     "identifier_type": "implicit"
-   }
-
-       Figure 2: An Instance of the Implicit Subject Identifier Type
-
-2.2.2.  Email Subject Identifier Type
+2.2.1.  Email Subject Identifier Type
 
    The "Email" Subject Identifier Type identifies a subject by email
    address.  It has the name "email", and contains a single additional
@@ -469,14 +440,24 @@ Internet-Draft               secevent-token                November 2017
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Email Subject Identifier Type:
 
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 8]
+
+Internet-Draft               secevent-token                November 2017
+
+
    {
      "identifier_type": "email",
      "email": "user@example.com"
    }
 
-        Figure 3: An Instance of the Email Subject Identifier Type
+        Figure 2: An Instance of the Email Subject Identifier Type
 
-2.2.3.  Phone Number Subject Identifier Type
+2.2.2.  Phone Number Subject Identifier Type
 
    The "Phone Number" Subject Identifier Type identifies a subject by
    phone number.  It has the name "phone_number", and contains a single
@@ -494,19 +475,9 @@ Internet-Draft               secevent-token                November 2017
      "phone_number": "+1 206 555 0123"
    }
 
-     Figure 4: An Instance of the Phone Number Subject Identifier Type
+     Figure 3: An Instance of the Phone Number Subject Identifier Type
 
-
-
-
-
-
-Backman, et al.           Expires June 2, 2018                  [Page 9]
-
-Internet-Draft               secevent-token                November 2017
-
-
-2.2.4.  Issuer and Subject Subject Identifier Type
+2.2.3.  Issuer and Subject Subject Identifier Type
 
    The "Issuer and Subject" Subject Identifier Type identifies a subject
    by an issuer and subject pair.  It has the name "iss-sub", and
@@ -527,13 +498,21 @@ Internet-Draft               secevent-token                November 2017
    representing an instance of the Issuer and Subject Subject Identifier
    Type:
 
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 9]
+
+Internet-Draft               secevent-token                November 2017
+
+
    {
      "identifier_type": "iss-sub",
      "iss": "http://id.example.com",
      "sub": "example.user.1234"
    }
 
-    Figure 5: An Instance of the Issuer and Subject Subject Identifier
+    Figure 4: An Instance of the Issuer and Subject Subject Identifier
                                    Type
 
 2.3.  Explicit Typing of SETs
@@ -549,18 +528,6 @@ Internet-Draft               secevent-token                November 2017
    Per the definition of "typ" in Section 4.1.9 of [RFC7515], it is
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
-
-
-
-
-
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 10]
-
-Internet-Draft               secevent-token                November 2017
-
 
 2.4.  Security Event Token Construction
 
@@ -582,42 +549,47 @@ Internet-Draft               secevent-token                November 2017
 
    The example JWT Claims Set is encoded as follows:
 
-   ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
-   ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
-   ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
-   MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
-   cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
-   ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
-   DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
-   ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
-   CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=
+
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 10]
+
+Internet-Draft               secevent-token                November 2017
+
+
+   ewogICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAogICJp
+   c3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgImF1ZCI6IFsg
+   Imh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgImlhdCI6IDE0NTg0OTYw
+   MjUsCiAgImV2ZW50IjogewogICAgImV2ZW50X3R5cGUiOiAiaHR0cHM6Ly9zZWNldmVu
+   dC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwKICAgICJldmVudF9zdWJqZWN0Ijog
+   ewogICAgICAiaWRlbnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVu
+   dDpzdWJqZWN0OmVtYWlsIiwKICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20i
+   CiAgICB9LAogICAgImV2ZW50X3RpbWUiOiAxNDU4NDkyNDI1LAogICAgImNsYWltXzEi
+   OiAiZm9vIiwKICAgICJjbGFpbV8yIjogImJhciIKICB9Cn0
 
    The encoded JWS signature is the empty string.  Concatenating the
    parts yields the following complete JWT:
 
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-   ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
-   ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
-   ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
-   MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
-   cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
-   ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
-   DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
-   ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
-   CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=.
+   ewogICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAogICJp
+   c3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgImF1ZCI6IFsg
+   Imh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgImlhdCI6IDE0NTg0OTYw
+   MjUsCiAgImV2ZW50IjogewogICAgImV2ZW50X3R5cGUiOiAiaHR0cHM6Ly9zZWNldmVu
+   dC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwKICAgICJldmVudF9zdWJqZWN0Ijog
+   ewogICAgICAiaWRlbnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVu
+   dDpzdWJqZWN0OmVtYWlsIiwKICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20i
+   CiAgICB9LAogICAgImV2ZW50X3RpbWUiOiAxNDU4NDkyNDI1LAogICAgImNsYWltXzEi
+   OiAiZm9vIiwKICAgICJjbGFpbV8yIjogImJhciIKICB9Cn0.
 
-             Figure 6: Example Unsecured Security Event Token
+             Figure 5: Example Unsecured Security Event Token
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 11]
-
-Internet-Draft               secevent-token                November 2017
-
-
    MUST employ other mechanisms such as TLS and HTTP to provide
    integrity, confidentiality, and issuer validation, as needed by the
    application.
@@ -638,6 +610,14 @@ Internet-Draft               secevent-token                November 2017
    be used to combine unrelated events into a single set, and MUST NOT
    be used as a general purpose batch transmission mechanism.  Profiling
    Specifications that require an event grouping mechanism with these or
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
    other semantics are encouraged to define additional event types for
    their use cases.
 
@@ -663,6 +643,26 @@ Internet-Draft               secevent-token                November 2017
 
    The following is a non-normative example of a SET containing a
    Related Events event:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -701,7 +701,7 @@ Internet-Draft               secevent-token                November 2017
      }
    }
 
-          Figure 7: Example SET Containing A Related Events Event
+          Figure 6: Example SET Containing A Related Events Event
 
    The following table demonstrates how Nested Events inherit values for
    omitted claims:
@@ -716,7 +716,7 @@ Internet-Draft               secevent-token                November 2017
             | nested_2  | 151059061  |                               |
             +-----------+------------+-------------------------------+
 
-     Figure 8: Example of Event Payloads Inheriting Values for Omitted
+     Figure 7: Example of Event Payloads Inheriting Values for Omitted
                                   Claims
 
    Since the Nested Event with event ID "nested_1" omits the

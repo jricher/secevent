@@ -1,7 +1,7 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-backman-secevent-token-01
+docname: draft-backman-secevent-token-02
 date: 2017-11-29
 category: std
 ipr: trust200902
@@ -274,12 +274,13 @@ guarantee that two events are not related.  This claim is OPTIONAL.
 
   event_subject
   : A Subject Identifier that identifies the subject of the event.  (See:
-  [](#subject)) This claim is RECOMMENDED. Profiling Specifications MAY use
-  the JWT "sub" claim to identify the subject, in order to be compatible 
-  with one or more other specifications (e.g. [OpenID.Core]).  Profiling Specifications
-  that do so MUST reference the document that defines the semantics for the
-  "sub" claim that the Profiling Specification is following, and MUST omit
-  the "event_subject" payload claim.
+  [](#subject)) This claim is RECOMMENDED. Profiling Specifications MAY omit
+  this claim if the subject is implicitly known, or if the subject is
+  identified by the JWT "sub" claim, in order to be compatible with one or
+  more other specifications (e.g. [OpenID.Core]).  Profiling Specifications
+  that use the JWT "sub" claim MUST reference the document that defines the
+  semantics for that claim that the Profiling Specification is following,
+  and MUST omit the "event_subject" payload claim.
 
   event_time
   : A number identifying the date and time at which the event is believed to
@@ -347,27 +348,6 @@ Subject Identifier Type.
 
 The names of the Subject Identifier Types defined below are registered in
 the IANA "SET Subject Identifier Types" registry established by [](#iana-sit).
-
-### Implicit Subject Identifier Type
-The "Implicit" Subject Identifier Type indicates that the recipient is to be
-determined implicitly, either from other claims in the SET envelope or event
-payload, or through some other context.  For example, there may be event
-types for which the only logical subject is the transmitter itself, in which
-case the subject is implicitly known from the "iss" claim in the SET
-envelope.
-
-The Implicit Subject Identifier Type has the name "implicit".  This type
-contains no additional claims.
-
-The following is a non-normative example of a Subject Identifier
-representing an instance of the Implicit Subject Identifier Type:
-
-~~~
-{
-  "identifier_type": "implicit"
-}
-~~~
-{: #figimplicit title="An Instance of the Implicit Subject Identifier Type"}
 
 ### Email Subject Identifier Type
 The "Email" Subject Identifier Type identifies a subject by email address.
