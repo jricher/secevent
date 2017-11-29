@@ -73,12 +73,12 @@ Table of Contents
    2.  The Security Event Token (SET)  . . . . . . . . . . . . . . .   5
      2.1.  SET Claims  . . . . . . . . . . . . . . . . . . . . . . .   5
      2.2.  Subject Identifiers . . . . . . . . . . . . . . . . . . .   8
-       2.2.1.  Email Subject Identifier Type . . . . . . . . . . . .   8
+       2.2.1.  Email Subject Identifier Type . . . . . . . . . . . .   9
        2.2.2.  Phone Number Subject Identifier Type  . . . . . . . .   9
-       2.2.3.  Issuer and Subject Subject Identifier Type  . . . . .   9
+       2.2.3.  Issuer and Subject Subject Identifier Type  . . . . .  10
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .  10
-     2.4.  Security Event Token Construction . . . . . . . . . . . .  10
-   3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  11
+     2.4.  Security Event Token Construction . . . . . . . . . . . .  11
+   3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  12
      3.1.  Processing Related Events . . . . . . . . . . . . . . . .  12
    4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  14
      4.1.  Extending Events  . . . . . . . . . . . . . . . . . . . .  14
@@ -101,8 +101,8 @@ Table of Contents
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
-
+   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 
 
@@ -295,7 +295,10 @@ Internet-Draft               secevent-token                November 2017
 
    iat
       A value identifying the time at which the SET was issued, as
-      defined by Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
+      defined by Section 4.1.6 of [RFC7519].  Since SETs typically
+      describe events that have already occurred, this is likely to be
+      different from the value stored in the "event_time" payload claim
+      (see below).  This claim is REQUIRED.
 
    jti
       A unique identifier for an event, as defined by Section 4.1.7 of
@@ -327,9 +330,6 @@ Internet-Draft               secevent-token                November 2017
       interpret a difference in "event_id" values as a guarantee that
       two events are not related.  This claim is OPTIONAL.
 
-   event_subject
-      A Subject Identifier that identifies the subject of the event.
-      (See: Section 2.2) This claim is RECOMMENDED.  Profiling
 
 
 
@@ -338,6 +338,9 @@ Backman, et al.           Expires June 2, 2018                  [Page 6]
 Internet-Draft               secevent-token                November 2017
 
 
+   event_subject
+      A Subject Identifier that identifies the subject of the event.
+      (See: Section 2.2) This claim is RECOMMENDED.  Profiling
       Specifications MAY omit this claim if the subject is implicitly
       known, or if the subject is identified by the JWT "sub" claim, in
       order to be compatible with one or more other specifications (e.g.
@@ -366,6 +369,31 @@ Internet-Draft               secevent-token                November 2017
    expressing a hypothetical event with two additional claims in the
    event payload:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 7]
+
+Internet-Draft               secevent-token                November 2017
+
+
    {
      "jti": "3d0c3cf797584bd193bd0fb1bd4e7d30",
      "iss": "https://transmitter.example.com",
@@ -386,13 +414,6 @@ Internet-Draft               secevent-token                November 2017
             Figure 1: Example SET With Event Claims In Payload
 
    The payload in this example contains the following:
-
-
-
-Backman, et al.           Expires June 2, 2018                  [Page 7]
-
-Internet-Draft               secevent-token                November 2017
-
 
    o  An "event_type" claim whose value is the URI identifying the
       hypothetical event type.
@@ -420,6 +441,15 @@ Internet-Draft               secevent-token                November 2017
 
    A Subject Identifier MUST contain an "identifier_type" claim, whose
    value is a string containing the name of the Subject Identifier's
+
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 8]
+
+Internet-Draft               secevent-token                November 2017
+
+
    Subject Identifier Type.  All other claims within the Subject
    Identifier MUST be defined by the Subject Identifier Type.
 
@@ -439,16 +469,6 @@ Internet-Draft               secevent-token                November 2017
 
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Email Subject Identifier Type:
-
-
-
-
-
-
-Backman, et al.           Expires June 2, 2018                  [Page 8]
-
-Internet-Draft               secevent-token                November 2017
-
 
    {
      "identifier_type": "email",
@@ -477,6 +497,15 @@ Internet-Draft               secevent-token                November 2017
 
      Figure 3: An Instance of the Phone Number Subject Identifier Type
 
+
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 9]
+
+Internet-Draft               secevent-token                November 2017
+
+
 2.2.3.  Issuer and Subject Subject Identifier Type
 
    The "Issuer and Subject" Subject Identifier Type identifies a subject
@@ -497,14 +526,6 @@ Internet-Draft               secevent-token                November 2017
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Issuer and Subject Subject Identifier
    Type:
-
-
-
-
-Backman, et al.           Expires June 2, 2018                  [Page 9]
-
-Internet-Draft               secevent-token                November 2017
-
 
    {
      "identifier_type": "iss-sub",
@@ -529,6 +550,18 @@ Internet-Draft               secevent-token                November 2017
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
 
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 10]
+
+Internet-Draft               secevent-token                November 2017
+
+
 2.4.  Security Event Token Construction
 
    A SET is a JWT, and therefore it's construction follows that
@@ -548,19 +581,6 @@ Internet-Draft               secevent-token                November 2017
    eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 
    The example JWT Claims Set is encoded as follows:
-
-
-
-
-
-
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 10]
-
-Internet-Draft               secevent-token                November 2017
-
 
    ewogICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAogICJp
    c3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgImF1ZCI6IFsg
@@ -590,6 +610,14 @@ Internet-Draft               secevent-token                November 2017
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
    MUST employ other mechanisms such as TLS and HTTP to provide
    integrity, confidentiality, and issuer validation, as needed by the
    application.
@@ -610,14 +638,6 @@ Internet-Draft               secevent-token                November 2017
    be used to combine unrelated events into a single set, and MUST NOT
    be used as a general purpose batch transmission mechanism.  Profiling
    Specifications that require an event grouping mechanism with these or
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 11]
-
-Internet-Draft               secevent-token                November 2017
-
-
    other semantics are encouraged to define additional event types for
    their use cases.
 
@@ -643,26 +663,6 @@ Internet-Draft               secevent-token                November 2017
 
    The following is a non-normative example of a SET containing a
    Related Events event:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1206,6 +1206,34 @@ Appendix A.  Acknowledgments
    mailing list and related working groups for their support of this
    specification.
 
+Appendix B.  Change Log
+
+   Draft 00 - A.  Backman - First Draft
+
+   Draft 01 - A.  Backman
+
+   o  Added Acknowledgements section.
+
+   o  Relaxed event_subject claim definition to allow usage of JWT "sub"
+      claim.
+
+   Draft 02 - A.  Backman
+
+   o  Added text to iat claim definition clarifying the difference
+      between iat and event_time.
+
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 22]
+
+Internet-Draft               secevent-token                November 2017
+
+
 Authors' Addresses
 
    Annabelle Backman
@@ -1226,39 +1254,11 @@ Authors' Addresses
    Email: morteza.ansari@cisco.com
 
 
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 22]
-
-Internet-Draft               secevent-token                November 2017
-
-
    Michael B. Jones
    Microsoft
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

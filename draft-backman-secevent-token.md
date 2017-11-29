@@ -241,7 +241,9 @@ is NOT RECOMMENDED.
 
 iat
 : A value identifying the time at which the SET was issued, as defined by
-Section 4.1.6 of [RFC7519].  This claim is REQUIRED.
+Section 4.1.6 of [RFC7519].  Since SETs typically describe events that have
+already occurred, this is likely to be different from the value stored in
+the "event_time" payload claim (see below).  This claim is REQUIRED.
 
 jti
 : A unique identifier for an event, as defined by Section 4.1.7 of
@@ -866,3 +868,16 @@ The editors would like to thank the participants on the IETF secevent
 mailing list and related working groups for their support of this
 specification.
 
+Change Log {#changelog}
+==========
+Draft 00 - A. Backman - First Draft
+
+Draft 01 - A. Backman
+
+* Added Acknowledgements section.
+* Relaxed event_subject claim definition to allow usage of JWT "sub" claim.
+
+Draft 02 - A. Backman
+
+* Added text to iat claim definition clarifying the difference between iat
+and event_time.
