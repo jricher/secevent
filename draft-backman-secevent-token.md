@@ -881,3 +881,4 @@ Draft 02 - A. Backman
 
 * Added text to iat claim definition clarifying the difference between iat
 and event_time.
+* Removed "implicit" Subject Identifier Type.

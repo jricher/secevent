@@ -1222,7 +1222,7 @@ Appendix B.  Change Log
    o  Added text to iat claim definition clarifying the difference
       between iat and event_time.
 
-
+   o  Removed "implicit" Subject Identifier Type.
 
 
 

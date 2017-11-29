@@ -1163,6 +1163,7 @@ specification.</t>
 <t><list style="symbols">
   <t>Added text to iat claim definition clarifying the difference between iat
 and event_time.</t>
+  <t>Removed “implicit” Subject Identifier Type.</t>
 </list></t>
 
 </section>
@@ -1171,7 +1172,7 @@ and event_time.</t>
   </back>
 
 <!-- ##markdown-source:
-H4sIAHMkH1oAA+19a3PbRrLo9/kVKKbqrpUlaUm2FFuntk5kSU7oY0teS44T
+H4sIAIMmH1oAA+19a3PbRrLo9/kVKKbqrpUlaUm2FFuntk5kSU7oY0teS44T
 u1wuEBiSY4EAA4CS6Wz2t99+zQskZXvP68tJpcoUMJhHT7+7p2cwGKjWtIU+
 Si51tqxNu0rObnTZJlfVtS6Te5dnVzsqHY9rfXOUNDrT+HLQ4kuVV1mZzuHT
 vE4n7WCcZtfztBzErQa7+ypPW2i1v7v3w2Bvb7D/WGXwYFrVK+iyzZVZ1EdJ
@@ -1436,7 +1437,7 @@ zZRLW0vPpnk2PDDYJTSCPXJ9x/xYlak57E132IqgPLt66tiXQpzAsYBo2vDy
 SryK5Bpf0IHy8Ni3Te6UJcWRa5iXbNHzCjOuOIkZLPkQvuqUgLS7mwyS42Hy
 BMAPLB3+eEqOOXqrbKO9qBEVDM8R0fwu2ovvmcCRIeEJnU86jy8nEXUhqD+G
 +jRVdCCctAZzkPY+dLPY3zILCvmieEk39I8l1cJLK/y1LNZFjvdhubMwHzgi
-//8BIJ+hjY+NAAA=
+j9OfV6go9+zFJFsrWQ7V/wd3z7PTvY0AAA==
 
 -->
 
