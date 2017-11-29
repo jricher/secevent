@@ -4,17 +4,17 @@
 
 secevent                                                      A. Backman
 Internet-Draft                                                    Amazon
-Intended status: Informational                                W. Denniss
-Expires: May 18, 2018                                             Google
+Intended status: Standards Track                              W. Denniss
+Expires: June 2, 2018                                             Google
                                                                M. Ansari
                                                                    Cisco
                                                                 M. Jones
                                                                Microsoft
-                                                       November 14, 2017
+                                                       November 29, 2017
 
 
                        Security Event Token (SET)
-                    draft-backman-secevent-token-02
+                    draft-backman-secevent-token-01
 
 Abstract
 
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 18, 2018.
+   This Internet-Draft will expire on June 2, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 1]
+Backman, et al.           Expires June 2, 2018                  [Page 1]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -76,9 +76,9 @@ Table of Contents
        2.2.1.  Implicit Subject Identifier Type  . . . . . . . . . .   8
        2.2.2.  Email Subject Identifier Type . . . . . . . . . . . .   9
        2.2.3.  Phone Number Subject Identifier Type  . . . . . . . .   9
-       2.2.4.  Issuer and Subject Subject Identifier Type  . . . . .   9
+       2.2.4.  Issuer and Subject Subject Identifier Type  . . . . .  10
      2.3.  Explicit Typing of SETs . . . . . . . . . . . . . . . . .  10
-     2.4.  Security Event Token Construction . . . . . . . . . . . .  10
+     2.4.  Security Event Token Construction . . . . . . . . . . . .  11
    3.  Related Events  . . . . . . . . . . . . . . . . . . . . . . .  12
      3.1.  Processing Related Events . . . . . . . . . . . . . . . .  12
    4.  Requirements for SET Profiles . . . . . . . . . . . . . . . .  14
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 2]
+Backman, et al.           Expires June 2, 2018                  [Page 2]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -165,7 +165,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 3]
+Backman, et al.           Expires June 2, 2018                  [Page 3]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -221,7 +221,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 4]
+Backman, et al.           Expires June 2, 2018                  [Page 4]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -277,7 +277,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 5]
+Backman, et al.           Expires June 2, 2018                  [Page 5]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -329,14 +329,21 @@ Internet-Draft               secevent-token                November 2017
 
    event_subject
       A Subject Identifier that identifies the subject of the event.
-      (See: Section 2.2) This claim is REQUIRED.
+      (See: Section 2.2) This claim is RECOMMENDED.  Profiling
 
 
 
-Backman, et al.           Expires May 18, 2018                  [Page 6]
+Backman, et al.           Expires June 2, 2018                  [Page 6]
 
 Internet-Draft               secevent-token                November 2017
 
+
+      Specifications MAY use the JWT "sub" claim to identify the
+      subject, in order to be compatible with one or more other
+      specifications (e.g.  [OpenID.Core]).  Profiling Specifications
+      that do so MUST reference the document that defines the semantics
+      for the "sub" claim that the Profiling Specification is following,
+      and MUST omit the "event_subject" payload claim.
 
    event_time
       A number identifying the date and time at which the event is
@@ -379,20 +386,19 @@ Internet-Draft               secevent-token                November 2017
 
    The payload in this example contains the following:
 
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 7]
+
+Internet-Draft               secevent-token                November 2017
+
+
    o  An "event_type" claim whose value is the URI identifying the
       hypothetical event type.
 
    o  An "event_subject" claim whose value identifies a subject via
       email address.
-
-
-
-
-
-Backman, et al.           Expires May 18, 2018                  [Page 7]
-
-Internet-Draft               secevent-token                November 2017
-
 
    o  An "event_time" claim whose value is the time at which the event
       occured.
@@ -436,19 +442,19 @@ Internet-Draft               secevent-token                November 2017
    The following is a non-normative example of a Subject Identifier
    representing an instance of the Implicit Subject Identifier Type:
 
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 8]
+
+Internet-Draft               secevent-token                November 2017
+
+
    {
      "identifier_type": "implicit"
    }
 
        Figure 2: An Instance of the Implicit Subject Identifier Type
-
-
-
-
-Backman, et al.           Expires May 18, 2018                  [Page 8]
-
-Internet-Draft               secevent-token                November 2017
-
 
 2.2.2.  Email Subject Identifier Type
 
@@ -490,6 +496,16 @@ Internet-Draft               secevent-token                November 2017
 
      Figure 4: An Instance of the Phone Number Subject Identifier Type
 
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                  [Page 9]
+
+Internet-Draft               secevent-token                November 2017
+
+
 2.2.4.  Issuer and Subject Subject Identifier Type
 
    The "Issuer and Subject" Subject Identifier Type identifies a subject
@@ -497,15 +513,6 @@ Internet-Draft               secevent-token                November 2017
    contains two claims:
 
    iss
-
-
-
-
-Backman, et al.           Expires May 18, 2018                  [Page 9]
-
-Internet-Draft               secevent-token                November 2017
-
-
       A case-sensitive string identifying the principal who is
       responsible for assignment of the identifier in the "sub" claim,
       as defined by Section 4.1.1 of [RFC7519].  This claim is REQUIRED.
@@ -543,6 +550,18 @@ Internet-Draft               secevent-token                November 2017
    RECOMMENDED that the "application/" prefix be omitted.  Therefore,
    the "typ" value used SHOULD be "secevent+jwt".
 
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 10]
+
+Internet-Draft               secevent-token                November 2017
+
+
 2.4.  Security Event Token Construction
 
    A SET is a JWT, and therefore it's construction follows that
@@ -553,14 +572,6 @@ Internet-Draft               secevent-token                November 2017
 
    The following is the example JWT Claims Set from Figure 1, expressed
    as an unsigned JWT.  The JOSE Header is:
-
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 10]
-
-Internet-Draft               secevent-token                November 2017
-
 
    {"typ":"secevent+jwt","alg":"none"}
 
@@ -599,6 +610,14 @@ Internet-Draft               secevent-token                November 2017
 
    For the purpose of a simpler example in Figure 5, an unsecured token
    was shown.  When SETs are not signed or encrypted, the Event Receiver
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 11]
+
+Internet-Draft               secevent-token                November 2017
+
+
    MUST employ other mechanisms such as TLS and HTTP to provide
    integrity, confidentiality, and issuer validation, as needed by the
    application.
@@ -607,16 +626,6 @@ Internet-Draft               secevent-token                November 2017
    is required, JWS signing and/or JWE encryption MAY be used.  To
    create and or validate a signed and/or encrypted SET, follow the
    instructions in Section 7 of [RFC7519].
-
-
-
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 11]
-
-Internet-Draft               secevent-token                November 2017
-
 
 3.  Related Events
 
@@ -660,16 +669,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-
-
-
-
-
-
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 12]
+Backman, et al.           Expires June 2, 2018                 [Page 12]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -725,7 +725,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 13]
+Backman, et al.           Expires June 2, 2018                 [Page 13]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -781,7 +781,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 14]
+Backman, et al.           Expires June 2, 2018                 [Page 14]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -837,7 +837,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 15]
+Backman, et al.           Expires June 2, 2018                 [Page 15]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -893,7 +893,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 16]
+Backman, et al.           Expires June 2, 2018                 [Page 16]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -949,7 +949,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 17]
+Backman, et al.           Expires June 2, 2018                 [Page 17]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1005,7 +1005,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 18]
+Backman, et al.           Expires June 2, 2018                 [Page 18]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1061,7 +1061,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 19]
+Backman, et al.           Expires June 2, 2018                 [Page 19]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1117,7 +1117,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 20]
+Backman, et al.           Expires June 2, 2018                 [Page 20]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1173,7 +1173,7 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 21]
+Backman, et al.           Expires June 2, 2018                 [Page 21]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1197,6 +1197,10 @@ Internet-Draft               secevent-token                November 2017
               <https://www.rfc-editor.org/info/rfc8055>.
 
 Appendix A.  Acknowledgments
+
+   The editors would like to thank Phil Hunt for his SET draft - on
+   which much of this specification is based - and his continuing
+   contributions to this draft.
 
    The editors would like to thank the participants on the IETF secevent
    mailing list and related working groups for their support of this
@@ -1225,11 +1229,7 @@ Authors' Addresses
 
 
 
-
-
-
-
-Backman, et al.           Expires May 18, 2018                 [Page 22]
+Backman, et al.           Expires June 2, 2018                 [Page 22]
 
 Internet-Draft               secevent-token                November 2017
 
@@ -1285,4 +1285,4 @@ Internet-Draft               secevent-token                November 2017
 
 
 
-Backman, et al.           Expires May 18, 2018                 [Page 23]
+Backman, et al.           Expires June 2, 2018                 [Page 23]

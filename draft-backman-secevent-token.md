@@ -1,9 +1,9 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-backman-secevent-token-02
-date: 2017-11-14
-category: info
+docname: draft-backman-secevent-token-01
+date: 2017-11-29
+category: std
 ipr: trust200902
 
 area: Security
@@ -274,16 +274,21 @@ guarantee that two events are not related.  This claim is OPTIONAL.
 
   event_subject
   : A Subject Identifier that identifies the subject of the event.  (See:
-[](#subject)) This claim is REQUIRED.
+  [](#subject)) This claim is RECOMMENDED. Profiling Specifications MAY use
+  the JWT "sub" claim to identify the subject, in order to be compatible 
+  with one or more other specifications (e.g. [OpenID.Core]).  Profiling Specifications
+  that do so MUST reference the document that defines the semantics for the
+  "sub" claim that the Profiling Specification is following, and MUST omit
+  the "event_subject" payload claim.
 
   event_time
   : A number identifying the date and time at which the event is believed to
-  have occurred or will occur in the future.  Its value MUST take the form
-  of a NumericDate value, as defined in Section 2 of [RFC7519].  This claim
-  is OPTIONAL, however if it is not present then the recipient MUST
-  interpret that to mean that no event time is being asserted, either
-  because there is no specific event time, the transmitter does not wish to
-  share it, or the transmitter does not know its value.
+have occurred or will occur in the future.  Its value MUST take the form
+of a NumericDate value, as defined in Section 2 of [RFC7519].  This claim
+is OPTIONAL, however if it is not present then the recipient MUST
+interpret that to mean that no event time is being asserted, either
+because there is no specific event time, the transmitter does not wish to
+share it, or the transmitter does not know its value.
 
 Both the SET envelope and event payload MAY contain additional claims, such
 as those defined in a Profiling Specification.  The format and meaning of
@@ -471,15 +476,15 @@ eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0
 The example JWT Claims Set is encoded as follows:
 
 ~~~
-ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
-ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
-ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
-MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
-cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
-ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
-DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
-ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
-CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=
+ewogICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAogICJp
+c3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgImF1ZCI6IFsg
+Imh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgImlhdCI6IDE0NTg0OTYw
+MjUsCiAgImV2ZW50IjogewogICAgImV2ZW50X3R5cGUiOiAiaHR0cHM6Ly9zZWNldmVu
+dC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwKICAgICJldmVudF9zdWJqZWN0Ijog
+ewogICAgICAiaWRlbnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVu
+dDpzdWJqZWN0OmVtYWlsIiwKICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20i
+CiAgICB9LAogICAgImV2ZW50X3RpbWUiOiAxNDU4NDkyNDI1LAogICAgImNsYWltXzEi
+OiAiZm9vIiwKICAgICJjbGFpbV8yIjogImJhciIKICB9Cn0
 ~~~
 
 The encoded JWS signature is the empty string.  Concatenating the
@@ -487,15 +492,15 @@ parts yields the following complete JWT:
 
 ~~~
 eyJ0eXAiOiJzZWNldmVudCtqd3QiLCJhbGciOiJub25lIn0.
-ew0KICAgImp0aSI6ICIzZDBjM2NmNzk3NTg0YmQxOTNiZDBmYjFiZDRlN2QzMCIsDQog
-ICAiaXNzIjogImh0dHBzOi8vdHJhbnNtaXR0ZXIuZXhhbXBsZS5jb20iLA0KICAgImF1
-ZCI6IFsgImh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sDQogICAiaWF0Ijog
-MTQ1ODQ5NjAyNSwNCiAgICJldmVudCI6IHsNCiAgICAgImV2ZW50X3R5cGUiOiAiaHR0
-cHM6Ly9zZWNldmVudC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwNCiAgICAgImV2
-ZW50X3N1YmplY3QiOiB7DQogICAgICAgImlkZW50aWZpZXJfdHlwZSI6ICJlbWFpbCIs
-DQogICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20iDQogICAgIH0sDQogICAg
-ICJldmVudF90aW1lIjogMTQ1ODQ5MjQyNSwNCiAgICAgImNsYWltXzEiOiAiZm9vIiwN
-CiAgICAgImNsYWltXzIiOiAiYmFyIg0KICAgfQ0KIH0=.
+ewogICJqdGkiOiAiM2QwYzNjZjc5NzU4NGJkMTkzYmQwZmIxYmQ0ZTdkMzAiLAogICJp
+c3MiOiAiaHR0cHM6Ly90cmFuc21pdHRlci5leGFtcGxlLmNvbSIsCiAgImF1ZCI6IFsg
+Imh0dHBzOi8vcmVjZWl2ZXIuZXhhbXBsZS5jb20iIF0sCiAgImlhdCI6IDE0NTg0OTYw
+MjUsCiAgImV2ZW50IjogewogICAgImV2ZW50X3R5cGUiOiAiaHR0cHM6Ly9zZWNldmVu
+dC5leGFtcGxlLmNvbS9leGFtcGxlX2V2ZW50IiwKICAgICJldmVudF9zdWJqZWN0Ijog
+ewogICAgICAiaWRlbnRpZmllcl90eXBlIjogInVybjppZXRmOnBhcmFtczpzZWNldmVu
+dDpzdWJqZWN0OmVtYWlsIiwKICAgICAgImVtYWlsIjogInVzZXJAZXhhbXBsZS5jb20i
+CiAgICB9LAogICAgImV2ZW50X3RpbWUiOiAxNDU4NDkyNDI1LAogICAgImNsYWltXzEi
+OiAiZm9vIiwKICAgICJjbGFpbV8yIjogImJhciIKICB9Cn0.
 ~~~
 {: #figsetencoded title="Example Unsecured Security Event Token"}
 
@@ -873,6 +878,10 @@ content is a SET.
 
 Acknowledgments {#ack}
 ===============
+The editors would like to thank Phil Hunt for his SET draft -- on which much
+of this specification is based -- and his continuing contributions to this
+draft.
+
 The editors would like to thank the participants on the IETF secevent
 mailing list and related working groups for their support of this
 specification.
