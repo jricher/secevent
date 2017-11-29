@@ -102,8 +102,8 @@ Table of Contents
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
-
+   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 
 
@@ -1206,6 +1206,34 @@ Appendix A.  Acknowledgments
    mailing list and related working groups for their support of this
    specification.
 
+Appendix B.  Change Log
+
+   Draft 00 - A.  Backman - First Draft
+
+   Draft 01 - A.  Backman
+
+   o  Added Acknowledgements section.
+
+   o  Relaxed event_subject claim definition to allow usage of JWT "sub"
+      claim.
+
+   Draft 02 - A.  Backman
+
+   o  Added text to iat claim definition clarifying the difference
+      between iat and event_time.
+
+
+
+
+
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 22]
+
+Internet-Draft               secevent-token                November 2017
+
+
 Authors' Addresses
 
    Annabelle Backman
@@ -1226,39 +1254,11 @@ Authors' Addresses
    Email: morteza.ansari@cisco.com
 
 
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 22]
-
-Internet-Draft               secevent-token                November 2017
-
-
    Michael B. Jones
    Microsoft
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

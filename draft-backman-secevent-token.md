@@ -888,3 +888,16 @@ The editors would like to thank the participants on the IETF secevent
 mailing list and related working groups for their support of this
 specification.
 
+Change Log {#changelog}
+==========
+Draft 00 - A. Backman - First Draft
+
+Draft 01 - A. Backman
+
+* Added Acknowledgements section.
+* Relaxed event_subject claim definition to allow usage of JWT "sub" claim.
+
+Draft 02 - A. Backman
+
+* Added text to iat claim definition clarifying the difference between iat
+and event_time.
