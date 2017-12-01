@@ -1208,7 +1208,35 @@ Appendix A.  Acknowledgments
 
 Appendix B.  Change Log
 
-   Draft 00 - A.  Backman - First Draft
+   Draft 00 - A.  Backman - Forked from draft-ietf-secevent-token-03
+
+   o  Cleaned up text in section 2.
+
+   o  Simplified JWT claim descriptions in section 2.1.
+
+   o  Removed "txn" claim.
+
+   o  Replaced multi-part "events" claim with "event" claim that
+      contains a single event payload.
+
+   o  Removed references to JWT "sub" claim and added
+      "event.event_subject" claim.
+
+   o  Replaced JWT "toe" claim with "event.event_time" claim.
+
+   o  Added Subject Identifier Types and defined "implicit", "email",
+      "phone_number", and "iss_sub" types.
+
+
+
+Backman, et al.           Expires June 2, 2018                 [Page 22]
+
+Internet-Draft               secevent-token                November 2017
+
+
+   o  Added Related Events event definition.
+
+   o  Added guidance for event extensions.
 
    Draft 01 - A.  Backman
 
@@ -1223,16 +1251,6 @@ Appendix B.  Change Log
       between iat and event_time.
 
    o  Removed "implicit" Subject Identifier Type.
-
-
-
-
-
-
-Backman, et al.           Expires June 2, 2018                 [Page 22]
-
-Internet-Draft               secevent-token                November 2017
-
 
 Authors' Addresses
 
@@ -1259,24 +1277,6 @@ Authors' Addresses
 
    Email: mbj@microsoft.com
    URI:   http://self-issued.info/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

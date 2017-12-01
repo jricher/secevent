@@ -870,7 +870,17 @@ specification.
 
 Change Log {#changelog}
 ==========
-Draft 00 - A. Backman - First Draft
+Draft 00 - A. Backman - Forked from draft-ietf-secevent-token-03
+
+* Cleaned up text in section 2.
+* Simplified JWT claim descriptions in section 2.1.
+* Removed "txn" claim.
+* Replaced multi-part "events" claim with "event" claim that contains a single event payload.
+* Removed references to JWT "sub" claim and added "event.event_subject" claim.
+* Replaced JWT "toe" claim with "event.event_time" claim.
+* Added Subject Identifier Types and defined "implicit", "email", "phone_number", and "iss_sub" types.
+* Added Related Events event definition.
+* Added guidance for event extensions.
 
 Draft 01 - A. Backman
 
