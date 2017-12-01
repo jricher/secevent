@@ -1,7 +1,7 @@
 ---
 title: Security Event Token (SET)
 abbrev: secevent-token
-docname: draft-backman-secevent-token-02
+docname: draft-backman-secevent-token-03
 date: 2017-11-29
 category: std
 ipr: trust200902

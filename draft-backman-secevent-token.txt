@@ -14,7 +14,7 @@ Expires: June 2, 2018                                             Google
 
 
                        Security Event Token (SET)
-                    draft-backman-secevent-token-02
+                    draft-backman-secevent-token-03
 
 Abstract
 
