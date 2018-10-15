@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-backman-secevent-subject-identifiers-00
-date: 2018-06-01
+docname: draft-ietf-secevent-subject-identifiers-00
+date: 2018-07-18
 category: std
 ipr: trust200902
 
@@ -27,9 +27,10 @@ author:
     email: mscurtescu@google.com
 
 normative:
+  BCP26: RFC8126
   JSON: RFC7159
   JWT: RFC7519
-  BCP26: RFC8126
+  SET: RFC8417
   E164:
     title: The international public telecommunication numbering plan
     target: http://www.itu.int/rec/T-REC-E.164-201011-I/en
@@ -56,19 +57,16 @@ normative:
         ins: C. Mortimore
         name: Chuck Mortimore
     date: 2017-04-07
-  SET:
-    title: Security Event Token (SET)
-    target: https://tools.ietf.org/html/draft-ietf-secevent-token-01
 
 --- abstract
 
-Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a {{!JSON}} object such as a [JSON Web Token (JWT)](#JWT) or [Security Event Token (SET)](#SET), and a registry for defining and allocating names for these claim sets.
+Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a {{!JSON}} object such as a [JSON Web Token](#JWT) or [Security Event Token](#SET), and a registry for defining and allocating names for these claim sets.
 
 --- middle
 
 Introduction {#intro}
 ============
-As described in section 1.2 of [SET](#SET), the subject of a security event may take a variety of forms, including but not limited to a JWT principal, an IP address, a URL, etc. Furthermore, even in the case where the subject of an event is more narrowly scoped, there may be multiple ways by which a given subject may be identified. For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT iss claim and sub claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses assoicated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which the subject of the security event is being identified.
+As described in section 1.2 of {{!SET}}, the subject of a security event may take a variety of forms, including but not limited to a JWT principal, an IP address, a URL, etc. Furthermore, even in the case where the subject of an event is more narrowly scoped, there may be multiple ways by which a given subject may be identified. For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT `iss` claim and `sub` claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which the subject of the security event is being identified.
 
 Notational Conventions {#conv}
 ======================
@@ -114,7 +112,7 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 
 Issuer and Subject Subject Identifier Type {#sub-id-iss-sub}
 ------------------------------------------
-The Issuer and Subject Subject Identifier Type describes a subject by an issuer and a subject. Subject Identifiers of this type MUST contain an `iss` claim whose value identifies the issuer, and a `sub` claim whose value identifies the subject with respect to the issuer. These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!RFC7519}}, respectively. Both the `iss` claim and the `sub` claim MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss_sub`.
+The Issuer and Subject Subject Identifier Type describes a subject by an issuer and a subject. Subject Identifiers of this type MUST contain an `iss` claim whose value identifies the issuer, and a `sub` claim whose value identifies the subject with respect to the issuer. These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!JWT}}, respectively. Both the `iss` claim and the `sub` claim MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss_sub`.
 
 Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:
 
@@ -172,7 +170,7 @@ Type Description
 : A brief description of the Subject Identifier Type.
 
 Change Controller
-: For types defined in documents published by the OpenID Foundation or its working groups, list "OIDF RISC Working Group".  For all other types, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.
+: For types defined in documents published by the OpenID Foundation or its working groups, list "OpenID Foundation RISC Working Group".  For all other types, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.
 
 Defining Document(s)
 : A reference to the document or documents that define the Subject Identifier Type.  The definition MUST specify the name, format, and meaning of each claim that may occur within a Subject Identifier of the defined type, as well as whether each claim is optional or required, or the circumstances under which the claim is optional or required. URIs that can be used to retrieve copies of each document SHOULD be included.
@@ -207,7 +205,7 @@ Defining Document(s)
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
 
-### Guidance for Exper Reviewers {#iana-sub-id-types-expert }
+### Guidance for Expert Reviewers {#iana-sub-id-types-expert}
 The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.
 
 Subject Identifier Types need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.
@@ -230,6 +228,6 @@ This document is based on work developed within the OpenID RISC Working Group. T
 Change Log
 ==========
 {: numbered="no"}
-(This sectcion to be removed by the RFC Editor before publication as an RFC.)
+(This section to be removed by the RFC Editor before publication as an RFC.)
 
 Draft 00 - AB - First draft
