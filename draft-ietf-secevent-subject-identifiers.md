@@ -19,6 +19,7 @@ author:
     name: Annabelle Backman
     organization: Amazon
     email: richanna@amazon.com
+    role: editor
 
  -
     ins: M. Scurtescu
@@ -84,7 +85,7 @@ The following Subject Identifier Types are registered in the IANA "Security Even
 
 Email Subject Identifier Type {#sub-id-email}
 -----------------------------
-The Email Subject Identifier Type describes a subject by email address. Subject Identifiers of this type MUST contain an `email` claim whose value is a string containing the email address of the subject. The `email` claim MUST NOT be null or empty. The Email Subject Identifier Type is identified by the name `email`.
+The Email Subject Identifier Type describes a subject that is a user account associated with an email address.  Subject Identifiers of this type MUST contain an `email` claim whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` claim is REQUIRED and MUST NOT be null or empty. The Email Subject Identifier Type is identified by the name `email`.
 
 Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:
 
@@ -98,7 +99,7 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 
 Phone Number Subject Identifier Type {#sub-id-phone}
 ------------------------------------
-The Phone Number Subject Identifier Type describes a subject by telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
+The Phone Number Subject Identifier Type describes a subject that is a user account associated with a telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
 
 Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:
 
@@ -112,13 +113,13 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 
 Issuer and Subject Subject Identifier Type {#sub-id-iss-sub}
 ------------------------------------------
-The Issuer and Subject Subject Identifier Type describes a subject by an issuer and a subject. Subject Identifiers of this type MUST contain an `iss` claim whose value identifies the issuer, and a `sub` claim whose value identifies the subject with respect to the issuer. These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!JWT}}, respectively. Both the `iss` claim and the `sub` claim MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss_sub`.
+The Issuer and Subject Subject Identifier Type describes a subject that is an account identified by a pair of `iss` and `sub` claims, as defined by {{!JWT}}.  These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!JWT}}, respectively. Both the `iss` claim and the `sub` claim are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss-sub`.
 
 Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:
 
 ~~~
 {
-  "subject_type": "iss_sub",
+  "subject_type": "iss-sub",
   "iss": "http://issuer.example.com/",
   "sub": "145234573",
 }
@@ -127,25 +128,30 @@ Below is a non-normative example Subject Identifier for the Issuer and Subject S
 
 ID Token Claims Subject Identifier Type {#sub-id-id-token}
 ---------------------------------------
-The ID Token Claims Subject Identifier Type describes a subject by a subset of the claims from an ID token. Subject Identifiers of this type MUST contain at least one of the following claims:
+The ID Token Claims Subject Identifier Type describes a subject that was the subject of a previously issued [ID Token](#IDTOKEN).  It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they require.  This type is identified by the name `id-token-claims`.
+
+Subject Identifiers of this type MUST contain at least one of the following claims:
 
 {: vspace="0"}
 email
-: An `email` claim, as defined in [IDTOKEN](#IDTOKEN).
+: An `email` claim, as defined in [IDTOKEN](#IDTOKEN).  If present, the value of this claim MUST NOT be null or empty.
 
 phone_number
-: A `phone_number` claim, as defined in [IDTOKEN](#IDTOKEN).
+: A `phone_number` claim, as defined in [IDTOKEN](#IDTOKEN).  If present, the value of this claim MUST NOT be null or empty.
 
 sub
-: A `sub` claim, as defined in {{!RFC7519}}.
+: A `sub` claim, as defined in {{!RFC7519}}.  If present, the value of this claim MUST NOT be null or empty.
 
-If the Subject Identifier contains a `sub` claim, it MUST also contain an `iss` claim, as defined in {{!RFC7519}}.  The ID Token Claims Subject Identifier Type is identified by the name `id_token_claims`.
+iss
+: An `iss` claim, as defined in {{!RFC7519}}. This claim is OPTIONAL, unless a `sub` claim in present, in which case it is REQUIRED. If present, its value MUST NOT be null or empty.
+
+At least one of `email`, `phone_number`, or `sub` MUST be present.
 
 Below is a non-normative example Subject Identifier for the ID Token Claims Subject Identifier Type:
 
 ~~~
 {
-  "subject_type": "id_token_claims",
+  "subject_type": "id-token-claims",
   "iss": "http://issuer.example.com/",
   "sub": "145234573",
   "email": "user@example.com",
@@ -186,14 +192,14 @@ Defining Document(s)
 
 #### ID Token Claims Subject Identifier Type
 
-* Type Name: `id_token_claims`
+* Type Name: `id-token-claims`
 * Type Description: Subject identifier based on OpenID Connect ID Token claims.
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Issuer and Subject Subject Identifier Type
 
-* Type Name: `iss_sub`
+* Type Name: `iss-sub`
 * Type Description: Subject identifier based on an issuer and subject.
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
@@ -231,3 +237,9 @@ Change Log
 (This section to be removed by the RFC Editor before publication as an RFC.)
 
 Draft 00 - AB - First draft
+
+Draft 01 - AB:
+* Added reference to RFC 5322 for format of `email` claim.
+* Renamed `iss_sub` type to `iss-sub`.
+* Renamed `id_token_claims` type to `id-token-claims`.
+* Added text specifying the nature of the subjects described by each type.

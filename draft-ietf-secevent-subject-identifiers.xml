@@ -14,7 +14,7 @@
   <front>
     <title abbrev="secevent-subject-identifiers">Subject Identifiers for Security Event Tokens</title>
 
-    <author initials="A." surname="Backman" fullname="Annabelle Backman">
+    <author initials="A." surname="Backman" fullname="Annabelle Backman" role="editor">
       <organization>Amazon</organization>
       <address>
         <email>richanna@amazon.com</email>
@@ -66,7 +66,7 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <t>The following Subject Identifier Types are registered in the IANA “Security Event Subject Identifier Types” registry established by <xref target="iana-sub-id-types"/>.</t>
 
 <section anchor="sub-id-email" title="Email Subject Identifier Type">
-<t>The Email Subject Identifier Type describes a subject by email address. Subject Identifiers of this type MUST contain an <spanx style="verb">email</spanx> claim whose value is a string containing the email address of the subject. The <spanx style="verb">email</spanx> claim MUST NOT be null or empty. The Email Subject Identifier Type is identified by the name <spanx style="verb">email</spanx>.</t>
+<t>The Email Subject Identifier Type describes a subject that is a user account associated with an email address.  Subject Identifiers of this type MUST contain an <spanx style="verb">email</spanx> claim whose value is a string containing the email address of the subject, formatted as an <spanx style="verb">addr-spec</spanx> as defined in Section 3.4.1 of <xref target="RFC5322"/>. The <spanx style="verb">email</spanx> claim is REQUIRED and MUST NOT be null or empty. The Email Subject Identifier Type is identified by the name <spanx style="verb">email</spanx>.</t>
 
 <t>Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</t>
 
@@ -79,7 +79,7 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 </section>
 <section anchor="sub-id-phone" title="Phone Number Subject Identifier Type">
-<t>The Phone Number Subject Identifier Type describes a subject by telephone number.  Subject Identifiers of this type MUST contain a <spanx style="verb">phone</spanx> claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to <xref target="E164">E.164</xref>. The <spanx style="verb">phone</spanx> claim MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name <spanx style="verb">phone</spanx>.</t>
+<t>The Phone Number Subject Identifier Type describes a subject that is a user account associated with a telephone number.  Subject Identifiers of this type MUST contain a <spanx style="verb">phone</spanx> claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to <xref target="E164">E.164</xref>. The <spanx style="verb">phone</spanx> claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name <spanx style="verb">phone</spanx>.</t>
 
 <t>Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</t>
 
@@ -92,13 +92,13 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 </section>
 <section anchor="sub-id-iss-sub" title="Issuer and Subject Subject Identifier Type">
-<t>The Issuer and Subject Subject Identifier Type describes a subject by an issuer and a subject. Subject Identifiers of this type MUST contain an <spanx style="verb">iss</spanx> claim whose value identifies the issuer, and a <spanx style="verb">sub</spanx> claim whose value identifies the subject with respect to the issuer. These claims MUST follow the formats of the <spanx style="verb">iss</spanx> claim and <spanx style="verb">sub</spanx> claim defined by <xref target="JWT"/>, respectively. Both the <spanx style="verb">iss</spanx> claim and the <spanx style="verb">sub</spanx> claim MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name <spanx style="verb">iss_sub</spanx>.</t>
+<t>The Issuer and Subject Subject Identifier Type describes a subject that is an account identified by a pair of <spanx style="verb">iss</spanx> and <spanx style="verb">sub</spanx> claims, as defined by <xref target="JWT"/>.  These claims MUST follow the formats of the <spanx style="verb">iss</spanx> claim and <spanx style="verb">sub</spanx> claim defined by <xref target="JWT"/>, respectively. Both the <spanx style="verb">iss</spanx> claim and the <spanx style="verb">sub</spanx> claim are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name <spanx style="verb">iss-sub</spanx>.</t>
 
 <t>Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:</t>
 
 <figure title="Example: Subject Identifier for the Issuer and Subject Subject Identifier Type." anchor="figexamplesubidisssub"><artwork><![CDATA[
 {
-  "subject_type": "iss_sub",
+  "subject_type": "iss-sub",
   "iss": "http://issuer.example.com/",
   "sub": "145234573",
 }
@@ -106,24 +106,28 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 </section>
 <section anchor="sub-id-id-token" title="ID Token Claims Subject Identifier Type">
-<t>The ID Token Claims Subject Identifier Type describes a subject by a subset of the claims from an ID token. Subject Identifiers of this type MUST contain at least one of the following claims:</t>
+<t>The ID Token Claims Subject Identifier Type describes a subject that was the subject of a previously issued <xref target="IDTOKEN">ID Token</xref>.  It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they require.  This type is identified by the name <spanx style="verb">id-token-claims</spanx>.</t>
+
+<t>Subject Identifiers of this type MUST contain at least one of the following claims:</t>
 
 <t><list style="hanging">
   <t hangText='email'><vspace blankLines='0'/>
-  An <spanx style="verb">email</spanx> claim, as defined in <xref target="IDTOKEN"></xref>.</t>
+  An <spanx style="verb">email</spanx> claim, as defined in <xref target="IDTOKEN"></xref>.  If present, the value of this claim MUST NOT be null or empty.</t>
   <t hangText='phone_number'><vspace blankLines='0'/>
-  A <spanx style="verb">phone_number</spanx> claim, as defined in <xref target="IDTOKEN"></xref>.</t>
+  A <spanx style="verb">phone_number</spanx> claim, as defined in <xref target="IDTOKEN"></xref>.  If present, the value of this claim MUST NOT be null or empty.</t>
   <t hangText='sub'><vspace blankLines='0'/>
-  A <spanx style="verb">sub</spanx> claim, as defined in <xref target="RFC7519"/>.</t>
+  A <spanx style="verb">sub</spanx> claim, as defined in <xref target="RFC7519"/>.  If present, the value of this claim MUST NOT be null or empty.</t>
+  <t hangText='iss'><vspace blankLines='0'/>
+  An <spanx style="verb">iss</spanx> claim, as defined in <xref target="RFC7519"/>. This claim is OPTIONAL, unless a <spanx style="verb">sub</spanx> claim in present, in which case it is REQUIRED. If present, its value MUST NOT be null or empty.</t>
 </list></t>
 
-<t>If the Subject Identifier contains a <spanx style="verb">sub</spanx> claim, it MUST also contain an <spanx style="verb">iss</spanx> claim, as defined in <xref target="RFC7519"/>.  The ID Token Claims Subject Identifier Type is identified by the name <spanx style="verb">id_token_claims</spanx>.</t>
+<t>At least one of <spanx style="verb">email</spanx>, <spanx style="verb">phone_number</spanx>, or <spanx style="verb">sub</spanx> MUST be present.</t>
 
 <t>Below is a non-normative example Subject Identifier for the ID Token Claims Subject Identifier Type:</t>
 
 <figure title="Example: Subject Identifier for the ID Token Claims Subject Identifier Type." anchor="figexamplesubididtoken"><artwork><![CDATA[
 {
-  "subject_type": "id_token_claims",
+  "subject_type": "id-token-claims",
   "iss": "http://issuer.example.com/",
   "sub": "145234573",
   "email": "user@example.com",
@@ -166,7 +170,7 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <section anchor="id-token-claims-subject-identifier-type" title="ID Token Claims Subject Identifier Type">
 
 <t><list style="symbols">
-  <t>Type Name: <spanx style="verb">id_token_claims</spanx></t>
+  <t>Type Name: <spanx style="verb">id-token-claims</spanx></t>
   <t>Type Description: Subject identifier based on OpenID Connect ID Token claims.</t>
   <t>Change Controller: IETF secevent Working Group</t>
   <t>Defining Document(s): <xref target="sub-ids"/> of this document.</t>
@@ -176,7 +180,7 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <section anchor="issuer-and-subject-subject-identifier-type" title="Issuer and Subject Subject Identifier Type">
 
 <t><list style="symbols">
-  <t>Type Name: <spanx style="verb">iss_sub</spanx></t>
+  <t>Type Name: <spanx style="verb">iss-sub</spanx></t>
   <t>Type Description: Subject identifier based on an issuer and subject.</t>
   <t>Change Controller: IETF secevent Working Group</t>
   <t>Defining Document(s): <xref target="sub-ids"/> of this document.</t>
@@ -329,6 +333,19 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 
 
+<reference  anchor="RFC5322" target='https://www.rfc-editor.org/info/rfc5322'>
+<front>
+<title>Internet Message Format</title>
+<author initials='P.' surname='Resnick' fullname='P. Resnick' role='editor'><organization /></author>
+<date year='2008' month='October' />
+<abstract><t>This document specifies the Internet Message Format (IMF), a syntax for text messages that are sent between computer users, within the framework of &quot;electronic mail&quot; messages.  This specification is a revision of Request For Comments (RFC) 2822, which itself superseded Request For Comments (RFC) 822, &quot;Standard for the Format of ARPA Internet Text Messages&quot;, updating it to reflect current practice and incorporating incremental changes that were specified in other RFCs.  [STANDARDS-TRACK]</t></abstract>
+</front>
+<seriesInfo name='RFC' value='5322'/>
+<seriesInfo name='DOI' value='10.17487/RFC5322'/>
+</reference>
+
+
+
 <reference  anchor="RFC7519" target='https://www.rfc-editor.org/info/rfc7519'>
 <front>
 <title>JSON Web Token (JWT)</title>
@@ -358,101 +375,113 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 <t>Draft 00 - AB - First draft</t>
 
+<t>Draft 01 - AB:
+* Added reference to RFC 5322 for format of <spanx style="verb">email</spanx> claim.
+* Renamed <spanx style="verb">iss_sub</spanx> type to <spanx style="verb">iss-sub</spanx>.
+* Renamed <spanx style="verb">id_token_claims</spanx> type to <spanx style="verb">id-token-claims</spanx>.
+* Added text specifying the nature of the subjects described by each type.</t>
+
 </section>
 
 
   </back>
 
 <!-- ##markdown-source:
-H4sIAPqWT1sAA8VbW3MbtxV+31+BUi92q6VJ1Y4TdjITWZJTppbsSvJkOp6O
-De6CJKq9BdgVzXiU397vHGCXu7yZamZSP0RcXM7BuV+AhGEYlLpM1EjcVJP/
-qKgU41hlpZ5qZayY5kbcqKgyulyKi3tMiNv8TmU2kJOJUfcjYVWkaDy0bnuo
-V9uDOI8ymQJ2bOQUU6qchvs2hINBEMsSG04Gw2/Dwctw+G0QYWCWmyVwlXGg
-CzMSpalseTIYfDc4CQJplBw1pwwWubmbmbwqRmsnt+JnTOlsJn6k6eBOLbE2
-HolxViqTqTI8p1MGgS1lFn+USZ7hIEtlg0KPxIcyj46FzU1p1NTi1zKlH/8G
-/qqc52YUiDAQ+KczOxKnffFKRnepzHjMMeE0y+REJYnqzOVmJjP9qyx1nmFN
-Kn/N3YRKpU5GwuhoLrHzB8lT/ShPgw6uy764AZ2lslHVwnYpja7s2lQX2Y95
-PktUG1lq6+U/zHjSoctyk2LPvQKV4tXZu5NvRuL69dm3w5NvMPDTzdsr/n45
-fPEdff986z5fDOnz5sJ9fvt8+BKfF8Nvno8Yp9e727kCISQCPpZMRFFNEh2J
-UiUK6NMq0xFPiaxKJ8qQCIvEs6+UZqbKkZiXZTF69myxWPR1WfUB8JlR0bPb
-8PriLLzoA2kInRoMh+H4mXJbG8EJz5paFepz3G4c4H2mvXQaNR3gc3x++/Yf
-F1cdst4WKhufi7M8y8iqznKjxLA/ECFWOyPadv4cu3TchzY+s4WKrB8IIwcG
-f40Khx8H/XmZJkfA2wDqUBN6oryKXEFF5J1MKyObCaclV7Jcm1rb+hM02cg4
-Ucu1nT/l86w7tbYTevkTTMiu7bskfVaJeNWZXtuLyViJSxUrbfJ1CK+MyvLN
-+TUQZ31xCWvVKTi2BuBsXkV3a7ONPF+Gg+fwPEEQhqGQE1saGcEpNL5EOV+y
-0gsVi4Uu5zrb7ilFKpfCVkUBdEKKe5ilwpJ8KlqOT5R5/bkUJQzCO0cBT/QM
-PjjHmBEFVD/ShUysMCphzNhHy/lQfQFb0laQ4gCsV9kp2W6if1WWV2Y5jwJ9
-jaJ9DGmZRTHcOmjEogX8VRirqc4wGCVSpxact5HREzLD1lGPQVyqyFdpm3Lg
-MKowyhJwrNyGzbNNii9f/kRO5OFB5G6VraI5HUaKDzQhflYTx85/PzmCe3kK
-axUftrEb8/A3T4+Jcdht1ExDgks+D5NBZ+G5JMmJQ/gkil2oAzlWOTKZA32n
-BamOoeVBAO9g8riKmINfjjR9PgTft/4Fpw17wC/QhmjHq4f9E2InCMXxHh6O
-O0LGhKSVLQVjrSnlneqqDAkTwQdqkFQxnX1SlSRSkehUe32Q5IBXukKsEON3
-QsYxpGFJTO+v3xwLVUZ98RreHppFVnDMiOnMdLRIghELTKmNk2b+hNA02gf2
-GZMvEih5BGcVM2kYJgIm+FMlpS4Q8xZyacVkCaCaZCtmmtDVgP3qRjtinA0C
-UZ9lis1Mg4yivMq2LCWomM8L+UvVGje8iwNbm/hiDq/jI8mxZ9Ynbe0nL3dS
-jk84lv92jDqGVOGImeW54xCiRAUyaXmmVMzWQuPwF5mFMBBIeBJRSIFU02c1
-rXWeeZwj2nz24nfs2LXZ2TsUyc51Afk3XJBFYXLIGs6g40NiPZ1CCmCXZ5sl
-ya5GSRrHrPOexULDI+SpWq3PM8h0Lu9Vl4eKvITNI914PiImJbkCCjuq9t42
-u22fgj3SJlIb0BBBPqABgQ1wJayUKACTyamunAMMhtm1ci6NFq2pJn92zQhK
-OlEktZZmBcFVXtYxHvGZFhJrYdIQyX3Xolu2TYkKkkZBWaMVvcv3N7e9Y/dX
-XL3l39cX/3w/vr44p983fz9986b54VYE+Hj7/o2fp1+rnWdvLy8vrs7d5svT
-f/WcE+u9fXc7fnt1+qbnbFNzWl2lLFvDUp/4BArulmQi13wQnA7Sr5Ph8LuH
-BxC/Lc//cgQ2IhO3W4kPTrcUB+J2WSjir4Tzmc3LcKHoD7wAtEHioMgs6mNY
-9m8sIx9DeLqRCc87DAhisBPowi6MzG5WLSkQgMnkyYF7Vw/timsfNj69OgWb
-u1FiB1jbW8UKhQIACaidO9fy5YuWmQwdg8KSFoOPQuxmCoTXkO585IrqjIUG
-PDoqYSMd3XfkYLQxY9mKrtCFDmDoaqyd4lZZDNy1TeS2QUi4jPql0oYcc144
-pT+m8Am/MUcQL9kgttLCst0IzeS1pI+j7Chp9COxpfagCz7BvUwq1g8SRVtQ
-7O52sK6O215Z4HK0t9NeIZdJLuskpFfHke0WAB9m2Fn7/MhUibKizmMmS6d/
-Ow4B2b5rI3OkWKd5qIO84+HEqqyzLYD1GYTfNHGJ3E4cW1le+5Kay2DHUnQp
-bwmOxEjBf2XtQKrhuvdyl3E08JNkHX6tL18BBq25ZS4gkVoQq3dZllfCP9Q6
-g+CCY9YuC639Xcih7YGyvN3/mM798DqOzq/B4TqBs7+1w8Jhi6yk8W0r0YtP
-DGCHXUn2ImB8yyK5FmgjbcJi7V2Jli7YRucoFFfQB0oK0qJcusX7Ccc5uomY
-S43SBglE8UpBQ9yJszwLm2ZCk3psAV7b0l7soyD47bffgi8o4HptR9QbiR5j
-R8AV9U+MVVaZHzxSamxg+sFBGImjqZ75KYACTYzYFfPf9y7czLYm2WFH7fce
-guAd50JXnAt9XTU5c/qKarY19CDoOxSVWi3tTA0u8JHKKj7x/kfq6pT0bR35
-ms62y51unyjWKGypGYSUUn8+9h55IwB84PYPKkNqPT31JtA57VdM4CDO7rEE
-h+v/ZQmM3VmC+4mxvwzFk5PBN0/FixcvwsFwMNhnCk42jzGFQxjGFjG2tvKl
-Tr3sq3aBWo3c/WGW0bKPR+DaYSXwyHoFpJWyPt6xtwrOjqmsMmLio8NWJ0Wt
-qnTfpvrAXJohBhT04fMgB5C1epUk8uFcHG8lNk3o2FMctzMqShR/5taGxwm9
-TmBAr3JXIW7A4bEWrK8Y4SPEt8cUcYaPhPN3GuPhh9lnmf4wzjbxQWO+D+wF
-1QpWz9wyWo9lw+cvTv76/MXLv+4zXADB30dZ7uGEOfv1rWxx5lTp68aLHI02
-HGy9znQPRLPLbunDlxRNgm7F1OQpN8fOBZ/p0XZcikRJC7CZqkGv0mGHBOKH
-YO5tISNIYACecWIR0G1QNw87dnW7sydA/+AvFRC3/K+nUFr2xR9dnCQgPrj4
-kUeBAk8chHazq7vRdQ7oHodz6vF0V0njWWK7XoobVcwymdh8h//bi1OIx4h/
-n93HH1nGH51Yfrf9H3aivcbfPdHvdQL/a56rYz7F45zEYdQ7D0Fl3lmeWUjG
-yLrPRjXb9lZTcGBFKK7rgtBB61aAj8gNGjcDTWgaa04fd1LmW6euBcEUkhrZ
-O9eAj4yiBib5UEikzo8ztVgVsczs+PDyty/GmS6R7ta9iFoUh3KrwUzFuOs1
-s63VbT8ytdeV62hbq2dZyrdcq/ZKKmO6CjB5NXPh/OJzoUwJMdzrFWXuyqnI
-Ex1xRsB3xQ8PzAs7p2ZDK88oEd3pFkv4a6La/jfEGdYr2QsdHR3Vwnfobms4
-WzRhtXXDEbPLuIJ3CNwddN2c2tO1Od7SW21xsIHCPo+685k4vTkbj1vVj8W5
-3S1Cwjc6YIYyIV+3RHNJd40UdJ70ZE+Eovdr7+kxypwZ9WGe4NQ09l3PX2/N
-l8WcLhif9MJ6aNVThheLFM54MmjDxYkTlc3KOXVviP5zJob7ghwMJkarqSex
-qG8K9/WxguBsLrOZIhsvDYTLcYnubpj/bc9eW5d1F/x1B4eg+8vy13mVxU6o
-AEBEL/yTDX7RAbPDtlL0Npdfj2/Ouu87eqTRgEJK565PS2e5DKJcE3ghDYyI
-MlcS0SRRjYW1NRsgiUxJ95iZS5MJeX1bSf6X+6L1bdPa5RN1Xdt1Lt3hcGSc
-kA3k93CR1Iw9r+8pzz3DntinLByUuXR7E6k6nW/8Fd1uNtz1rXfi+/4WJCus
-uxVlOlhtXT9zFTvrstopWKokHw1sUxJUu9SdMRI1eQR31Lq62cTs+V2rRVlb
-FV0089+5YmG1oMO31p1rwdfKTT/b91u1Aen0aidS671wtR9GX7y/HnuO+dso
-BE/24kbBZtU99dkLKq1qihuee1vj1jP1J1h25JxqV91EKNIZlsw2B0XMf+CN
-R/tr/CD4s2h81qhOHuvBliGvYvfqLlRMJNGVr12I9rF9w35HYnxx+7p52bX2
-bOrPYpt+jtqesMmZa171PX0HJg7rlK4nb4+mee0tTnMMB++PZsLBJdYGH3zx
-+mj6u42Lum3xx5J9SE9onWDXOPtfyO00M/9IQsWPlY7JE3EA6SRJ7qJ10wMo
-XvTgrhm6G8hv0XRU1k6Js62273chqAkNHGllNx8jb6csN4HulSHnrt0LJiT6
-cEx8N7ENeVphE3GVEGp6QBNpSwDplUkUqaJ0vpQF4WKlQ0QyEFOpnb7plKIr
-eURJzwesi1jT9g7kt9PNrBJHmPMjIORNU6SUvItbwNhy3IRdd8FPN6v8BM5d
-MDaPfRp/3WKRzzo8cn6xsnTUGuTTjt7UquRe+S4BreanFvf0PNHkdGnrMwRZ
-tojYeDwjG55o6znln8hskGrneZXEdSLQPiD3uDlB4Z6eFAtDT0SQeED6iomD
-kpA/r/vqqECse/vlkUJqLoBzqqEAzdcqmiuVpbB5ZSIX5tqpDdO34JcUGScd
-nFo4Ndj6lsDXG/Qkhu8mgW8GFTNIw5bEQohRUnrlqiN+wzLXszk9H/LP1twb
-JlaZqEokZTZURv2Nmgkdc6CzuCTTA2pdMhLlGVIAxYlkFlcUiMMGBcmYpLRD
-8b0oplAdesvSJCVctfhOA6kaFUM4ea1iJFmiq15OVtYxxIVOWH3SvOSDITFP
-nULnOICcIH2kdifpUZrb0h1xr7YQi51idnStNq42bl5PPRgUL5V7LkR2VVnW
-DcqUU35fxey3yyzPlu4dH72i+uzLltLl/O+MvpfRcrOwL9zEvjc0ZBX0bCwX
-frErixoo/VYPYAN+/bxnF4I1DM1roA0UqPnh2qK7IDiN7rJ8gXJ8xqZkNyBT
-4egiiYq/72U51Y6dbgE9MqpjDxUssJB7ldBjuPZzL5+EbFYqTged87JeTom+
-81m+zO788yd+QtWEHa6I6ipFsy7FDjupYCNnT66Pf2/yWbCXsCfuBal/tehK
-f6NSqFfjNa9fn4mLWJfAPHFPudx7badm5K8zWtN/ikqGHtSLAT16Pn2F/7zW
-BtrJ/zNA8F9oZKzbejAAAA==
+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
+Vm/+C/10PNPZMwAA
 
 -->
 
