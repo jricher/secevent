@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-00
-date: 2018-07-18
+docname: draft-ietf-secevent-subject-identifiers-02
+date: 2018-10-23
 category: std
 ipr: trust200902
 
@@ -24,8 +24,8 @@ author:
  -
     ins: M. Scurtescu
     name: Marius Scurtescu
-    organization: Google
-    email: mscurtescu@google.com
+    organization: Coinbase
+    email: marius.scurtescu@coinbase.com
 
 normative:
   BCP26: RFC8126
@@ -106,7 +106,7 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 ~~~
 {
   "subject_type": "phone",
-  "phone": "+1 (206) 555-0100",
+  "phone": "+12065550100",
 }
 ~~~
 {: #figexamplesubidphone  title="Example: Subject Identifier for the Phone Number Subject Identifier Type."}
@@ -243,3 +243,7 @@ Draft 01 - AB:
 * Renamed `iss_sub` type to `iss-sub`.
 * Renamed `id_token_claims` type to `id-token-claims`.
 * Added text specifying the nature of the subjects described by each type.
+
+Draft 02 - AB:
+* Corrected format of phone numbers in examples.
+* Updated author info.

@@ -394,12 +394,12 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.7.0 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.11.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Backman, A., Ed. and M. Scurtescu" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-secevent-subject-identifiers-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-7-18" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-secevent-subject-identifiers-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-10-23" />
   <meta name="dct.abstract" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a " />
   <meta name="description" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a " />
 
@@ -423,12 +423,12 @@
 <td class="right">M. Scurtescu</td>
 </tr>
 <tr>
-<td class="left">Expires: January 19, 2019</td>
-<td class="right">Google</td>
+<td class="left">Expires: April 26, 2019</td>
+<td class="right">Coinbase</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 18, 2018</td>
+<td class="right">October 23, 2018</td>
 </tr>
 
     	
@@ -436,18 +436,18 @@
   </table>
 
   <p class="title">Subject Identifiers for Security Event Tokens<br />
-  <span class="filename">draft-ietf-secevent-subject-identifiers-00</span></p>
+  <span class="filename">draft-ietf-secevent-subject-identifiers-02</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a <a href="#JSON" class="xref">[JSON]</a> object such as a <a href="#JWT" class="xref">JSON Web Token</a> or <a href="#SET" class="xref">Security Event Token</a>, and a registry for defining and allocating names for these claim sets.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
-<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 19, 2019.</p>
+<p>This Internet-Draft will expire on April 26, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
-<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
   <hr class="noprint" />
@@ -532,7 +532,7 @@
 <pre>
 {
   "subject_type": "phone",
-  "phone": "+1 (206) 555-0100",
+  "phone": "+12065550100",
 }
 </pre>
 <p class="figure">Figure 2: Example: Subject Identifier for the Phone Number Subject Identifier Type.</p>
@@ -681,7 +681,7 @@
 <tr>
 <td class="reference"><b id="BCP26">[BCP26]</b></td>
 <td class="top">
-<a>Cotton, M.</a>, <a>Leiba, B.</a> and <a>T. Narten</a>, "<a href="http://tools.ietf.org/html/rfc8126">Guidelines for Writing an IANA Considerations Section in RFCs</a>", BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017.</td>
+<a>Cotton, M.</a>, <a>Leiba, B.</a> and <a>T. Narten</a>, "<a href="https://tools.ietf.org/html/rfc8126">Guidelines for Writing an IANA Considerations Section in RFCs</a>", BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="E164">[E164]</b></td>
@@ -696,32 +696,32 @@
 <tr>
 <td class="reference"><b id="JSON">[JSON]</b></td>
 <td class="top">
-<a>Bray, T.</a>, "<a href="http://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
 </tr>
 <tr>
 <td class="reference"><b id="JWT">[JWT]</b></td>
 <td class="top">
-<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="http://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
-<a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC5322">[RFC5322]</b></td>
 <td class="top">
-<a>Resnick, P.</a>, "<a href="http://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
+<a>Resnick, P.</a>, "<a href="https://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC7519">[RFC7519]</b></td>
 <td class="top">
-<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="http://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
 </tr>
 <tr>
 <td class="reference"><b id="SET">[SET]</b></td>
 <td class="top">
-<a>Hunt, P.</a>, <a>Jones, M.</a>, <a>Denniss, W.</a> and <a>M. Ansari</a>, "<a href="http://tools.ietf.org/html/rfc8417">Security Event Token (SET)</a>", RFC 8417, DOI 10.17487/RFC8417, July 2018.</td>
+<a>Hunt, P.</a>, <a>Jones, M.</a>, <a>Denniss, W.</a> and <a>M. Ansari</a>, "<a href="https://tools.ietf.org/html/rfc8417">Security Event Token (SET)</a>", RFC 8417, DOI 10.17487/RFC8417, July 2018.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.acknowledgements"><a href="#rfc.acknowledgements">Acknowledgements</a></h1>
@@ -730,6 +730,7 @@
 <p id="rfc.section.B.p.1">(This section to be removed by the RFC Editor before publication as an RFC.)</p>
 <p id="rfc.section.B.p.2">Draft 00 - AB - First draft</p>
 <p id="rfc.section.B.p.3">Draft 01 - AB: * Added reference to RFC 5322 for format of <samp>email</samp> claim.  * Renamed <samp>iss_sub</samp> type to <samp>iss-sub</samp>.  * Renamed <samp>id_token_claims</samp> type to <samp>id-token-claims</samp>.  * Added text specifying the nature of the subjects described by each type.</p>
+<p id="rfc.section.B.p.4">Draft 02 - AB: * Corrected format of phone numbers in examples.  * Updated author info.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
@@ -760,7 +761,7 @@
 		<span class="family-name">Scurtescu</span>
 	  </span>
 	</span>
-	<span class="org vcardline">Google</span>
+	<span class="org vcardline">Coinbase</span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
@@ -770,7 +771,7 @@
 	  </span>
 	  <span class="country-name vcardline"></span>
 	</span>
-	<span class="vcardline">EMail: <a href="mailto:mscurtescu@google.com">mscurtescu@google.com</a></span>
+	<span class="vcardline">EMail: <a href="mailto:marius.scurtescu@coinbase.com">marius.scurtescu@coinbase.com</a></span>
 
   </address>
 </div>
