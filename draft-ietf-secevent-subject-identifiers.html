@@ -381,7 +381,7 @@
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Email Subject Identifier Type">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Phone Number Subject Identifier Type">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 Issuer and Subject Subject Identifier Type">
-<link href="#rfc.section.3.5" rel="Chapter" title="3.5 ID Token Claims Subject Identifier Type">
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Aliases Subject Identifier Type">
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Security Event Subject Identifier Types Registry">
 <link href="#rfc.section.4.1.1" rel="Chapter" title="4.1.1 Registration Template">
@@ -469,7 +469,7 @@
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">Issuer and Subject Subject Identifier Type</a>
 </li>
-<li>3.5.   <a href="#rfc.section.3.5">ID Token Claims Subject Identifier Type</a>
+<li>3.5.   <a href="#rfc.section.3.5">Aliases Subject Identifier Type</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">IANA Considerations</a>
 </li>
@@ -569,39 +569,32 @@
 </pre>
 <p class="figure">Figure 4: Example: Subject Identifier for the Issuer and Subject Subject Identifier Type.</p>
 <h1 id="rfc.section.3.5">
-<a href="#rfc.section.3.5">3.5.</a> <a href="#sub-id-id-token" id="sub-id-id-token">ID Token Claims Subject Identifier Type</a>
+<a href="#rfc.section.3.5">3.5.</a> <a href="#sub-id-aliases" id="sub-id-aliases">Aliases Subject Identifier Type</a>
 </h1>
-<p id="rfc.section.3.5.p.1">The ID Token Claims Subject Identifier Type describes a subject that was the subject of a previously issued <a href="#IDTOKEN" class="xref">ID Token</a>.  It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they require.  This type is identified by the name <samp>id-token-claims</samp>.</p>
-<p id="rfc.section.3.5.p.2">Subject Identifiers of this type MUST contain at least one of the following claims:</p>
-<p></p>
-
-<dl>
-<dt>email</dt>
-<dd style="margin-left: 8">
-<br> An <samp>email</samp> claim, as defined in <a href="#IDTOKEN" class="xref">[IDTOKEN]</a>.  If present, the value of this claim MUST NOT be null or empty.</dd>
-<dt>phone_number</dt>
-<dd style="margin-left: 8">
-<br> A <samp>phone_number</samp> claim, as defined in <a href="#IDTOKEN" class="xref">[IDTOKEN]</a>.  If present, the value of this claim MUST NOT be null or empty.</dd>
-<dt>sub</dt>
-<dd style="margin-left: 8">
-<br> A <samp>sub</samp> claim, as defined in <a href="#RFC7519" class="xref">[RFC7519]</a>.  If present, the value of this claim MUST NOT be null or empty.</dd>
-<dt>iss</dt>
-<dd style="margin-left: 8">
-<br> An <samp>iss</samp> claim, as defined in <a href="#RFC7519" class="xref">[RFC7519]</a>. This claim is OPTIONAL, unless a <samp>sub</samp> claim in present, in which case it is REQUIRED. If present, its value MUST NOT be null or empty.</dd>
-</dl>
-<p id="rfc.section.3.5.p.4">At least one of <samp>email</samp>, <samp>phone_number</samp>, or <samp>sub</samp> MUST be present.</p>
-<p id="rfc.section.3.5.p.5">Below is a non-normative example Subject Identifier for the ID Token Claims Subject Identifier Type:</p>
+<p id="rfc.section.3.5.p.1">The Aliases Subject Identifier Type describes a subject that is identified by a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an <samp>identifiers</samp> claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <samp>identifiers</samp> claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name <samp>aliases</samp>.</p>
+<p id="rfc.section.3.5.p.2">Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:</p>
 <div id="rfc.figure.5"></div>
 <div id="figexamplesubididtoken"></div>
 <pre>
 {
-  "subject_type": "id-token-claims",
-  "iss": "http://issuer.example.com/",
-  "sub": "145234573",
-  "email": "user@example.com",
+  "subject_type": "aliases",
+  "identifiers": [
+    {
+      "subject_type": "email",
+      "email": "user@example.com",
+    },
+    {
+      "subject_type": "phone",
+      "phone": "+12065550100",
+    },
+    {
+      "subject_type": "email",
+      "email": "user+qualifier@example.com",
+    }
+  ],
 }
 </pre>
-<p class="figure">Figure 5: Example: Subject Identifier for the ID Token Claims Subject Identifier Type.</p>
+<p class="figure">Figure 5: Example: Subject Identifier for the Aliases Subject Identifier Type.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#iana" id="iana">IANA Considerations</a>
 </h1>
@@ -656,19 +649,7 @@
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
 <h1 id="rfc.section.4.1.2.3">
-<a href="#rfc.section.4.1.2.3">4.1.2.3.</a> <a href="#id-token-claims-subject-identifier-type" id="id-token-claims-subject-identifier-type">ID Token Claims Subject Identifier Type</a>
-</h1>
-<p></p>
-
-<ul>
-<li>Type Name: <samp>id-token-claims</samp>
-</li>
-<li>Type Description: Subject identifier based on OpenID Connect ID Token claims.</li>
-<li>Change Controller: IETF secevent Working Group</li>
-<li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
-</ul>
-<h1 id="rfc.section.4.1.2.4">
-<a href="#rfc.section.4.1.2.4">4.1.2.4.</a> <a href="#issuer-and-subject-subject-identifier-type" id="issuer-and-subject-subject-identifier-type">Issuer and Subject Subject Identifier Type</a>
+<a href="#rfc.section.4.1.2.3">4.1.2.3.</a> <a href="#issuer-and-subject-subject-identifier-type" id="issuer-and-subject-subject-identifier-type">Issuer and Subject Subject Identifier Type</a>
 </h1>
 <p></p>
 
@@ -679,8 +660,8 @@
 <li>Change Controller: IETF secevent Working Group</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.4.1.2.5">
-<a href="#rfc.section.4.1.2.5">4.1.2.5.</a> <a href="#phone-number-subject-identifier-type" id="phone-number-subject-identifier-type">Phone Number Subject Identifier Type</a>
+<h1 id="rfc.section.4.1.2.4">
+<a href="#rfc.section.4.1.2.4">4.1.2.4.</a> <a href="#phone-number-subject-identifier-type" id="phone-number-subject-identifier-type">Phone Number Subject Identifier Type</a>
 </h1>
 <p></p>
 
@@ -688,6 +669,18 @@
 <li>Type Name: <samp>phone</samp>
 </li>
 <li>Type Description: Subject identifier based on an phone number.</li>
+<li>Change Controller: IETF secevent Working Group</li>
+<li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
+</ul>
+<h1 id="rfc.section.4.1.2.5">
+<a href="#rfc.section.4.1.2.5">4.1.2.5.</a> <a href="#aliases-subject-identifier-type" id="aliases-subject-identifier-type">Aliases Subject Identifier Type</a>
+</h1>
+<p></p>
+
+<ul>
+<li>Type Name: <samp>aliases</samp>
+</li>
+<li>Type Description: Subject identifier that groups together multiple different subject identifiers for the same subject.</li>
 <li>Change Controller: IETF secevent Working Group</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
@@ -718,11 +711,6 @@
 <a>International Telecommunication Union</a>, "<a href="http://www.itu.int/rec/T-REC-E.164-201011-I/en">The international public telecommunication numbering plan</a>", 2010.</td>
 </tr>
 <tr>
-<td class="reference"><b id="IDTOKEN">[IDTOKEN]</b></td>
-<td class="top">
-<a>Sakamura, N.</a>, <a>Bradley, J.</a>, <a>Jones, M.</a>, <a>de Medeiros, B.</a> and <a>C. Mortimore</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html#IDToken">OpenID Connect Core 1.0 - ID Token</a>", April 2017.</td>
-</tr>
-<tr>
 <td class="reference"><b id="JSON">[JSON]</b></td>
 <td class="top">
 <a>Bray, T.</a>, "<a href="http://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
@@ -743,11 +731,6 @@
 <a>Resnick, P.</a>, "<a href="http://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
 </tr>
 <tr>
-<td class="reference"><b id="RFC7519">[RFC7519]</b></td>
-<td class="top">
-<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="http://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
-</tr>
-<tr>
 <td class="reference"><b id="RFC7565">[RFC7565]</b></td>
 <td class="top">
 <a>Saint-Andre, P.</a>, "<a href="http://tools.ietf.org/html/rfc7565">The 'acct' URI Scheme</a>", RFC 7565, DOI 10.17487/RFC7565, May 2015.</td>
@@ -765,7 +748,7 @@
 <p id="rfc.section.B.p.2">Draft 00 - AB - First draft</p>
 <p id="rfc.section.B.p.3">Draft 01 - AB: * Added reference to RFC 5322 for format of <samp>email</samp> claim.  * Renamed <samp>iss_sub</samp> type to <samp>iss-sub</samp>.  * Renamed <samp>id_token_claims</samp> type to <samp>id-token-claims</samp>.  * Added text specifying the nature of the subjects described by each type.</p>
 <p id="rfc.section.B.p.4">Draft 02 - AB: * Corrected format of phone numbers in examples.  * Updated author info.</p>
-<p id="rfc.section.B.p.5">Draft 03 - AB: * Added <samp>account</samp> type for <samp>acct</samp> URIs.</p>
+<p id="rfc.section.B.p.5">Draft 03 - AB: * Added <samp>account</samp> type for <samp>acct</samp> URIs.  * Replaced <samp>id-token-claims</samp> type with <samp>aliases</samp> type.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

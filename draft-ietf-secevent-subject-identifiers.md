@@ -38,26 +38,6 @@ normative:
     author:
       org: International Telecommunication Union
     date: 2010
-  IDTOKEN:
-    title: OpenID Connect Core 1.0 - ID Token
-    target: http://openid.net/specs/openid-connect-core-1_0.html#IDToken
-    author:
-     -
-        ins: N. Sakamura
-        name: Nat Sakamura
-     -
-        ins: J. Bradley
-        name: John Bradley
-     -
-        ins: M. Jones
-        name: Michael B. Jones
-     -
-        ins: B. de Medeiros
-        name: Breno de Medeiros
-     -
-        ins: C. Mortimore
-        name: Chuck Mortimore
-    date: 2017-04-07
 
 --- abstract
 
@@ -140,38 +120,32 @@ Below is a non-normative example Subject Identifier for the Issuer and Subject S
 ~~~
 {: #figexamplesubidisssub  title="Example: Subject Identifier for the Issuer and Subject Subject Identifier Type."}
 
-ID Token Claims Subject Identifier Type {#sub-id-id-token}
+Aliases Subject Identifier Type {#sub-id-aliases}
 ---------------------------------------
-The ID Token Claims Subject Identifier Type describes a subject that was the subject of a previously issued [ID Token](#IDTOKEN).  It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they require.  This type is identified by the name `id-token-claims`.
+The Aliases Subject Identifier Type describes a subject that is identified by a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an `identifiers` claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`.
 
-Subject Identifiers of this type MUST contain at least one of the following claims:
-
-{: vspace="0"}
-email
-: An `email` claim, as defined in [IDTOKEN](#IDTOKEN).  If present, the value of this claim MUST NOT be null or empty.
-
-phone_number
-: A `phone_number` claim, as defined in [IDTOKEN](#IDTOKEN).  If present, the value of this claim MUST NOT be null or empty.
-
-sub
-: A `sub` claim, as defined in {{!RFC7519}}.  If present, the value of this claim MUST NOT be null or empty.
-
-iss
-: An `iss` claim, as defined in {{!RFC7519}}. This claim is OPTIONAL, unless a `sub` claim in present, in which case it is REQUIRED. If present, its value MUST NOT be null or empty.
-
-At least one of `email`, `phone_number`, or `sub` MUST be present.
-
-Below is a non-normative example Subject Identifier for the ID Token Claims Subject Identifier Type:
+Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:
 
 ~~~
 {
-  "subject_type": "id-token-claims",
-  "iss": "http://issuer.example.com/",
-  "sub": "145234573",
-  "email": "user@example.com",
+  "subject_type": "aliases",
+  "identifiers": [
+    {
+      "subject_type": "email",
+      "email": "user@example.com",
+    },
+    {
+      "subject_type": "phone",
+      "phone": "+12065550100",
+    },
+    {
+      "subject_type": "email",
+      "email": "user+qualifier@example.com",
+    }
+  ],
 }
 ~~~
-{: #figexamplesubididtoken  title="Example: Subject Identifier for the ID Token Claims Subject Identifier Type."}
+{: #figexamplesubididtoken  title="Example: Subject Identifier for the Aliases Subject Identifier Type."}
 
 IANA Considerations {#iana}
 ===================
@@ -211,13 +185,6 @@ Defining Document(s)
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
 
-#### ID Token Claims Subject Identifier Type
-
-* Type Name: `id-token-claims`
-* Type Description: Subject identifier based on OpenID Connect ID Token claims.
-* Change Controller: IETF secevent Working Group
-* Defining Document(s): {{sub-ids}} of this document.
-
 #### Issuer and Subject Subject Identifier Type
 
 * Type Name: `iss-sub`
@@ -229,6 +196,13 @@ Defining Document(s)
 
 * Type Name: `phone`
 * Type Description: Subject identifier based on an phone number.
+* Change Controller: IETF secevent Working Group
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Aliases Subject Identifier Type
+
+* Type Name: `aliases`
+* Type Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
 
@@ -271,3 +245,4 @@ Draft 02 - AB:
 
 Draft 03 - AB:
 * Added `account` type for `acct` URIs.
+* Replaced `id-token-claims` type with `aliases` type.
