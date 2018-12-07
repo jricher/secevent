@@ -2,7 +2,7 @@
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
 docname: draft-ietf-secevent-subject-identifiers-02
-date: 2018-10-23
+date: 2018-12-06
 category: std
 ipr: trust200902
 
@@ -82,6 +82,20 @@ A Subject Identifier Type is a light-weight schema that describes a set of claim
 A Subject Identifier is a {{!JSON}} object containing a `subject_type` claim whose value is the unique name of a Subject Identifier Type, and a set of additional "payload claims" which are to be interpreted according to the rules defined by that Subject Identifier Type.  Payload claim values MUST match the format specified for the claim by the Subject Identifier Type. A Subject Identifier MUST NOT contain any payload claims prohibited or not described by its Subject Identifier Type, and MUST contain all payload claims required by its Subject Identifier Type.
 
 The following Subject Identifier Types are registered in the IANA "Security Event Subject Identifier Types" registry established by {{iana-sub-id-types}}.
+
+Account Subject Identifier Type {#sub-id-acct}
+-------------------------------
+The Account Subject Identifier Type describes a subject that is an account at a service provider, identified by an `acct` URI as defined in {{!RFC7565}}.  Subject Identifiers of this type MUST contain a `uri` claim whose value is the `acct` URI for the subject.  The `uri` claim is REQUIRED and MUST NOT be null or empty.  The Account Subject Identifier Type is identified by the name `account`.
+
+Below is a non-normative example Subject Identifier for the Account Subject Identifier Type:
+
+~~~
+{
+  "subject_type": "account",
+  "uri": "acct:example.user@service.example.com",
+}
+~~~
+{: #figexamplesubidaccount title="Example: Subject Identifier for the Account Subject Identifier Type."}
 
 Email Subject Identifier Type {#sub-id-email}
 -----------------------------
@@ -183,6 +197,13 @@ Defining Document(s)
 
 ### Initial Registry Contents {#iana-sub-id-types-init}
 
+#### Account Subject Identifier Type
+
+* Type Name: `account`
+* Type Description: Subject identifier based on `acct` URI.
+* Change Controller: IETF secevent Working Group
+* Defining Document(s): {{sub-ids}} of this document.
+
 #### Email Subject Identifier Type
 
 * Type Name: `email`
@@ -247,3 +268,6 @@ Draft 01 - AB:
 Draft 02 - AB:
 * Corrected format of phone numbers in examples.
 * Updated author info.
+
+Draft 03 - AB:
+* Added `account` type for `acct` URIs.
