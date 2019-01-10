@@ -379,6 +379,7 @@
 <link href="#rfc.section.3" rel="Chapter" title="3 Subject Identifiers">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Account Subject Identifier Type">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Email Subject Identifier Type">
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Email Canonicalization">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Phone Number Subject Identifier Type">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 Issuer and Subject Subject Identifier Type">
 <link href="#rfc.section.3.5" rel="Chapter" title="3.5 Aliases Subject Identifier Type">
@@ -465,7 +466,9 @@
 </li>
 <li>3.2.   <a href="#rfc.section.3.2">Email Subject Identifier Type</a>
 </li>
-<li>3.3.   <a href="#rfc.section.3.3">Phone Number Subject Identifier Type</a>
+<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Email Canonicalization</a>
+</li>
+</ul><li>3.3.   <a href="#rfc.section.3.3">Phone Number Subject Identifier Type</a>
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">Issuer and Subject Subject Identifier Type</a>
 </li>
@@ -539,6 +542,10 @@
 }
 </pre>
 <p class="figure">Figure 2: Example: Subject Identifier for the Email Subject Identifier Type.</p>
+<h1 id="rfc.section.3.2.1">
+<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#email-canon" id="email-canon">Email Canonicalization</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">Many email providers will treat multiple email addresses as equivalent. For example, some providers treat email addresses as case-insensitive, and consider &#8220;user@example.com&#8221;, &#8220;User@example.com&#8221;, and &#8220;USER@example.com&#8221; as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation&#8217;s canonicalization algorithm to resolve the email address to the same subject identifier string used in their system.</p>
 <h1 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#sub-id-phone" id="sub-id-phone">Phone Number Subject Identifier Type</a>
 </h1>
@@ -746,9 +753,30 @@
 <h1 id="rfc.change_log"><a href="#rfc.change_log">Change Log</a></h1>
 <p id="rfc.section.B.p.1">(This section to be removed by the RFC Editor before publication as an RFC.)</p>
 <p id="rfc.section.B.p.2">Draft 00 - AB - First draft</p>
-<p id="rfc.section.B.p.3">Draft 01 - AB: * Added reference to RFC 5322 for format of <samp>email</samp> claim.  * Renamed <samp>iss_sub</samp> type to <samp>iss-sub</samp>.  * Renamed <samp>id_token_claims</samp> type to <samp>id-token-claims</samp>.  * Added text specifying the nature of the subjects described by each type.</p>
-<p id="rfc.section.B.p.4">Draft 02 - AB: * Corrected format of phone numbers in examples.  * Updated author info.</p>
-<p id="rfc.section.B.p.5">Draft 03 - AB: * Added <samp>account</samp> type for <samp>acct</samp> URIs.  * Replaced <samp>id-token-claims</samp> type with <samp>aliases</samp> type.</p>
+<p id="rfc.section.B.p.3">Draft 01 - AB:</p>
+<p></p>
+
+<ul>
+<li>Added reference to RFC 5322 for format of <samp>email</samp> claim.</li>
+<li>Renamed <samp>iss_sub</samp> type to <samp>iss-sub</samp>.</li>
+<li>Renamed <samp>id_token_claims</samp> type to <samp>id-token-claims</samp>.</li>
+<li>Added text specifying the nature of the subjects described by each type.</li>
+</ul>
+<p id="rfc.section.B.p.5">Draft 02 - AB:</p>
+<p></p>
+
+<ul>
+<li>Corrected format of phone numbers in examples.</li>
+<li>Updated author info.</li>
+</ul>
+<p id="rfc.section.B.p.7">Draft 03 - AB:</p>
+<p></p>
+
+<ul>
+<li>Added <samp>account</samp> type for <samp>acct</samp> URIs.</li>
+<li>Replaced <samp>id-token-claims</samp> type with <samp>aliases</samp> type.</li>
+<li>Added email canonicalization guidance.</li>
+</ul>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

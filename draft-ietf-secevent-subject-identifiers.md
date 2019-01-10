@@ -91,6 +91,9 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 ~~~
 {: #figexamplesubidemail  title="Example: Subject Identifier for the Email Subject Identifier Type."}
 
+### Email Canonicalization {#email-canon}
+Many email providers will treat multiple email addresses as equivalent. For example, some providers treat email addresses as case-insensitive, and consider "user@example.com", "User@example.com", and "USER@example.com" as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation's canonicalization algorithm to resolve the email address to the same subject identifier string used in their system.
+
 Phone Number Subject Identifier Type {#sub-id-phone}
 ------------------------------------
 The Phone Number Subject Identifier Type describes a subject that is a user account associated with a telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
@@ -234,15 +237,19 @@ Change Log
 Draft 00 - AB - First draft
 
 Draft 01 - AB:
+
 * Added reference to RFC 5322 for format of `email` claim.
 * Renamed `iss_sub` type to `iss-sub`.
 * Renamed `id_token_claims` type to `id-token-claims`.
 * Added text specifying the nature of the subjects described by each type.
 
 Draft 02 - AB:
+
 * Corrected format of phone numbers in examples.
 * Updated author info.
 
 Draft 03 - AB:
+
 * Added `account` type for `acct` URIs.
 * Replaced `id-token-claims` type with `aliases` type.
+* Added email canonicalization guidance.
