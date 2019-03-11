@@ -2,7 +2,7 @@
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
 docname: draft-ietf-secevent-subject-identifiers-02
-date: 2018-12-06
+date: 2019-03-11
 category: std
 ipr: trust200902
 
@@ -57,15 +57,15 @@ document are to be interpreted as described in {{!RFC2119}}.
 
 Subject Identifiers {#sub-ids}
 ===================
-A Subject Identifier Type is a light-weight schema that describes a set of claims that identifies a subject.  Every Subject Identifier Type MUST have a unique name registered in the IANA "Security Event Subject Identifier Types" registry established by {{iana-sub-id-types}}.  A Subject Identifier Type MAY describe more claims than are strictly necessary to uniquely identify a subject, and MAY describe conditions under which those claims are required, optional, or prohibited.
+A Subject Identifier Type is a light-weight schema that describes a set of claims that identifies a subject.  Every Subject Identifier Type MUST have a unique name registered in the IANA "Security Event Subject Identifier Types" registry established by {{iana-sub-id-types}}.  A Subject Identifier Type MAY describe more claims than are strictly necessary to identify a subject, and MAY describe conditions under which those claims are required, optional, or prohibited.
 
-A Subject Identifier is a {{!JSON}} object containing a `subject_type` claim whose value is the unique name of a Subject Identifier Type, and a set of additional "payload claims" which are to be interpreted according to the rules defined by that Subject Identifier Type.  Payload claim values MUST match the format specified for the claim by the Subject Identifier Type. A Subject Identifier MUST NOT contain any payload claims prohibited or not described by its Subject Identifier Type, and MUST contain all payload claims required by its Subject Identifier Type.
+A Subject Identifier is a {{!JSON}} object containing a `subject_type` claim whose value is the name of a Subject Identifier Type, and a set of additional "payload claims" which are to be interpreted according to the rules defined by that Subject Identifier Type.  Payload claim values MUST match the format specified for the claim by the Subject Identifier Type. A Subject Identifier MUST NOT contain any payload claims prohibited or not described by its Subject Identifier Type, and MUST contain all payload claims required by its Subject Identifier Type.
 
 The following Subject Identifier Types are registered in the IANA "Security Event Subject Identifier Types" registry established by {{iana-sub-id-types}}.
 
 Account Subject Identifier Type {#sub-id-acct}
 -------------------------------
-The Account Subject Identifier Type describes a subject that is an account at a service provider, identified by an `acct` URI as defined in {{!RFC7565}}.  Subject Identifiers of this type MUST contain a `uri` claim whose value is the `acct` URI for the subject.  The `uri` claim is REQUIRED and MUST NOT be null or empty.  The Account Subject Identifier Type is identified by the name `account`.
+The Account Subject Identifier Type describes a user account at a service provider, identified with an `acct` URI as defined in {{!RFC7565}}.  Subject Identifiers of this type MUST contain a `uri` claim whose value is the `acct` URI for the subject.  The `uri` claim is REQUIRED and MUST NOT be null or empty.  The Account Subject Identifier Type is identified by the name `account`.
 
 Below is a non-normative example Subject Identifier for the Account Subject Identifier Type:
 
@@ -79,7 +79,7 @@ Below is a non-normative example Subject Identifier for the Account Subject Iden
 
 Email Subject Identifier Type {#sub-id-email}
 -----------------------------
-The Email Subject Identifier Type describes a subject that is a user account associated with an email address.  Subject Identifiers of this type MUST contain an `email` claim whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` claim is REQUIRED and MUST NOT be null or empty. The Email Subject Identifier Type is identified by the name `email`.
+The Email Subject Identifier Type describes a principal identified with an email address.  Subject Identifiers of this type MUST contain an `email` claim whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` claim is REQUIRED and MUST NOT be null or empty. The value of the `email` claim SHOULD identify a mailbox to which email may be delivered, in accordance with {{!RFC5321}}. The Email Subject Identifier Type is identified by the name `email`.
 
 Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:
 
@@ -96,7 +96,7 @@ Many email providers will treat multiple email addresses as equivalent. For exam
 
 Phone Number Subject Identifier Type {#sub-id-phone}
 ------------------------------------
-The Phone Number Subject Identifier Type describes a subject that is a user account associated with a telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
+The Phone Number Subject Identifier Type describes a principal identified with a telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
 
 Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:
 
@@ -110,7 +110,7 @@ Below is a non-normative example Subject Identifier for the Email Subject Identi
 
 Issuer and Subject Subject Identifier Type {#sub-id-iss-sub}
 ------------------------------------------
-The Issuer and Subject Subject Identifier Type describes a subject that is an account identified by a pair of `iss` and `sub` claims, as defined by {{!JWT}}.  These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!JWT}}, respectively. Both the `iss` claim and the `sub` claim are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss-sub`.
+The Issuer and Subject Subject Identifier Type describes a principal identified with a pair of `iss` and `sub` claims, as defined by {{!JWT}}.  These claims MUST follow the formats of the `iss` claim and `sub` claim defined by {{!JWT}}, respectively. Both the `iss` claim and the `sub` claim are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name `iss-sub`.
 
 Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:
 
@@ -125,7 +125,7 @@ Below is a non-normative example Subject Identifier for the Issuer and Subject S
 
 Aliases Subject Identifier Type {#sub-id-aliases}
 ---------------------------------------
-The Aliases Subject Identifier Type describes a subject that is identified by a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an `identifiers` claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`.
+The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an `identifiers` claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`.
 
 Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:
 
@@ -149,6 +149,14 @@ Below is a non-normative example Subject Identifier for the Aliases Subject Iden
 }
 ~~~
 {: #figexamplesubididtoken  title="Example: Subject Identifier for the Aliases Subject Identifier Type."}
+
+Privacy Considerations {#privacy}
+======================
+There are no privacy considerations.
+
+Security Considerations {#security}
+=======================
+There are no security considerations.
 
 IANA Considerations {#iana}
 ===================
@@ -214,14 +222,6 @@ The Expert Reviewer is expected to review the documentation referenced in a regi
 
 Subject Identifier Types need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.
 
-Privacy Considerations {#privacy}
-======================
-There are no privacy considerations.
-
-Security Considerations {#security}
-=======================
-There are no security considerations.
-
 --- back
 
 Acknowledgements
@@ -253,3 +253,4 @@ Draft 03 - AB:
 * Added `account` type for `acct` URIs.
 * Replaced `id-token-claims` type with `aliases` type.
 * Added email canonicalization guidance.
+* Updated semantics for `email`, `phone`, and `iss-sub` types.
