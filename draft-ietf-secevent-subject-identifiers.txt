@@ -10,7 +10,7 @@ Expires: September 12, 2019                                     Coinbase
 
 
              Subject Identifiers for Security Event Tokens
-               draft-ietf-secevent-subject-identifiers-02
+               draft-ietf-secevent-subject-identifiers-03
 
 Abstract
 
@@ -568,6 +568,8 @@ Internet-Draft        secevent-subject-identifiers            March 2019
 
    o  Added email canonicalization guidance.
 
+   o  Updated semantics for "email", "phone", and "iss-sub" types.
+
 Authors' Addresses
 
    Annabelle Backman (editor)
@@ -580,8 +582,6 @@ Authors' Addresses
    Coinbase
 
    Email: marius.scurtescu@coinbase.com
-
-
 
 
 
