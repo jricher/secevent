@@ -9,7 +9,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc symrefs="yes"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-secevent-subject-identifiers-03" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-secevent-subject-identifiers-04" category="std">
 
   <front>
     <title abbrev="secevent-subject-identifiers">Subject Identifiers for Security Event Tokens</title>
@@ -27,7 +27,7 @@
       </address>
     </author>
 
-    <date year="2019" month="March" day="11"/>
+    <date year="2019" month="July" day="08"/>
 
     <area>Security</area>
     <workgroup>Security Events Working Group</workgroup>
@@ -125,6 +125,8 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <section anchor="sub-id-aliases" title="Aliases Subject Identifier Type">
 <t>The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an <spanx style="verb">identifiers</spanx> claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <spanx style="verb">identifiers</spanx> claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name <spanx style="verb">aliases</spanx>.</t>
 
+<t><spanx style="verb">alias</spanx> Subject Identifiers MUST NOT be nested; i.e., the <spanx style="verb">identifiers</spanx> claim of an <spanx style="verb">alias</spanx> Subject Identifier MUST NOT contain a Subject Identifier of type <spanx style="verb">aliases</spanx>.</t>
+
 <t>Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:</t>
 
 <figure title="Example: Subject Identifier for the Aliases Subject Identifier Type." anchor="figexamplesubididtoken"><artwork><![CDATA[
@@ -149,9 +151,104 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 </section>
 </section>
-<section anchor="privacy" title="Privacy Considerations">
-<t>There are no privacy considerations.</t>
+<section anchor="jwt-claims" title="Subject Identifiers in JWTs">
 
+<section anchor="jwt-claims-sub_id" title="“sub_id” Claim">
+<t>This document defines the <spanx style="verb">sub_id</spanx> JWT Claim, in accordance with Section 4.2 of <xref target="RFC7519"/>.  When present, the value of this claim MUST be a Subject Identifier that identifies the principal that is the subject of the JWT.  The <spanx style="verb">sub_id</spanx> claim MAY be included in a JWT, whether or not the <spanx style="verb">sub</spanx> claim is present.  When both the <spanx style="verb">sub</spanx> and <spanx style="verb">sub_id</spanx> claims are present in a JWT, they MUST identify the same principal.</t>
+
+<t>Below is are non-normative examples of JWTs containing the <spanx style="verb">sub_id</spanx> claim:</t>
+
+<figure title="Example: JWT containing a `sub_id` claim and no `sub` claim." anchor="figexamplejwtsubidemail"><artwork><![CDATA[
+{
+  "iss": "issuer.example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "user@example.com",
+  },
+}
+]]></artwork></figure>
+
+<figure title="Example: JWT where both the `sub` and `sub_id` claims identify the subject using the same identifier." anchor="figexamplejwtsamesubtype"><artwork><![CDATA[
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "user@example.com",
+  },
+}
+]]></artwork></figure>
+
+<figure title="Example: JWT where both the `sub` and `sub_id` claims identify the subject using different values of the same identifier type." anchor="figexamplejwtdiffsubvalues"><artwork><![CDATA[
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "elizabeth@example.com",
+  },
+}
+]]></artwork></figure>
+
+<figure title="Example: JWT where the `sub` and `sub_id` claims identify the subject via different types of identifiers." anchor="figexamplejwtdiffsubtype"><artwork><![CDATA[
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "account",
+    "uri": "acct:example.user@service.example.com",
+  },
+}
+]]></artwork></figure>
+
+</section>
+<section anchor="subid-and-iss-sub-subject-identifiers" title="“sub_id” and “iss-sub” Subject Identifiers">
+<t>The <spanx style="verb">sub_id</spanx> claim MAY contain an <spanx style="verb">iss-sub</spanx> Subject Identifier.  In this case, the JWT’s <spanx style="verb">iss</spanx> claim and the Subject Identifier’s <spanx style="verb">iss</spanx> claim MAY be different.  For example, an <xref target="OIDC">OpenID Connect</xref> client may construct such a JWT when issuing a JWT back to its OpenID Connect Identity Provider, in order to communicate information about the services’ shared subject principal using an identifier the Identity Provider is known to understand.  Similarly, the JWT’s <spanx style="verb">sub</spanx> claim and the Subject Identifier’s <spanx style="verb">sub</spanx> claim MAY be different.  For example, this may be used by an OpenID Connect client to communicate the subject principal’s local identifier at the client back to its Identity Provider.</t>
+
+<t>Below are non-normative examples of a JWT where the <spanx style="verb">iss</spanx> claims are the same, and a JWT where they are different.</t>
+
+<figure title="Example: JWT with a `iss-sub` Subject Identifier where JWT issuer and subject issuer are the same." anchor="figexamplejwtsameiss"><artwork><![CDATA[
+{
+  "iss": "issuer.example.com",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+]]></artwork></figure>
+
+<figure title="Example: JWT with an `iss-sub` Subject Identifier where the JWT issuer and subject issuer are different." anchor="figexamplejwtdiffiss"><artwork><![CDATA[
+{
+  "iss": "client.example.com",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+]]></artwork></figure>
+
+<figure title="Example: JWT with an `iss-sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the Subject Identifier's `iss` and `sub` claims." anchor="figexamplejwtdiffisssub"><artwork><![CDATA[
+{
+  "iss": "client.example.com",
+  "sub": "client_user",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+]]></artwork></figure>
+
+</section>
+</section>
+<section anchor="privacy" title="Privacy Considerations">
+
+<section anchor="identifier-correlation" title="Identifier Correlation">
+<t>The act of presenting two or more identifiers for a single principal together (e.g., within an <spanx style="verb">aliases</spanx> Subject Identifier, or via the <spanx style="verb">sub</spanx> and <spanx style="verb">sub_id</spanx> JWT claims) may communicate more information about the principal than was intended.  For example, the entity to which the identifiers are presented, now knows that both identifiers relate to the same principal, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token).</t>
+
+</section>
 </section>
 <section anchor="security" title="Security Considerations">
 <t>There are no security considerations.</t>
@@ -236,6 +333,20 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 </section>
 </section>
+<section anchor="json-web-token-claims-registration" title="JSON Web Token Claims Registration">
+<t>This document defines the <spanx style="verb">sub_id</spanx> JWT Claim, which IANA is asked to register in the “JSON Web Token Claims” registry <xref target="IANA.JWT.Claims">IANA JSON Web Token Claims Registry</xref> established by <xref target="SET"/>.</t>
+
+<section anchor="registry-contents" title="Registry Contents">
+
+<t><list style="symbols">
+  <t>Claim Name: “sub_id”</t>
+  <t>Claim Description: Subject Identifier</t>
+  <t>Change Controller: IESG</t>
+  <t>Specification Document(s): <xref target="jwt-claims-sub_id"/> of this document.</t>
+</list></t>
+
+</section>
+</section>
 </section>
 
 
@@ -317,6 +428,15 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
     <date year="2010"/>
   </front>
 </reference>
+<reference anchor="IANA.JWT.Claims" target="http://www.iana.org/assignments/jwt">
+  <front>
+    <title>JSON Web Token Claims</title>
+    <author >
+      <organization>IANA</organization>
+    </author>
+    <date year="n.d."/>
+  </front>
+</reference>
 
 
 
@@ -374,9 +494,50 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 
 
+<reference  anchor="RFC7519" target='https://www.rfc-editor.org/info/rfc7519'>
+<front>
+<title>JSON Web Token (JWT)</title>
+<author initials='M.' surname='Jones' fullname='M. Jones'><organization /></author>
+<author initials='J.' surname='Bradley' fullname='J. Bradley'><organization /></author>
+<author initials='N.' surname='Sakimura' fullname='N. Sakimura'><organization /></author>
+<date year='2015' month='May' />
+<abstract><t>JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties.  The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.</t></abstract>
+</front>
+<seriesInfo name='RFC' value='7519'/>
+<seriesInfo name='DOI' value='10.17487/RFC7519'/>
+</reference>
+
+
+
 
     </references>
 
+    <references title='Informative References'>
+
+<reference anchor="OIDC" target="http://openid.net/specs/openid-connect-core-1_0.html">
+  <front>
+    <title>OpenID Connect Core 1.0</title>
+    <author initials="N." surname="Sakimura" fullname="Nat Sakimura">
+      <organization>Nomura Research Institute, Ltd.</organization>
+    </author>
+    <author initials="J." surname="Bradley" fullname="John Bradley">
+      <organization>Ping Identity</organization>
+    </author>
+    <author initials="M." surname="Jones" fullname="Michael B. Jones">
+      <organization>Microsoft</organization>
+    </author>
+    <author initials="B." surname="de Medeiros" fullname="Breno de Medeiros">
+      <organization>Google</organization>
+    </author>
+    <author initials="C." surname="Mortimore" fullname="Chuck Mortimore">
+      <organization>Salesforce</organization>
+    </author>
+    <date year="2014" month="November"/>
+  </front>
+</reference>
+
+
+    </references>
 
 
 <section numbered="no" anchor="acknowledgements" title="Acknowledgements">
@@ -413,115 +574,152 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
   <t>Updated semantics for <spanx style="verb">email</spanx>, <spanx style="verb">phone</spanx>, and <spanx style="verb">iss-sub</spanx> types.</t>
 </list></t>
 
+<t>Draft 04 - AB:</t>
+
+<t><list style="symbols">
+  <t>Added <spanx style="verb">sub_id</spanx> JWT Claim definition, guidance, examples.</t>
+  <t>Added text prohibiting <spanx style="verb">aliases</spanx> nesting.</t>
+  <t>Added privacy considerations for identifier correlation.</t>
+</list></t>
+
 </section>
 
 
   </back>
 
 <!-- ##markdown-source:
-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
-Nn2LjzkAAA==
+H4sIADLFI10AA8082XLbRrbv+Iq+1EOkGZJabNkxp1IVWZZzlbJkjySXa8rl
+sppAk+wIBBg0QJp2Kd9+z9INNEhwS+Z6Jg+xCPRy9q1Po9PpBLnOY9UTt0X/
+NxXm4jJSSa4HWmVGDNJM3KqwyHQ+FxdTeCHu0geVmED2+5ma9oRRocLnHcPT
+O7qaHkRpmMgxrB1lcgCvVD7orJvQOXoaRDKHCSdHxy86R887Rz8GITwYptkc
+9sqjQE+ynsizwuQnR0cvjk6CQGZK9koog1maPQyztJj0FiA34gO80slQ/IKv
+gwc1h7FRT1wmucoSlXdeIZRBYHKZRJ9lnCYAyFyZYKJ74mOehm1h0izP1MDA
+X/Mx/vEJ9i/yUZr1AtEJBPynE9MTZ13xUoYPY5nQMybCWZLIvopjVXuXZkOZ
+6K8y12kCY8bya8ov1FjquCcyHY4kzPxZ0qtumI7pdZYi01Sk8zQLaptfdcUt
+IJ4rExbe9lcy04VZeFXf/TzVSV8a5e8/pmld46b9HNpBBEmQpNkYZk8VEEC8
+PH938qwnbl6f/3h88gwe/Hr79pp+Pz8+fYG/P9zxz9Nj/Hl7wT9/fHr8HH5e
+HD972qO9rUjejRSghNwhAGUsJkU/1qHIVaxg+3GR6JBeiaQY91WG3J3ElrK5
+zIYq74lRnk96h4ez2ayr86ILCx5mKjy869xcnHcuurBpB8Tt6Pi4c3moeGrJ
+U2GJ5KTEwXG3BMD7RFvGlRJ8BD8vz67PuoB29zyWemxq6CF1xAfVZ50SPGIl
+6DKRXYDkUBqjh8kYJfrwt1m+El7YOAh0MvAZ9Pby1XkNhLcTlVy+AsYnCer+
+eZopcdw9agIihaE66oKiHJqJCo190Al5Lvybqc7x56PuKB/HHiGu06lC3iBF
+ni5D27FAs+xeg+zKBz0uMumes/Rey3zpDeF5neIjcaOMklk4Aj4ZwK3IVVu8
+yaNu0LTLr6CemYxiNa9v8ms6Shbf0CbvULDYMIKJaVoSlO5XMBimvuAVKq+K
+xcuFt7QovMxSk6LJaVgQpkRKXKlIaRhVX/ZlppK06TWt+0uaDmPVuOh5V1yB
+CdNj4FV9yfNRET4sv6QFb2WsDMhRCIt2Oh0h+ybPZAhwlxZWsYWtVEJFYqbz
+kU6a/QeYlbkwxWQCGwoppmBkFAxJB8JzByJP3c+5yMEWWJchwD4fgmdK4Vkm
+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
+UOoG/wcaLhgrmFAAAA==
 
 -->
 

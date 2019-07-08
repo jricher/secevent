@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-03
-date: 2019-03-11
+docname: draft-ietf-secevent-subject-identifiers-04
+date: 2019-07-08
 category: std
 ipr: trust200902
 
@@ -38,6 +38,42 @@ normative:
     author:
       org: International Telecommunication Union
     date: 2010
+  IANA.JWT.Claims:
+    title: JSON Web Token Claims
+    target: http://www.iana.org/assignments/jwt
+    author:
+      org: IANA
+
+informative:
+  OIDC:
+    title: OpenID Connect Core 1.0
+    target: http://openid.net/specs/openid-connect-core-1_0.html
+    date: November 2014
+    author:
+     -
+       ins: N. Sakimura
+       name: Nat Sakimura
+       org: Nomura Research Institute, Ltd.
+
+     -
+       ins: J. Bradley
+       name: John Bradley
+       org: Ping Identity
+
+     -
+       ins: M. Jones
+       name: Michael B. Jones
+       org: Microsoft
+
+     -
+       ins: B. de Medeiros
+       name: Breno de Medeiros
+       org: Google
+
+     -
+       ins: C. Mortimore
+       name: Chuck Mortimore
+       org: Salesforce
 
 --- abstract
 
@@ -125,7 +161,9 @@ Below is a non-normative example Subject Identifier for the Issuer and Subject S
 
 Aliases Subject Identifier Type {#sub-id-aliases}
 ---------------------------------------
-The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an `identifiers` claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`.
+The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an `identifiers` claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`. 
+
+`alias` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` claim of an `alias` Subject Identifier MUST NOT contain a Subject Identifier of type `aliases`.
 
 Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:
 
@@ -150,9 +188,111 @@ Below is a non-normative example Subject Identifier for the Aliases Subject Iden
 ~~~
 {: #figexamplesubididtoken  title="Example: Subject Identifier for the Aliases Subject Identifier Type."}
 
+Subject Identifiers in JWTs {#jwt-claims}
+===========================
+
+"sub_id" Claim {#jwt-claims-sub_id}
+--------------
+This document defines the `sub_id` JWT Claim, in accordance with Section 4.2 of {{!RFC7519}}.  When present, the value of this claim MUST be a Subject Identifier that identifies the principal that is the subject of the JWT.  The `sub_id` claim MAY be included in a JWT, whether or not the `sub` claim is present.  When both the `sub` and `sub_id` claims are present in a JWT, they MUST identify the same principal.
+
+Below is are non-normative examples of JWTs containing the `sub_id` claim:
+
+~~~
+{
+  "iss": "issuer.example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "user@example.com",
+  },
+}
+~~~
+{: #figexamplejwtsubidemail title="Example: JWT containing a `sub_id` claim and no `sub` claim."}
+
+~~~
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "user@example.com",
+  },
+}
+~~~
+{: #figexamplejwtsamesubtype title="Example: JWT where both the `sub` and `sub_id` claims identify the subject using the same identifier."}
+
+~~~
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "email",
+    "email": "elizabeth@example.com",
+  },
+}
+~~~
+{: #figexamplejwtdiffsubvalues title="Example: JWT where both the `sub` and `sub_id` claims identify the subject using different values of the same identifier type."}
+
+~~~
+{
+  "iss": "issuer.example.com",
+  "sub": "user@example.com",
+  "sub_id": {
+    "subject_type": "account",
+    "uri": "acct:example.user@service.example.com",
+  },
+}
+~~~
+{: #figexamplejwtdiffsubtype title="Example: JWT where the `sub` and `sub_id` claims identify the subject via different types of identifiers."}
+
+"sub_id" and "iss-sub" Subject Identifiers
+------------------------------------------
+The `sub_id` claim MAY contain an `iss-sub` Subject Identifier.  In this case, the JWT's `iss` claim and the Subject Identifier's `iss` claim MAY be different.  For example, an [OpenID Connect](#OIDC) client may construct such a JWT when issuing a JWT back to its OpenID Connect Identity Provider, in order to communicate information about the services' shared subject principal using an identifier the Identity Provider is known to understand.  Similarly, the JWT's `sub` claim and the Subject Identifier's `sub` claim MAY be different.  For example, this may be used by an OpenID Connect client to communicate the subject principal's local identifier at the client back to its Identity Provider.
+
+Below are non-normative examples of a JWT where the `iss` claims are the same, and a JWT where they are different.
+
+~~~
+{
+  "iss": "issuer.example.com",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+~~~
+{: #figexamplejwtsameiss title="Example: JWT with a `iss-sub` Subject Identifier where JWT issuer and subject issuer are the same."}
+
+~~~
+{
+  "iss": "client.example.com",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+~~~
+{: #figexamplejwtdiffiss title="Example: JWT with an `iss-sub` Subject Identifier where the JWT issuer and subject issuer are different."}
+
+~~~
+{
+  "iss": "client.example.com",
+  "sub": "client_user",
+  "sub_id": {
+    "subject_type": "iss-sub",
+    "iss": "issuer.example.com",
+    "sub": "example_user",
+  },
+}
+~~~
+{: #figexamplejwtdiffisssub title="Example: JWT with an `iss-sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the Subject Identifier's `iss` and `sub` claims."}
+
 Privacy Considerations {#privacy}
 ======================
-There are no privacy considerations.
+
+Identifier Correlation
+----------------------
+The act of presenting two or more identifiers for a single principal together (e.g., within an `aliases` Subject Identifier, or via the `sub` and `sub_id` JWT claims) may communicate more information about the principal than was intended.  For example, the entity to which the identifiers are presented, now knows that both identifiers relate to the same principal, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token).
 
 Security Considerations {#security}
 =======================
@@ -221,6 +361,17 @@ Defining Document(s)
 The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.
 
 Subject Identifier Types need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.
+ 
+JSON Web Token Claims Registration
+----------------------------------
+This document defines the `sub_id` JWT Claim, which IANA is asked to register in the "JSON Web Token Claims" registry [IANA JSON Web Token Claims Registry](#IANA.JWT.Claims) established by {{!SET}}.
+
+### Registry Contents
+
+* Claim Name: "sub_id"
+* Claim Description: Subject Identifier
+* Change Controller: IESG
+* Specification Document(s): {{jwt-claims-sub_id}} of this document.
 
 --- back
 
@@ -254,3 +405,9 @@ Draft 03 - AB:
 * Replaced `id-token-claims` type with `aliases` type.
 * Added email canonicalization guidance.
 * Updated semantics for `email`, `phone`, and `iss-sub` types.
+
+Draft 04 - AB:
+
+* Added `sub_id` JWT Claim definition, guidance, examples.
+* Added text prohibiting `aliases` nesting.
+* Added privacy considerations for identifier correlation.
