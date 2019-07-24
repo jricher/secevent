@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-04
-date: 2019-07-08
+docname: draft-ietf-secevent-subject-identifiers-05
+date: 2019-07-24
 category: std
 ipr: trust200902
 
@@ -132,14 +132,14 @@ Many email providers will treat multiple email addresses as equivalent. For exam
 
 Phone Number Subject Identifier Type {#sub-id-phone}
 ------------------------------------
-The Phone Number Subject Identifier Type describes a principal identified with a telephone number.  Subject Identifiers of this type MUST contain a `phone` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone`.
+The Phone Number Subject Identifier Type describes a principal identified with a telephone number.  Subject Identifiers of this type MUST contain a `phone_number` claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone_number` claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name `phone-number`.
 
 Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:
 
 ~~~
 {
-  "subject_type": "phone",
-  "phone": "+12065550100",
+  "subject_type": "phone-number",
+  "phone_number": "+12065550100",
 }
 ~~~
 {: #figexamplesubidphone  title="Example: Subject Identifier for the Phone Number Subject Identifier Type."}
@@ -176,8 +176,8 @@ Below is a non-normative example Subject Identifier for the Aliases Subject Iden
       "email": "user@example.com",
     },
     {
-      "subject_type": "phone",
-      "phone": "+12065550100",
+      "subject_type": "phone-number",
+      "phone_number": "+12065550100",
     },
     {
       "subject_type": "email",
@@ -345,7 +345,7 @@ Defining Document(s)
 
 #### Phone Number Subject Identifier Type
 
-* Type Name: `phone`
+* Type Name: `phone-number`
 * Type Description: Subject identifier based on an phone number.
 * Change Controller: IETF secevent Working Group
 * Defining Document(s): {{sub-ids}} of this document.
@@ -411,3 +411,8 @@ Draft 04 - AB:
 * Added `sub_id` JWT Claim definition, guidance, examples.
 * Added text prohibiting `aliases` nesting.
 * Added privacy considerations for identifier correlation.
+
+Draft 05 - AB:
+
+* Renamed the `phone` type to `phone-number` and its `phone` claim to `phone_number`.
+

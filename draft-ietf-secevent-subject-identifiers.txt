@@ -5,12 +5,12 @@
 Security Events Working Group                            A. Backman, Ed.
 Internet-Draft                                                    Amazon
 Intended status: Standards Track                            M. Scurtescu
-Expires: January 9, 2020                                        Coinbase
-                                                           July 08, 2019
+Expires: January 25, 2020                                       Coinbase
+                                                           July 24, 2019
 
 
              Subject Identifiers for Security Event Tokens
-               draft-ietf-secevent-subject-identifiers-04
+               draft-ietf-secevent-subject-identifiers-05
 
 Abstract
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 9, 2020.
+   This Internet-Draft will expire on January 25, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Backman & Scurtescu      Expires January 9, 2020                [Page 1]
+Backman & Scurtescu     Expires January 25, 2020                [Page 1]
 
 Internet-Draft        secevent-subject-identifiers             July 2019
 
@@ -73,23 +73,23 @@ Table of Contents
        3.2.1.  Email Canonicalization  . . . . . . . . . . . . . . .   4
      3.3.  Phone Number Subject Identifier Type  . . . . . . . . . .   5
      3.4.  Issuer and Subject Subject Identifier Type  . . . . . . .   5
-     3.5.  Aliases Subject Identifier Type . . . . . . . . . . . . .   5
-   4.  Subject Identifiers in JWTs . . . . . . . . . . . . . . . . .   6
-     4.1.  "sub_id" Claim  . . . . . . . . . . . . . . . . . . . . .   6
+     3.5.  Aliases Subject Identifier Type . . . . . . . . . . . . .   6
+   4.  Subject Identifiers in JWTs . . . . . . . . . . . . . . . . .   7
+     4.1.  "sub_id" Claim  . . . . . . . . . . . . . . . . . . . . .   7
      4.2.  "sub_id" and "iss-sub" Subject Identifiers  . . . . . . .   8
    5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   9
      5.1.  Identifier Correlation  . . . . . . . . . . . . . . . . .   9
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  Security Event Subject Identifier Types Registry  . . . .  10
        7.1.1.  Registration Template . . . . . . . . . . . . . . . .  10
-       7.1.2.  Initial Registry Contents . . . . . . . . . . . . . .  10
+       7.1.2.  Initial Registry Contents . . . . . . . . . . . . . .  11
        7.1.3.  Guidance for Expert Reviewers . . . . . . . . . . . .  12
      7.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  12
        7.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  12
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  13
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  14
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  14
    Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . .  14
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Backman & Scurtescu      Expires January 9, 2020                [Page 2]
+Backman & Scurtescu     Expires January 25, 2020                [Page 2]
 
 Internet-Draft        secevent-subject-identifiers             July 2019
 
@@ -165,7 +165,7 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
 
 
-Backman & Scurtescu      Expires January 9, 2020                [Page 3]
+Backman & Scurtescu     Expires January 25, 2020                [Page 3]
 
 Internet-Draft        secevent-subject-identifiers             July 2019
 
@@ -221,7 +221,7 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
 
 
-Backman & Scurtescu      Expires January 9, 2020                [Page 4]
+Backman & Scurtescu     Expires January 25, 2020                [Page 4]
 
 Internet-Draft        secevent-subject-identifiers             July 2019
 
@@ -230,18 +230,19 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
    The Phone Number Subject Identifier Type describes a principal
    identified with a telephone number.  Subject Identifiers of this type
-   MUST contain a "phone" claim whose value is a string containing the
-   full telephone number of the subject, including international dialing
-   prefix, formatted according to E.164 [E164].  The "phone" claim is
-   REQUIRED and MUST NOT be null or empty.  The Phone Number Subject
-   Identifier Type is identified by the name "phone".
+   MUST contain a "phone_number" claim whose value is a string
+   containing the full telephone number of the subject, including
+   international dialing prefix, formatted according to E.164 [E164].
+   The "phone_number" claim is REQUIRED and MUST NOT be null or empty.
+   The Phone Number Subject Identifier Type is identified by the name
+   "phone-number".
 
    Below is a non-normative example Subject Identifier for the Email
    Subject Identifier Type:
 
    {
-     "subject_type": "phone",
-     "phone": "+12065550100",
+     "subject_type": "phone-number",
+     "phone_number": "+12065550100",
    }
 
     Figure 3: Example: Subject Identifier for the Phone Number Subject
@@ -269,19 +270,23 @@ Internet-Draft        secevent-subject-identifiers             July 2019
      Figure 4: Example: Subject Identifier for the Issuer and Subject
                          Subject Identifier Type.
 
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires January 25, 2020                [Page 5]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
 3.5.  Aliases Subject Identifier Type
 
    The Aliases Subject Identifier Type describes a subject that is
    identified with a list of different Subject Identifiers.  It is
    intended for use when a variety of identifiers have been shared with
-
-
-
-Backman & Scurtescu      Expires January 9, 2020                [Page 5]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
-
    the party that will be interpreting the Subject Identifier, and it is
    unknown which of those identifiers they will recognize or support.
    Subject Identifiers of this type MUST contain an "identifiers" claim
@@ -308,8 +313,8 @@ Internet-Draft        secevent-subject-identifiers             July 2019
          "email": "user@example.com",
        },
        {
-         "subject_type": "phone",
-         "phone": "+12065550100",
+         "subject_type": "phone-number",
+         "phone_number": "+12065550100",
        },
        {
          "subject_type": "email",
@@ -321,6 +326,18 @@ Internet-Draft        secevent-subject-identifiers             July 2019
        Figure 5: Example: Subject Identifier for the Aliases Subject
                              Identifier Type.
 
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires January 25, 2020                [Page 6]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
 4.  Subject Identifiers in JWTs
 
 4.1.  "sub_id" Claim
@@ -330,14 +347,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    be a Subject Identifier that identifies the principal that is the
    subject of the JWT.  The "sub_id" claim MAY be included in a JWT,
    whether or not the "sub" claim is present.  When both the "sub" and
-
-
-
-Backman & Scurtescu      Expires January 9, 2020                [Page 6]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
-
    "sub_id" claims are present in a JWT, they MUST identify the same
    principal.
 
@@ -367,6 +376,24 @@ Internet-Draft        secevent-subject-identifiers             July 2019
       Figure 7: Example: JWT where both the `sub` and `sub_id` claims
               identify the subject using the same identifier.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires January 25, 2020                [Page 7]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    {
      "iss": "issuer.example.com",
      "sub": "user@example.com",
@@ -379,20 +406,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
       Figure 8: Example: JWT where both the `sub` and `sub_id` claims
     identify the subject using different values of the same identifier
                                    type.
-
-
-
-
-
-
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020                [Page 7]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
    {
      "iss": "issuer.example.com",
@@ -423,6 +436,20 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    Below are non-normative examples of a JWT where the "iss" claims are
    the same, and a JWT where they are different.
 
+
+
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires January 25, 2020                [Page 8]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    {
      "iss": "issuer.example.com",
      "sub_id": {
@@ -434,21 +461,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
    Figure 10: Example: JWT with a `iss-sub` Subject Identifier where JWT
                   issuer and subject issuer are the same.
-
-
-
-
-
-
-
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020                [Page 8]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
    {
      "iss": "client.example.com",
@@ -486,6 +498,14 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    the principal than was intended.  For example, the entity to which
    the identifiers are presented, now knows that both identifiers relate
    to the same principal, and may be able to correlate additional data
+
+
+
+Backman & Scurtescu     Expires January 25, 2020                [Page 9]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    based on that.  When transmitting Subject Identifiers, the
    transmitter SHOULD take care that they are only transmitting multiple
    identifiers together when it is known that the recipient already
@@ -496,15 +516,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 6.  Security Considerations
 
    There are no security considerations.
-
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020                [Page 9]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
 7.  IANA Considerations
 
@@ -543,6 +554,14 @@ Internet-Draft        secevent-subject-identifiers             July 2019
       and meaning of each claim that may occur within a Subject
       Identifier of the defined type, as well as whether each claim is
       optional or required, or the circumstances under which the claim
+
+
+
+Backman & Scurtescu     Expires January 25, 2020               [Page 10]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
       is optional or required.  URIs that can be used to retrieve copies
       of each document SHOULD be included.
 
@@ -553,14 +572,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    o  Type Name: "account"
 
    o  Type Description: Subject identifier based on "acct" URI.
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 10]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
    o  Change Controller: IETF secevent Working Group
 
@@ -589,13 +600,23 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
 7.1.2.4.  Phone Number Subject Identifier Type
 
-   o  Type Name: "phone"
+   o  Type Name: "phone-number"
 
    o  Type Description: Subject identifier based on an phone number.
 
    o  Change Controller: IETF secevent Working Group
 
    o  Defining Document(s): Section 3 of this document.
+
+
+
+
+
+
+Backman & Scurtescu     Expires January 25, 2020               [Page 11]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
 
 7.1.2.5.  Aliases Subject Identifier Type
 
@@ -607,16 +628,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    o  Change Controller: IETF secevent Working Group
 
    o  Defining Document(s): Section 3 of this document.
-
-
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 11]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
 7.1.3.  Guidance for Expert Reviewers
 
@@ -655,6 +666,14 @@ Internet-Draft        secevent-subject-identifiers             July 2019
 
    o  Change Controller: IESG
 
+
+
+
+Backman & Scurtescu     Expires January 25, 2020               [Page 12]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    o  Specification Document(s): Section 4.1 of this document.
 
 8.  References
@@ -665,14 +684,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 12]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
    [E164]     International Telecommunication Union, "The international
               public telecommunication numbering plan", 2010,
@@ -711,6 +722,14 @@ Internet-Draft        secevent-subject-identifiers             July 2019
               DOI 10.17487/RFC7565, May 2015,
               <https://www.rfc-editor.org/info/rfc7565>.
 
+
+
+
+Backman & Scurtescu     Expires January 25, 2020               [Page 13]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    [SET]      Hunt, P., Ed., Jones, M., Denniss, W., and M. Ansari,
               "Security Event Token (SET)", RFC 8417,
               DOI 10.17487/RFC8417, July 2018,
@@ -721,14 +740,6 @@ Internet-Draft        secevent-subject-identifiers             July 2019
    [OIDC]     Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
               C. Mortimore, "OpenID Connect Core 1.0", November 2014,
               <http://openid.net/specs/openid-connect-core-1_0.html>.
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 13]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
 
 Acknowledgements
 
@@ -768,6 +779,13 @@ Change Log
 
    o  Added email canonicalization guidance.
 
+
+
+Backman & Scurtescu     Expires January 25, 2020               [Page 14]
+
+Internet-Draft        secevent-subject-identifiers             July 2019
+
+
    o  Updated semantics for "email", "phone", and "iss-sub" types.
 
    Draft 04 - AB:
@@ -778,13 +796,10 @@ Change Log
 
    o  Added privacy considerations for identifier correlation.
 
+   Draft 05 - AB:
 
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 14]
-
-Internet-Draft        secevent-subject-identifiers             July 2019
-
+   o  Renamed the "phone" type to "phone-number" and its "phone" claim
+      to "phone_number".
 
 Authors' Addresses
 
@@ -822,19 +837,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Backman & Scurtescu      Expires January 9, 2020               [Page 15]
+Backman & Scurtescu     Expires January 25, 2020               [Page 15]
