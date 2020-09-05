@@ -376,24 +376,28 @@
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Notational Conventions">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Definitions">
 <link href="#rfc.section.3" rel="Chapter" title="3 Subject Identifiers">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Account Subject Identifier Type">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Email Subject Identifier Type">
-<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Email Canonicalization">
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Phone Number Subject Identifier Type">
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Issuer and Subject Subject Identifier Type">
-<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Aliases Subject Identifier Type">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Subject Identifier Types versus Principal Types">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Subject Identifier Type Definitions">
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Account Subject Identifier Type">
+<link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 Email Subject Identifier Type">
+<link href="#rfc.section.3.2.3" rel="Chapter" title="3.2.3 Phone Number Subject Identifier Type">
+<link href="#rfc.section.3.2.4" rel="Chapter" title="3.2.4 Issuer and Subject Subject Identifier Type">
+<link href="#rfc.section.3.2.5" rel="Chapter" title="3.2.5 Aliases Subject Identifier Type">
 <link href="#rfc.section.4" rel="Chapter" title="4 Subject Identifiers in JWTs">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 &#8220;sub_id&#8221; Claim">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 &#8220;sub_id&#8221; and &#8220;iss-sub&#8221; Subject Identifiers">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 &#8220;sub_id&#8221; and &#8220;iss_sub&#8221; Subject Identifiers">
 <link href="#rfc.section.5" rel="Chapter" title="5 Privacy Considerations">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Identifier Correlation">
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Confidentiality and Integrity">
 <link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 Security Event Subject Identifier Types Registry">
-<link href="#rfc.section.7.1.1" rel="Chapter" title="7.1.1 Registration Template">
-<link href="#rfc.section.7.1.2" rel="Chapter" title="7.1.2 Initial Registry Contents">
-<link href="#rfc.section.7.1.3" rel="Chapter" title="7.1.3 Guidance for Expert Reviewers">
+<link href="#rfc.section.7.1.1" rel="Chapter" title="7.1.1 Registry Location">
+<link href="#rfc.section.7.1.2" rel="Chapter" title="7.1.2 Registration Template">
+<link href="#rfc.section.7.1.3" rel="Chapter" title="7.1.3 Initial Registry Contents">
+<link href="#rfc.section.7.1.4" rel="Chapter" title="7.1.4 Guidance for Expert Reviewers">
 <link href="#rfc.section.7.2" rel="Chapter" title="7.2 JSON Web Token Claims Registration">
 <link href="#rfc.section.7.2.1" rel="Chapter" title="7.2.1 Registry Contents">
 <link href="#rfc.references" rel="Chapter" title="8 References">
@@ -404,14 +408,14 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.11.1 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.35.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Backman, A., Ed. and M. Scurtescu" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-secevent-subject-identifiers-05" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-07-24" />
-  <meta name="dct.abstract" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a " />
-  <meta name="description" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a " />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-secevent-subject-identifiers-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-09-04" />
+  <meta name="dct.abstract" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a JSON object such as a JSON Web Token (JWT) or Security Event Token (SET), and a registry for defining and allocating names for these claim sets." />
+  <meta name="description" content="Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a JSON object such as a JSON Web Token (JWT) or Security Event Token (SET), and a registry for defining and allocating names for these claim sets." />
 
 </head>
 
@@ -433,12 +437,12 @@
 <td class="right">M. Scurtescu</td>
 </tr>
 <tr>
-<td class="left">Expires: January 25, 2020</td>
+<td class="left">Expires: March 8, 2021</td>
 <td class="right">Coinbase</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 24, 2019</td>
+<td class="right">September 04, 2020</td>
 </tr>
 
     	
@@ -446,17 +450,17 @@
   </table>
 
   <p class="title">Subject Identifiers for Security Event Tokens<br />
-  <span class="filename">draft-ietf-secevent-subject-identifiers-05</span></p>
+  <span class="filename">draft-ietf-secevent-subject-identifiers-06</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a <a href="#JSON" class="xref">[JSON]</a> object such as a <a href="#JWT" class="xref">JSON Web Token</a> or <a href="#SET" class="xref">Security Event Token</a>, and a registry for defining and allocating names for these claim sets.</p>
+<p>Security events communicated within Security Event Tokens may support a variety of identifiers to identify the subject and/or other principals related to the event.  This specification formalizes the notion of subject identifiers as named sets of well-defined claims describing the subject, a mechanism for representing subject identifiers within a JSON object such as a JSON Web Token (JWT) or Security Event Token (SET), and a registry for defining and allocating names for these claim sets.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 25, 2020.</p>
+<p>This Internet-Draft will expire on March 8, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
@@ -468,25 +472,29 @@
 </li>
 <li>2.   <a href="#rfc.section.2">Notational Conventions</a>
 </li>
-<li>3.   <a href="#rfc.section.3">Subject Identifiers</a>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Definitions</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">Account Subject Identifier Type</a>
+</ul><li>3.   <a href="#rfc.section.3">Subject Identifiers</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Email Subject Identifier Type</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Subject Identifier Types versus Principal Types</a>
 </li>
-<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Email Canonicalization</a>
+<li>3.2.   <a href="#rfc.section.3.2">Subject Identifier Type Definitions</a>
 </li>
-</ul><li>3.3.   <a href="#rfc.section.3.3">Phone Number Subject Identifier Type</a>
+<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Account Subject Identifier Type</a>
 </li>
-<li>3.4.   <a href="#rfc.section.3.4">Issuer and Subject Subject Identifier Type</a>
+<li>3.2.2.   <a href="#rfc.section.3.2.2">Email Subject Identifier Type</a>
 </li>
-<li>3.5.   <a href="#rfc.section.3.5">Aliases Subject Identifier Type</a>
+<li>3.2.3.   <a href="#rfc.section.3.2.3">Phone Number Subject Identifier Type</a>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">Subject Identifiers in JWTs</a>
+<li>3.2.4.   <a href="#rfc.section.3.2.4">Issuer and Subject Subject Identifier Type</a>
+</li>
+<li>3.2.5.   <a href="#rfc.section.3.2.5">Aliases Subject Identifier Type</a>
+</li>
+</ul></ul><li>4.   <a href="#rfc.section.4">Subject Identifiers in JWTs</a>
 </li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">&#8220;sub_id&#8221; Claim</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">&#8220;sub_id&#8221; and &#8220;iss-sub&#8221; Subject Identifiers</a>
+<li>4.2.   <a href="#rfc.section.4.2">&#8220;sub_id&#8221; and &#8220;iss_sub&#8221; Subject Identifiers</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">Privacy Considerations</a>
 </li>
@@ -494,15 +502,19 @@
 </li>
 </ul><li>6.   <a href="#rfc.section.6">Security Considerations</a>
 </li>
-<li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Confidentiality and Integrity</a>
+</li>
+</ul><li>7.   <a href="#rfc.section.7">IANA Considerations</a>
 </li>
 <ul><li>7.1.   <a href="#rfc.section.7.1">Security Event Subject Identifier Types Registry</a>
 </li>
-<ul><li>7.1.1.   <a href="#rfc.section.7.1.1">Registration Template</a>
+<ul><li>7.1.1.   <a href="#rfc.section.7.1.1">Registry Location</a>
 </li>
-<li>7.1.2.   <a href="#rfc.section.7.1.2">Initial Registry Contents</a>
+<li>7.1.2.   <a href="#rfc.section.7.1.2">Registration Template</a>
 </li>
-<li>7.1.3.   <a href="#rfc.section.7.1.3">Guidance for Expert Reviewers</a>
+<li>7.1.3.   <a href="#rfc.section.7.1.3">Initial Registry Contents</a>
+</li>
+<li>7.1.4.   <a href="#rfc.section.7.1.4">Guidance for Expert Reviewers</a>
 </li>
 </ul><li>7.2.   <a href="#rfc.section.7.2">JSON Web Token Claims Registration</a>
 </li>
@@ -527,23 +539,88 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">As described in section 1.2 of <a href="#SET" class="xref">[SET]</a>, the subject of a security event may take a variety of forms, including but not limited to a JWT principal, an IP address, a URL, etc. Furthermore, even in the case where the subject of an event is more narrowly scoped, there may be multiple ways by which a given subject may be identified. For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT <samp>iss</samp> claim and <samp>sub</samp> claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which the subject of the security event is being identified.</p>
+<p id="rfc.section.1.p.1">As described in Section 1.2 of SET <a href="#RFC8417" class="xref">[RFC8417]</a>, the subject of a security event may take a variety of forms, including but not limited to a JWT <a href="#RFC7519" class="xref">[RFC7519]</a> principal, an IP address, a URL, etc. Furthermore, even in the case where the subject of an event is more narrowly scoped, there may be multiple ways by which a given subject may be identified. For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT <samp>iss</samp> claim and <samp>sub</samp> claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which the subject of the security event is being identified.</p>
+<p id="rfc.section.1.p.2">To address this problem, this specification defines Subject Identifiers - JSON <a href="#RFC7159" class="xref">[RFC7159]</a> objects containing information identifying a subject - and Subject Identifier Types - named sets of rules describing how to encode different kinds of subject identifying information (e.g., an email address, or an issuer and subject pair) as a Subject Identifier.</p>
+<p id="rfc.section.1.p.3">Below is a non-normative example of a Subject Identifier that identifies a subject by email address, using the Email Subject Identifier Type.</p>
+<div id="rfc.figure.1"></div>
+<div id="figexampleintro"></div>
+<pre>
+{
+  "subject_type": "email",
+  "email": "user@example.com",
+}
+</pre>
+<p class="figure">Figure 1: Example: Subject Identifier using the Email Subject Identifier Type</p>
+<p id="rfc.section.1.p.4">Subject Identifiers are intended to be a general purpose mechanism for identifying principals within JSON objects. Below is a non-normative example of a JWT that uses a Subject Identifier in the <samp>sub_id</samp> claim (defined in this specification) to identify its subject.</p>
+<div id="rfc.figure.2"></div>
+<div id="figexampleintro2"></div>
+<pre>
+{
+  "iss": "issuer.example.com",
+  "sub_id": {
+    "subject_type": "phone_number",
+    "phone_number": "+12065550100",
+  },
+}
+</pre>
+<p class="figure">Figure 2: Example: JWT using a Subject Identifier with the sub_id claim</p>
+<p id="rfc.section.1.p.5">Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.</p>
+<div id="rfc.figure.3"></div>
+<div id="figexampleintro3"></div>
+<pre>
+{
+  "iss": "issuer.example.com",
+  "iat": 1508184845,
+  "aud": "aud.example.com",
+  "events": {
+    "https://secevent.example.com/events/message-interception": {
+      "from": {
+        "subject_type": "email",
+        "email": "alice@example.com",
+      },
+      "to": {
+        "subject_type": "email",
+        "email": "bob@example.com",
+      },
+      "interceptor": {
+        "subject_type": "email",
+        "email": "eve@example.com",
+      },
+    },
+  },
+}
+
+</pre>
+<p class="figure">Figure 3: Example: SET with an event payload containing multiple Subject Identifiers</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#conv" id="conv">Notational Conventions</a>
 </h1>
 <p id="rfc.section.2.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
+<h1 id="rfc.section.2.1">
+<a href="#rfc.section.2.1">2.1.</a> <a href="#defn" id="defn">Definitions</a>
+</h1>
+<p id="rfc.section.2.1.p.1">This specification utilizes terminology defined in <a href="#RFC7159" class="xref">[RFC7159]</a>, <a href="#RFC7519" class="xref">[RFC7519]</a>, and <a href="#RFC8417" class="xref">[RFC8417]</a>.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#sub-ids" id="sub-ids">Subject Identifiers</a>
 </h1>
-<p id="rfc.section.3.p.1">A Subject Identifier Type is a light-weight schema that describes a set of claims that identifies a subject.  Every Subject Identifier Type MUST have a unique name registered in the IANA &#8220;Security Event Subject Identifier Types&#8221; registry established by <a href="#iana-sub-id-types" class="xref">Section 7.1</a>.  A Subject Identifier Type MAY describe more claims than are strictly necessary to identify a subject, and MAY describe conditions under which those claims are required, optional, or prohibited.</p>
-<p id="rfc.section.3.p.2">A Subject Identifier is a <a href="#JSON" class="xref">[JSON]</a> object containing a <samp>subject_type</samp> claim whose value is the name of a Subject Identifier Type, and a set of additional &#8220;payload claims&#8221; which are to be interpreted according to the rules defined by that Subject Identifier Type.  Payload claim values MUST match the format specified for the claim by the Subject Identifier Type. A Subject Identifier MUST NOT contain any payload claims prohibited or not described by its Subject Identifier Type, and MUST contain all payload claims required by its Subject Identifier Type.</p>
-<p id="rfc.section.3.p.3">The following Subject Identifier Types are registered in the IANA &#8220;Security Event Subject Identifier Types&#8221; registry established by <a href="#iana-sub-id-types" class="xref">Section 7.1</a>.</p>
+<p id="rfc.section.3.p.1">A Subject Identifier is a JSON <a href="#RFC7159" class="xref">[RFC7159]</a> object whose contents may be used to identify a principal within some context.  A Subject Identifier Type is a named definition of a set of information that may be used to identify a principal, and the rules for encoding that information as a Subject Identifier.  A Subject Identifier MUST conform to a specific Subject Identifier Type, and MUST contain a <samp>subject_type</samp> member whose value is the name of that Subject Identifier Type.</p>
+<p id="rfc.section.3.p.2">Every Subject Identifier Type MUST have a unique name registered in the IANA &#8220;Security Event Subject Identifier Types&#8221; registry established by <a href="#iana-sub-id-types" class="xref">Section 7.1</a>, or a Collision-Resistant Name as defined in <a href="#RFC7519" class="xref">[RFC7519]</a>.  Subject Identifier Types that are expected to be used broadly by a variety of parties SHOULD be registered in the &#8220;Security Event Subject Identifier Types&#8221; registry.</p>
+<p id="rfc.section.3.p.3">A Subject Identifier Type MAY describe more members than are strictly necessary to identify a subject, and MAY describe conditions under which those members are required, optional, or prohibited.</p>
+<p id="rfc.section.3.p.4">Aside from the <samp>subject_type</samp> member whose definition is given above, every member within a Subject Identifier MUST match the format specified for that member by the Subject Identifier&#8217;s Subject Identifier Type. A Subject Identifier MUST NOT contain any members prohibited or not described by its Subject Identifier Type, and MUST contain all members required by its Subject Identifier Type.</p>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#sub-id-acct" id="sub-id-acct">Account Subject Identifier Type</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#subject-identifier-types-versus-principal-types" id="subject-identifier-types-versus-principal-types">Subject Identifier Types versus Principal Types</a>
 </h1>
-<p id="rfc.section.3.1.p.1">The Account Subject Identifier Type describes a user account at a service provider, identified with an <samp>acct</samp> URI as defined in <a href="#RFC7565" class="xref">[RFC7565]</a>.  Subject Identifiers of this type MUST contain a <samp>uri</samp> claim whose value is the <samp>acct</samp> URI for the subject.  The <samp>uri</samp> claim is REQUIRED and MUST NOT be null or empty.  The Account Subject Identifier Type is identified by the name <samp>account</samp>.</p>
-<p id="rfc.section.3.1.p.2">Below is a non-normative example Subject Identifier for the Account Subject Identifier Type:</p>
-<div id="rfc.figure.1"></div>
+<p id="rfc.section.3.1.p.1">A Subject Identifier Type describes a way to identify a principal, but does not explicitly indicate the type of that principal (e.g., user, group, network connection, baseball team, astronomic object).  Consequently Subject Identifiers remove ambiguity around how a principal is being identified, and how to parse an identifying structure, but they do not remove ambiguity around how to resolve that identifier to a principal.  For example, consider a directory management API that allows callers to identify users and groups through both immutable unique identifiers and mutable email addresses.  Such an API could use Subject Identifiers to disambiguate between which of these two types of identifiers is in use.  However, the service would have to determine whether the principal is a user or group via some other means, such as by querying a database or by inferring the type from the API contract.</p>
+<h1 id="rfc.section.3.2">
+<a href="#rfc.section.3.2">3.2.</a> <a href="#subject-identifier-type-definitions" id="subject-identifier-type-definitions">Subject Identifier Type Definitions</a>
+</h1>
+<p id="rfc.section.3.2.p.1">The following Subject Identifier Types are registered in the IANA &#8220;Security Event Subject Identifier Types&#8221; registry established by <a href="#iana-sub-id-types" class="xref">Section 7.1</a>.</p>
+<h1 id="rfc.section.3.2.1">
+<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#sub-id-acct" id="sub-id-acct">Account Subject Identifier Type</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">The Account Subject Identifier Type identifies a principal using an account at a service provider, identified with an <samp>acct</samp> URI as defined in <a href="#RFC7565" class="xref">[RFC7565]</a>.  Subject Identifiers of this type MUST contain a <samp>uri</samp> member whose value is the <samp>acct</samp> URI for the subject.  The <samp>uri</samp> member is REQUIRED and MUST NOT be null or empty.  The Account Subject Identifier Type is identified by the name <samp>account</samp>.</p>
+<p id="rfc.section.3.2.1.p.2">Below is a non-normative example Subject Identifier for the Account Subject Identifier Type:</p>
+<div id="rfc.figure.4"></div>
 <div id="figexamplesubidaccount"></div>
 <pre>
 {
@@ -551,13 +628,13 @@
   "uri": "acct:example.user@service.example.com",
 }
 </pre>
-<p class="figure">Figure 1: Example: Subject Identifier for the Account Subject Identifier Type.</p>
-<h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#sub-id-email" id="sub-id-email">Email Subject Identifier Type</a>
+<p class="figure">Figure 4: Example: Subject Identifier for the Account Subject Identifier Type</p>
+<h1 id="rfc.section.3.2.2">
+<a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#sub-id-email" id="sub-id-email">Email Subject Identifier Type</a>
 </h1>
-<p id="rfc.section.3.2.p.1">The Email Subject Identifier Type describes a principal identified with an email address.  Subject Identifiers of this type MUST contain an <samp>email</samp> claim whose value is a string containing the email address of the subject, formatted as an <samp>addr-spec</samp> as defined in Section 3.4.1 of <a href="#RFC5322" class="xref">[RFC5322]</a>. The <samp>email</samp> claim is REQUIRED and MUST NOT be null or empty. The value of the <samp>email</samp> claim SHOULD identify a mailbox to which email may be delivered, in accordance with <a href="#RFC5321" class="xref">[RFC5321]</a>. The Email Subject Identifier Type is identified by the name <samp>email</samp>.</p>
-<p id="rfc.section.3.2.p.2">Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</p>
-<div id="rfc.figure.2"></div>
+<p id="rfc.section.3.2.2.p.1">The Email Subject Identifier Type identifies a principal using an email address.  Subject Identifiers of this type MUST contain an <samp>email</samp> member whose value is a string containing the email address of the principal, formatted as an <samp>addr-spec</samp> as defined in Section 3.4.1 of <a href="#RFC5322" class="xref">[RFC5322]</a>. The <samp>email</samp> member is REQUIRED and MUST NOT be null or empty. The value of the <samp>email</samp> member SHOULD identify a mailbox to which email may be delivered, in accordance with <a href="#RFC5321" class="xref">[RFC5321]</a>. The Email Subject Identifier Type is identified by the name <samp>email</samp>.</p>
+<p id="rfc.section.3.2.2.p.2">Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</p>
+<div id="rfc.figure.5"></div>
 <div id="figexamplesubidemail"></div>
 <pre>
 {
@@ -565,47 +642,47 @@
   "email": "user@example.com",
 }
 </pre>
-<p class="figure">Figure 2: Example: Subject Identifier for the Email Subject Identifier Type.</p>
-<h1 id="rfc.section.3.2.1">
-<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#email-canon" id="email-canon">Email Canonicalization</a>
+<p class="figure">Figure 5: Example: Subject Identifier for the Email Subject Identifier Type</p>
+<h1 id="rfc.section.3.2.2.1">
+<a href="#rfc.section.3.2.2.1">3.2.2.1.</a> <a href="#email-canon" id="email-canon">Email Canonicalization</a>
 </h1>
-<p id="rfc.section.3.2.1.p.1">Many email providers will treat multiple email addresses as equivalent. For example, some providers treat email addresses as case-insensitive, and consider &#8220;user@example.com&#8221;, &#8220;User@example.com&#8221;, and &#8220;USER@example.com&#8221; as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation&#8217;s canonicalization algorithm to resolve the email address to the same subject identifier string used in their system.</p>
-<h1 id="rfc.section.3.3">
-<a href="#rfc.section.3.3">3.3.</a> <a href="#sub-id-phone" id="sub-id-phone">Phone Number Subject Identifier Type</a>
+<p id="rfc.section.3.2.2.1.p.1">Many email providers will treat multiple email addresses as equivalent. While the domain portion of an <a href="#RFC5322" class="xref">[RFC5322]</a> email address is consistently treated as case-insensitive per <a href="#RFC1034" class="xref">[RFC1034]</a>, some providers treat the local part of the email address as case-insensitive as well, and consider &#8220;user@example.com&#8221;, &#8220;User@example.com&#8221;, and &#8220;USER@example.com&#8221; as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation&#8217;s canonicalization algorithm to resolve the email address to the same string used in their system.</p>
+<h1 id="rfc.section.3.2.3">
+<a href="#rfc.section.3.2.3">3.2.3.</a> <a href="#sub-id-phone" id="sub-id-phone">Phone Number Subject Identifier Type</a>
 </h1>
-<p id="rfc.section.3.3.p.1">The Phone Number Subject Identifier Type describes a principal identified with a telephone number.  Subject Identifiers of this type MUST contain a <samp>phone_number</samp> claim whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to <a href="#E164" class="xref">E.164</a>. The <samp>phone_number</samp> claim is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name <samp>phone-number</samp>.</p>
-<p id="rfc.section.3.3.p.2">Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</p>
-<div id="rfc.figure.3"></div>
+<p id="rfc.section.3.2.3.p.1">The Phone Number Subject Identifier Type identifies a principal using a telephone number.  Subject Identifiers of this type MUST contain a <samp>phone_number</samp> member whose value is a string containing the full telephone number of the principal, including international dialing prefix, formatted according to <a href="#E164" class="xref">E.164</a>. The <samp>phone_number</samp> member is REQUIRED and MUST NOT be null or empty. The Phone Number Subject Identifier Type is identified by the name <samp>phone_number</samp>.</p>
+<p id="rfc.section.3.2.3.p.2">Below is a non-normative example Subject Identifier for the Email Subject Identifier Type:</p>
+<div id="rfc.figure.6"></div>
 <div id="figexamplesubidphone"></div>
 <pre>
 {
-  "subject_type": "phone-number",
+  "subject_type": "phone_number",
   "phone_number": "+12065550100",
 }
 </pre>
-<p class="figure">Figure 3: Example: Subject Identifier for the Phone Number Subject Identifier Type.</p>
-<h1 id="rfc.section.3.4">
-<a href="#rfc.section.3.4">3.4.</a> <a href="#sub-id-iss-sub" id="sub-id-iss-sub">Issuer and Subject Subject Identifier Type</a>
+<p class="figure">Figure 6: Example: Subject Identifier for the Phone Number Subject Identifier Type.</p>
+<h1 id="rfc.section.3.2.4">
+<a href="#rfc.section.3.2.4">3.2.4.</a> <a href="#sub-id-iss-sub" id="sub-id-iss-sub">Issuer and Subject Subject Identifier Type</a>
 </h1>
-<p id="rfc.section.3.4.p.1">The Issuer and Subject Subject Identifier Type describes a principal identified with a pair of <samp>iss</samp> and <samp>sub</samp> claims, as defined by <a href="#JWT" class="xref">[JWT]</a>.  These claims MUST follow the formats of the <samp>iss</samp> claim and <samp>sub</samp> claim defined by <a href="#JWT" class="xref">[JWT]</a>, respectively. Both the <samp>iss</samp> claim and the <samp>sub</samp> claim are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name <samp>iss-sub</samp>.</p>
-<p id="rfc.section.3.4.p.2">Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:</p>
-<div id="rfc.figure.4"></div>
+<p id="rfc.section.3.2.4.p.1">The Issuer and Subject Subject Identifier Type identifies a principal using a pair of <samp>iss</samp> and <samp>sub</samp> members, analagous to how subjects are identified using the <samp>iss</samp> and <samp>sub</samp> claims in <a href="#OpenID.Core" class="xref">OpenID Connect</a> ID Tokens.  These members MUST follow the formats of the <samp>iss</samp> member and <samp>sub</samp> member defined by <a href="#RFC7519" class="xref">[RFC7519]</a>, respectively.  Both the <samp>iss</samp> member and the <samp>sub</samp> member are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Subject Identifier Type is identified by the name <samp>iss_sub</samp>.</p>
+<p id="rfc.section.3.2.4.p.2">Below is a non-normative example Subject Identifier for the Issuer and Subject Subject Identifier Type:</p>
+<div id="rfc.figure.7"></div>
 <div id="figexamplesubidisssub"></div>
 <pre>
 {
-  "subject_type": "iss-sub",
+  "subject_type": "iss_sub",
   "iss": "http://issuer.example.com/",
   "sub": "145234573",
 }
 </pre>
-<p class="figure">Figure 4: Example: Subject Identifier for the Issuer and Subject Subject Identifier Type.</p>
-<h1 id="rfc.section.3.5">
-<a href="#rfc.section.3.5">3.5.</a> <a href="#sub-id-aliases" id="sub-id-aliases">Aliases Subject Identifier Type</a>
+<p class="figure">Figure 7: Example: Subject Identifier for the Issuer and Subject Subject Identifier Type</p>
+<h1 id="rfc.section.3.2.5">
+<a href="#rfc.section.3.2.5">3.2.5.</a> <a href="#sub-id-aliases" id="sub-id-aliases">Aliases Subject Identifier Type</a>
 </h1>
-<p id="rfc.section.3.5.p.1">The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an <samp>identifiers</samp> claim whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <samp>identifiers</samp> claim is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name <samp>aliases</samp>.</p>
-<p><samp>alias</samp> Subject Identifiers MUST NOT be nested; i.e., the <samp>identifiers</samp> claim of an <samp>alias</samp> Subject Identifier MUST NOT contain a Subject Identifier of type <samp>aliases</samp>.</p>
-<p id="rfc.section.3.5.p.3">Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:</p>
-<div id="rfc.figure.5"></div>
+<p id="rfc.section.3.2.5.p.1">The Aliases Subject Identifier Type describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers of this type MUST contain an <samp>identifiers</samp> member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <samp>identifiers</samp> member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Subject Identifier Type (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name <samp>aliases</samp>.</p>
+<p><samp>alias</samp> Subject Identifiers MUST NOT be nested; i.e., the <samp>identifiers</samp> member of an <samp>alias</samp> Subject Identifier MUST NOT contain a Subject Identifier of type <samp>aliases</samp>.</p>
+<p id="rfc.section.3.2.5.p.3">Below is a non-normative example Subject Identifier for the Aliases Subject Identifier Type:</p>
+<div id="rfc.figure.8"></div>
 <div id="figexamplesubididtoken"></div>
 <pre>
 {
@@ -616,7 +693,7 @@
       "email": "user@example.com",
     },
     {
-      "subject_type": "phone-number",
+      "subject_type": "phone_number",
       "phone_number": "+12065550100",
     },
     {
@@ -626,16 +703,17 @@
   ],
 }
 </pre>
-<p class="figure">Figure 5: Example: Subject Identifier for the Aliases Subject Identifier Type.</p>
+<p class="figure">Figure 8: Example: Subject Identifier for the Aliases Subject Identifier Type</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#jwt-claims" id="jwt-claims">Subject Identifiers in JWTs</a>
 </h1>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#jwt-claims-sub_id" id="jwt-claims-sub_id">&#8220;sub_id&#8221; Claim</a>
 </h1>
-<p id="rfc.section.4.1.p.1">This document defines the <samp>sub_id</samp> JWT Claim, in accordance with Section 4.2 of <a href="#RFC7519" class="xref">[RFC7519]</a>.  When present, the value of this claim MUST be a Subject Identifier that identifies the principal that is the subject of the JWT.  The <samp>sub_id</samp> claim MAY be included in a JWT, whether or not the <samp>sub</samp> claim is present.  When both the <samp>sub</samp> and <samp>sub_id</samp> claims are present in a JWT, they MUST identify the same principal.</p>
-<p id="rfc.section.4.1.p.2">Below is are non-normative examples of JWTs containing the <samp>sub_id</samp> claim:</p>
-<div id="rfc.figure.6"></div>
+<p id="rfc.section.4.1.p.1">The <samp>sub</samp> JWT Claim is defined in Section 4.1.2 of <a href="#RFC7519" class="xref">[RFC7519]</a> as containing a string value, and therefore cannot contain a Subject Identifier (which is a JSON object) as its value.  This document defines the <samp>sub_id</samp> JWT Claim, in accordance with Section 4.2 of <a href="#RFC7519" class="xref">[RFC7519]</a>, as a common claim that identifies the subject of the JWT using a Subject Identifier.  When present, the value of this claim MUST be a Subject Identifier that identifies the principal that is the subject of the JWT.  The <samp>sub_id</samp> claim MAY be included in a JWT, whether or not the <samp>sub</samp> claim is present.  When both the <samp>sub</samp> and <samp>sub_id</samp> claims are present in a JWT, they MUST identify the same principal.</p>
+<p id="rfc.section.4.1.p.2">When processing a JWT with both <samp>sub</samp> and <samp>sub_id</samp> claims, implementations MUST NOT rely on both claims to determine the subject.  An implementation MAY attempt to determine the subject from one claim and fall back to using the other if it determines it does not understand the format of the first claim.  For example, an implementation may attempt to use <samp>sub_id</samp>, and fall back to using <samp>sub</samp> upon finding that <samp>sub_id</samp> contains a Subject Identifier whose type is not recognized by the implementation.</p>
+<p id="rfc.section.4.1.p.3">Below are non-normative examples of JWTs containing the <samp>sub_id</samp> claim:</p>
+<div id="rfc.figure.9"></div>
 <div id="figexamplejwtsubidemail"></div>
 <pre>
 {
@@ -646,8 +724,8 @@
   },
 }
 </pre>
-<p class="figure">Figure 6: Example: JWT containing a `sub_id` claim and no `sub` claim.</p>
-<div id="rfc.figure.7"></div>
+<p class="figure">Figure 9: Example: JWT containing a `sub_id` claim and no `sub` claim</p>
+<div id="rfc.figure.10"></div>
 <div id="figexamplejwtsamesubtype"></div>
 <pre>
 {
@@ -659,8 +737,8 @@
   },
 }
 </pre>
-<p class="figure">Figure 7: Example: JWT where both the `sub` and `sub_id` claims identify the subject using the same identifier.</p>
-<div id="rfc.figure.8"></div>
+<p class="figure">Figure 10: Example: JWT where both the `sub` and `sub_id` claims identify the subject using the same identifier</p>
+<div id="rfc.figure.11"></div>
 <div id="figexamplejwtdiffsubvalues"></div>
 <pre>
 {
@@ -672,8 +750,8 @@
   },
 }
 </pre>
-<p class="figure">Figure 8: Example: JWT where both the `sub` and `sub_id` claims identify the subject using different values of the same identifier type.</p>
-<div id="rfc.figure.9"></div>
+<p class="figure">Figure 11: Example: JWT where both the `sub` and `sub_id` claims identify the subject using different values of the same identifier type</p>
+<div id="rfc.figure.12"></div>
 <div id="figexamplejwtdiffsubtype"></div>
 <pre>
 {
@@ -685,94 +763,105 @@
   },
 }
 </pre>
-<p class="figure">Figure 9: Example: JWT where the `sub` and `sub_id` claims identify the subject via different types of identifiers.</p>
+<p class="figure">Figure 12: Example: JWT where the `sub` and `sub_id` claims identify the subject via different types of identifiers</p>
 <h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#subid-and-iss-sub-subject-identifiers" id="subid-and-iss-sub-subject-identifiers">&#8220;sub_id&#8221; and &#8220;iss-sub&#8221; Subject Identifiers</a>
+<a href="#rfc.section.4.2">4.2.</a> <a href="#subid-and-isssub-subject-identifiers" id="subid-and-isssub-subject-identifiers">&#8220;sub_id&#8221; and &#8220;iss_sub&#8221; Subject Identifiers</a>
 </h1>
-<p id="rfc.section.4.2.p.1">The <samp>sub_id</samp> claim MAY contain an <samp>iss-sub</samp> Subject Identifier.  In this case, the JWT&#8217;s <samp>iss</samp> claim and the Subject Identifier&#8217;s <samp>iss</samp> claim MAY be different.  For example, an <a href="#OIDC" class="xref">OpenID Connect</a> client may construct such a JWT when issuing a JWT back to its OpenID Connect Identity Provider, in order to communicate information about the services&#8217; shared subject principal using an identifier the Identity Provider is known to understand.  Similarly, the JWT&#8217;s <samp>sub</samp> claim and the Subject Identifier&#8217;s <samp>sub</samp> claim MAY be different.  For example, this may be used by an OpenID Connect client to communicate the subject principal&#8217;s local identifier at the client back to its Identity Provider.</p>
-<p id="rfc.section.4.2.p.2">Below are non-normative examples of a JWT where the <samp>iss</samp> claims are the same, and a JWT where they are different.</p>
-<div id="rfc.figure.10"></div>
+<p id="rfc.section.4.2.p.1">The <samp>sub_id</samp> claim MAY contain an <samp>iss_sub</samp> Subject Identifier.  In this case, the JWT&#8217;s <samp>iss</samp> claim and the Subject Identifier&#8217;s <samp>iss</samp> member MAY be different.  For example, an <a href="#OpenID.Core" class="xref">OpenID Connect</a> client may construct such a JWT when issuing a JWT back to its OpenID Connect Identity Provider, in order to communicate information about the services&#8217; shared subject principal using an identifier the Identity Provider is known to understand.  Similarly, the JWT&#8217;s <samp>sub</samp> claim and the Subject Identifier&#8217;s <samp>sub</samp> member MAY be different.  For example, this may be used by an OpenID Connect client to communicate the subject principal&#8217;s local identifier at the client back to its Identity Provider.</p>
+<p id="rfc.section.4.2.p.2">Below are non-normative examples of a JWT where the <samp>iss</samp> claim and <samp>iss</samp> member within the <samp>sub_id</samp> claim are the same, and a JWT where they are different.</p>
+<div id="rfc.figure.13"></div>
 <div id="figexamplejwtsameiss"></div>
 <pre>
 {
   "iss": "issuer.example.com",
   "sub_id": {
-    "subject_type": "iss-sub",
+    "subject_type": "iss_sub",
     "iss": "issuer.example.com",
     "sub": "example_user",
   },
 }
 </pre>
-<p class="figure">Figure 10: Example: JWT with a `iss-sub` Subject Identifier where JWT issuer and subject issuer are the same.</p>
-<div id="rfc.figure.11"></div>
+<p class="figure">Figure 13: Example: JWT with a `iss_sub` Subject Identifier where JWT issuer and subject issuer are the same</p>
+<div id="rfc.figure.14"></div>
 <div id="figexamplejwtdiffiss"></div>
 <pre>
 {
   "iss": "client.example.com",
   "sub_id": {
-    "subject_type": "iss-sub",
+    "subject_type": "iss_sub",
     "iss": "issuer.example.com",
     "sub": "example_user",
   },
 }
 </pre>
-<p class="figure">Figure 11: Example: JWT with an `iss-sub` Subject Identifier where the JWT issuer and subject issuer are different.</p>
-<div id="rfc.figure.12"></div>
+<p class="figure">Figure 14: Example: JWT with an `iss_sub` Subject Identifier where the JWT issuer and subject issuer are different</p>
+<div id="rfc.figure.15"></div>
 <div id="figexamplejwtdiffisssub"></div>
 <pre>
 {
   "iss": "client.example.com",
   "sub": "client_user",
   "sub_id": {
-    "subject_type": "iss-sub",
+    "subject_type": "iss_sub",
     "iss": "issuer.example.com",
     "sub": "example_user",
   },
 }
 </pre>
-<p class="figure">Figure 12: Example: JWT with an `iss-sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the Subject Identifier's `iss` and `sub` claims.</p>
+<p class="figure">Figure 15: Example: JWT with an `iss_sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the Subject Identifier's `iss` and `sub` members</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#privacy" id="privacy">Privacy Considerations</a>
 </h1>
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#identifier-correlation" id="identifier-correlation">Identifier Correlation</a>
 </h1>
-<p id="rfc.section.5.1.p.1">The act of presenting two or more identifiers for a single principal together (e.g., within an <samp>aliases</samp> Subject Identifier, or via the <samp>sub</samp> and <samp>sub_id</samp> JWT claims) may communicate more information about the principal than was intended.  For example, the entity to which the identifiers are presented, now knows that both identifiers relate to the same principal, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token).</p>
+<p id="rfc.section.5.1.p.1">The act of presenting two or more identifiers for a single principal together (e.g., within an <samp>aliases</samp> Subject Identifier, or via the <samp>sub</samp> and <samp>sub_id</samp> JWT claims) may communicate more information about the principal than was intended.  For example, the entity to which the identifiers are presented, now knows that both identifiers relate to the same principal, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.</p>
+<p id="rfc.section.5.1.p.2">The considerations described in Section 6 of <a href="#RFC8417" class="xref">[RFC8417]</a> also apply when Subject Identifiers are used within SETs.  The considerations described in Section 12 of <a href="#RFC7519" class="xref">[RFC7519]</a> also apply when Subject Identifiers are used within JWTs.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#security" id="security">Security Considerations</a>
 </h1>
-<p id="rfc.section.6.p.1">There are no security considerations.</p>
+<h1 id="rfc.section.6.1">
+<a href="#rfc.section.6.1">6.1.</a> <a href="#confidentiality-and-integrity" id="confidentiality-and-integrity">Confidentiality and Integrity</a>
+</h1>
+<p id="rfc.section.6.1.p.1">This specification does not define any mechanism for ensuring the confidentiality or integrityi of a Subject Identifier.  Where such properties are required, implementations MUST use mechanisms provided by the containing format (e.g., integrity protecting SETs or JWTs using JWS <a href="#RFC7515" class="xref">[RFC7515]</a>), or at the transport layer or other layer in the application stack (e.g., using TLS <a href="#RFC8446" class="xref">[RFC8446]</a>).</p>
+<p id="rfc.section.6.1.p.2">Further considerations regarding confidentiality and integrity of SETs can be found in Section 5.1 of <a href="#RFC8417" class="xref">[RFC8417]</a>.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana" id="iana">IANA Considerations</a>
 </h1>
 <h1 id="rfc.section.7.1">
 <a href="#rfc.section.7.1">7.1.</a> <a href="#iana-sub-id-types" id="iana-sub-id-types">Security Event Subject Identifier Types Registry</a>
 </h1>
-<p id="rfc.section.7.1.p.1">This document defines Subject Identifier Types, for which IANA is asked to create and maintain a new registry titled &#8220;Security Event Subject Identifier Types&#8221;. Initial values for the Security Event Subject Identifier Types registry are given in <a href="#sub-ids" class="xref">Section 3</a>.  Future assignments are to be made through the Expert Review registration policy <a href="#BCP26" class="xref">[BCP26]</a> and shall follow the template presented in <a href="#iana-sub-id-types-template" class="xref">Section 7.1.1</a>.</p>
+<p id="rfc.section.7.1.p.1">This document defines Subject Identifier Types, for which IANA is asked to create and maintain a new registry titled &#8220;Security Event Subject Identifier Types&#8221;.  Initial values for the Security Event Subject Identifier Types registry are given in <a href="#sub-ids" class="xref">Section 3</a>.  Future assignments are to be made through the Expert Review registration policy <a href="#BCP26" class="xref">[BCP26]</a> and shall follow the template presented in <a href="#iana-sub-id-types-template" class="xref">Section 7.1.2</a>.</p>
+<p id="rfc.section.7.1.p.2">It is suggested that multiple Designated Experts be appointed who are able to represent the perspectives of different applications using this specification, in order to enable broadly informed review of registration decisions.  In cases where a registration decision could be perceived as creating a conflict of interest for a particular Expert, that Expert should defer to the judgment of the other Experts.</p>
 <h1 id="rfc.section.7.1.1">
-<a href="#rfc.section.7.1.1">7.1.1.</a> <a href="#iana-sub-id-types-template" id="iana-sub-id-types-template">Registration Template</a>
+<a href="#rfc.section.7.1.1">7.1.1.</a> <a href="#registry-location" id="registry-location">Registry Location</a>
+</h1>
+<p id="rfc.section.7.1.1.p.1">(This section to be removed by the RFC Editor before publication as an RFC.)</p>
+<p id="rfc.section.7.1.1.p.2">The authors recommend that the Subject Identifier Types registry be located at <samp>https://www.iana.org/assignments/secevent/</samp>.</p>
+<h1 id="rfc.section.7.1.2">
+<a href="#rfc.section.7.1.2">7.1.2.</a> <a href="#iana-sub-id-types-template" id="iana-sub-id-types-template">Registration Template</a>
 </h1>
 <p></p>
 
 <dl>
 <dt>Type Name</dt>
 <dd style="margin-left: 8">
-<br> The name of the Subject Identifier Type, as described in <a href="#sub-ids" class="xref">Section 3</a>. The name MUST be an ASCII string consisting only of lower-case characters (&#8220;a&#8221; - &#8220;z&#8221;), digits (&#8220;0&#8221; - &#8220;9&#8221;), and hyphens (&#8220;-&#8220;), and SHOULD NOT exceed 20 characters in length.</dd>
+<br> The name of the Subject Identifier Type, as described in <a href="#sub-ids" class="xref">Section 3</a>. The name MUST be an ASCII string consisting only of lower-case characters (&#8220;a&#8221; - &#8220;z&#8221;), digits (&#8220;0&#8221; - &#8220;9&#8221;), underscores (&#8220;_&#8221;), and hyphens (&#8220;-&#8220;), and SHOULD NOT exceed 20 characters in length.</dd>
 <dt>Type Description</dt>
 <dd style="margin-left: 8">
 <br> A brief description of the Subject Identifier Type.</dd>
 <dt>Change Controller</dt>
 <dd style="margin-left: 8">
-<br> For types defined in documents published by the OpenID Foundation or its working groups, list &#8220;OpenID Foundation RISC Working Group&#8221;.  For all other types, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.</dd>
+<br> For types defined in documents published by the IETF or its working groups, list &#8220;IETF&#8221;.  For all other types, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.</dd>
 <dt>Defining Document(s)</dt>
 <dd style="margin-left: 8">
-<br> A reference to the document or documents that define the Subject Identifier Type.  The definition MUST specify the name, format, and meaning of each claim that may occur within a Subject Identifier of the defined type, as well as whether each claim is optional or required, or the circumstances under which the claim is optional or required. URIs that can be used to retrieve copies of each document SHOULD be included.</dd>
+<br> A reference to the document or documents that define the Subject Identifier Type.  The definition MUST specify the name, format, and meaning of each member that may occur within a Subject Identifier of the defined type, as well as whether each member is optional, required, prohibited, or the circumstances under which the member may be optional, required, or prohibited. URIs that can be used to retrieve copies of each document SHOULD be included.</dd>
 </dl>
-<h1 id="rfc.section.7.1.2">
-<a href="#rfc.section.7.1.2">7.1.2.</a> <a href="#iana-sub-id-types-init" id="iana-sub-id-types-init">Initial Registry Contents</a>
+<h1 id="rfc.section.7.1.3">
+<a href="#rfc.section.7.1.3">7.1.3.</a> <a href="#iana-sub-id-types-init" id="iana-sub-id-types-init">Initial Registry Contents</a>
 </h1>
-<h1 id="rfc.section.7.1.2.1">
-<a href="#rfc.section.7.1.2.1">7.1.2.1.</a> <a href="#account-subject-identifier-type" id="account-subject-identifier-type">Account Subject Identifier Type</a>
+<h1 id="rfc.section.7.1.3.1">
+<a href="#rfc.section.7.1.3.1">7.1.3.1.</a> <a href="#account-subject-identifier-type" id="account-subject-identifier-type">Account Subject Identifier Type</a>
 </h1>
 <p></p>
 
@@ -780,11 +869,11 @@
 <li>Type Name: <samp>account</samp>
 </li>
 <li>Type Description: Subject identifier based on <samp>acct</samp> URI.</li>
-<li>Change Controller: IETF secevent Working Group</li>
+<li>Change Controller: IETF</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.7.1.2.2">
-<a href="#rfc.section.7.1.2.2">7.1.2.2.</a> <a href="#email-subject-identifier-type" id="email-subject-identifier-type">Email Subject Identifier Type</a>
+<h1 id="rfc.section.7.1.3.2">
+<a href="#rfc.section.7.1.3.2">7.1.3.2.</a> <a href="#email-subject-identifier-type" id="email-subject-identifier-type">Email Subject Identifier Type</a>
 </h1>
 <p></p>
 
@@ -792,35 +881,35 @@
 <li>Type Name: <samp>email</samp>
 </li>
 <li>Type Description: Subject identifier based on email address.</li>
-<li>Change Controller: IETF secevent Working Group</li>
+<li>Change Controller: IETF</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.7.1.2.3">
-<a href="#rfc.section.7.1.2.3">7.1.2.3.</a> <a href="#issuer-and-subject-subject-identifier-type" id="issuer-and-subject-subject-identifier-type">Issuer and Subject Subject Identifier Type</a>
+<h1 id="rfc.section.7.1.3.3">
+<a href="#rfc.section.7.1.3.3">7.1.3.3.</a> <a href="#issuer-and-subject-subject-identifier-type" id="issuer-and-subject-subject-identifier-type">Issuer and Subject Subject Identifier Type</a>
 </h1>
 <p></p>
 
 <ul>
-<li>Type Name: <samp>iss-sub</samp>
+<li>Type Name: <samp>iss_sub</samp>
 </li>
 <li>Type Description: Subject identifier based on an issuer and subject.</li>
-<li>Change Controller: IETF secevent Working Group</li>
+<li>Change Controller: IETF</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.7.1.2.4">
-<a href="#rfc.section.7.1.2.4">7.1.2.4.</a> <a href="#phone-number-subject-identifier-type" id="phone-number-subject-identifier-type">Phone Number Subject Identifier Type</a>
+<h1 id="rfc.section.7.1.3.4">
+<a href="#rfc.section.7.1.3.4">7.1.3.4.</a> <a href="#phone-number-subject-identifier-type" id="phone-number-subject-identifier-type">Phone Number Subject Identifier Type</a>
 </h1>
 <p></p>
 
 <ul>
-<li>Type Name: <samp>phone-number</samp>
+<li>Type Name: <samp>phone_number</samp>
 </li>
 <li>Type Description: Subject identifier based on an phone number.</li>
-<li>Change Controller: IETF secevent Working Group</li>
+<li>Change Controller: IETF</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.7.1.2.5">
-<a href="#rfc.section.7.1.2.5">7.1.2.5.</a> <a href="#aliases-subject-identifier-type" id="aliases-subject-identifier-type">Aliases Subject Identifier Type</a>
+<h1 id="rfc.section.7.1.3.5">
+<a href="#rfc.section.7.1.3.5">7.1.3.5.</a> <a href="#aliases-subject-identifier-type" id="aliases-subject-identifier-type">Aliases Subject Identifier Type</a>
 </h1>
 <p></p>
 
@@ -828,18 +917,18 @@
 <li>Type Name: <samp>aliases</samp>
 </li>
 <li>Type Description: Subject identifier that groups together multiple different subject identifiers for the same subject.</li>
-<li>Change Controller: IETF secevent Working Group</li>
+<li>Change Controller: IETF</li>
 <li>Defining Document(s): <a href="#sub-ids" class="xref">Section 3</a> of this document.</li>
 </ul>
-<h1 id="rfc.section.7.1.3">
-<a href="#rfc.section.7.1.3">7.1.3.</a> <a href="#iana-sub-id-types-expert" id="iana-sub-id-types-expert">Guidance for Expert Reviewers</a>
+<h1 id="rfc.section.7.1.4">
+<a href="#rfc.section.7.1.4">7.1.4.</a> <a href="#iana-sub-id-types-expert" id="iana-sub-id-types-expert">Guidance for Expert Reviewers</a>
 </h1>
-<p id="rfc.section.7.1.3.p.1">The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.</p>
-<p id="rfc.section.7.1.3.p.2">Subject Identifier Types need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.</p>
+<p id="rfc.section.7.1.4.p.1">The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.</p>
+<p id="rfc.section.7.1.4.p.2">Subject Identifier Types need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.</p>
 <h1 id="rfc.section.7.2">
 <a href="#rfc.section.7.2">7.2.</a> <a href="#json-web-token-claims-registration" id="json-web-token-claims-registration">JSON Web Token Claims Registration</a>
 </h1>
-<p id="rfc.section.7.2.p.1">This document defines the <samp>sub_id</samp> JWT Claim, which IANA is asked to register in the &#8220;JSON Web Token Claims&#8221; registry <a href="#IANA.JWT.Claims" class="xref">IANA JSON Web Token Claims Registry</a> established by <a href="#SET" class="xref">[SET]</a>.</p>
+<p id="rfc.section.7.2.p.1">This document defines the <samp>sub_id</samp> JWT Claim, which IANA is asked to register in the &#8220;JSON Web Token Claims&#8221; registry <a href="#IANA.JWT.Claims" class="xref">IANA JSON Web Token Claims Registry</a> established by <a href="#RFC7519" class="xref">[RFC7519]</a>.</p>
 <h1 id="rfc.section.7.2.1">
 <a href="#rfc.section.7.2.1">7.2.1.</a> <a href="#registry-contents" id="registry-contents">Registry Contents</a>
 </h1>
@@ -872,16 +961,6 @@
 <a>IANA</a>, "<a href="http://www.iana.org/assignments/jwt">JSON Web Token Claims</a>", n.d..</td>
 </tr>
 <tr>
-<td class="reference"><b id="JSON">[JSON]</b></td>
-<td class="top">
-<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
-</tr>
-<tr>
-<td class="reference"><b id="JWT">[JWT]</b></td>
-<td class="top">
-<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
-</tr>
-<tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
 <a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
@@ -897,6 +976,11 @@
 <a>Resnick, P.</a>, "<a href="https://tools.ietf.org/html/rfc5322">Internet Message Format</a>", RFC 5322, DOI 10.17487/RFC5322, October 2008.</td>
 </tr>
 <tr>
+<td class="reference"><b id="RFC7159">[RFC7159]</b></td>
+<td class="top">
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
+</tr>
+<tr>
 <td class="reference"><b id="RFC7519">[RFC7519]</b></td>
 <td class="top">
 <a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
@@ -907,20 +991,37 @@
 <a>Saint-Andre, P.</a>, "<a href="https://tools.ietf.org/html/rfc7565">The 'acct' URI Scheme</a>", RFC 7565, DOI 10.17487/RFC7565, May 2015.</td>
 </tr>
 <tr>
-<td class="reference"><b id="SET">[SET]</b></td>
+<td class="reference"><b id="RFC8417">[RFC8417]</b></td>
 <td class="top">
 <a>Hunt, P.</a>, <a>Jones, M.</a>, <a>Denniss, W.</a> and <a>M. Ansari</a>, "<a href="https://tools.ietf.org/html/rfc8417">Security Event Token (SET)</a>", RFC 8417, DOI 10.17487/RFC8417, July 2018.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
 <a href="#rfc.references.2">8.2.</a> Informative References</h1>
-<table><tbody><tr>
-<td class="reference"><b id="OIDC">[OIDC]</b></td>
+<table><tbody>
+<tr>
+<td class="reference"><b id="OpenID.Core">[OpenID.Core]</b></td>
 <td class="top">
 <a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a>, <a title="Google">de Medeiros, B.</a> and <a title="Salesforce">C. Mortimore</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", November 2014.</td>
-</tr></tbody></table>
+</tr>
+<tr>
+<td class="reference"><b id="RFC1034">[RFC1034]</b></td>
+<td class="top">
+<a>Mockapetris, P.</a>, "<a href="https://tools.ietf.org/html/rfc1034">Domain names - concepts and facilities</a>", STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7515">[RFC7515]</b></td>
+<td class="top">
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7515">JSON Web Signature (JWS)</a>", RFC 7515, DOI 10.17487/RFC7515, May 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8446">[RFC8446]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>", RFC 8446, DOI 10.17487/RFC8446, August 2018.</td>
+</tr>
+</tbody></table>
 <h1 id="rfc.acknowledgements"><a href="#rfc.acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.A.p.1">This document is based on work developed within the OpenID RISC Working Group. The authors would like to thank the members of this group for their hard work and contributions.</p>
+<p id="rfc.section.A.p.1">The authors would like to thank the members of the IETF Security Events working group, as well as those of the OpenID Shared Signals and Events Working Group, whose work provided the original basis for this document.</p>
 <h1 id="rfc.change_log"><a href="#rfc.change_log">Change Log</a></h1>
 <p id="rfc.section.B.p.1">(This section to be removed by the RFC Editor before publication as an RFC.)</p>
 <p id="rfc.section.B.p.2">Draft 00 - AB - First draft</p>
@@ -961,6 +1062,21 @@
 <p></p>
 
 <ul><li>Renamed the <samp>phone</samp> type to <samp>phone-number</samp> and its <samp>phone</samp> claim to <samp>phone_number</samp>.</li></ul>
+<p id="rfc.section.B.p.13">Draft 06 - AB:</p>
+<p></p>
+
+<ul>
+<li>Replaced usage of the word &#8220;claim&#8221; to describe members of a Subject Identifier with the word &#8220;member&#8221;, in accordance with terminology in RFC7159.</li>
+<li>Renamed the <samp>phone-number</samp> type to <samp>phone_number</samp> and <samp>iss-sub</samp> to <samp>iss_sub</samp>.</li>
+<li>Added normative requirements limiting the use of both <samp>sub</samp> and <samp>sub_id</samp> claims together when processing a JWT.</li>
+<li>Clarified that identifier correlation may be acceptable when it is a core part of the use case.</li>
+<li>Replaced references to OIDF with IETF in IANA Considerations.</li>
+<li>Recommended the appointment of multiple Designated Experts, and a location for the Subject Identifier Types registry.</li>
+<li>Added &#8220;_&#8221; to list of allowed characters in the Type Name for Subject Identifier Types.</li>
+<li>Clarified that Subject Identifiers don&#8217;t provide confidentiality or integrity protection.</li>
+<li>Added references to SET, JWT privacy and security considerations.</li>
+<li>Added section describing the difference between subject identifier type and principal type that hopefully clarifies things and doesn&#8217;t just muddy the water further.</li>
+</ul>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
