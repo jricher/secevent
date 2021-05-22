@@ -272,7 +272,7 @@ Below is a non-normative example Subject Identifier in the Opaque Identifier For
 {: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
 
 ### Decentralized Identifier (DID) Format {#sub-id-did}
-The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is the DID URL for the subject. The value of the `url` member MUST be a valid DID URL as defined in {{DID}}, and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
+The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the subject. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
 
 Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:
 
@@ -291,6 +291,7 @@ Below are non-normative example Subject Identifiers for the Decentralized Identi
 }
 ~~~
 {: #figexamplesubiddidcomplex title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components"}
+
 Subject Identifiers in JWTs {#jwt-claims}
 ===========================
 
@@ -577,3 +578,6 @@ Draft 07 - AB:
   * Defined "subject" as applying generically and "JWT Subject" as applying specifically to the subject of a JWT.
   * Replaced most instances of the word "principal" with "subject".
 * Added `opaque` Identifier Format
+
+Post 07:
+* Added `did` Identifier Format
