@@ -187,53 +187,10 @@ Below is a non-normative example Subject Identifier for the Account Identifier F
 ~~~
 {: #figexamplesubidaccount title="Example: Subject Identifier for the Account Identifier Format"}
 
-### Email Identifier Format {#sub-id-email}
-The Email Identifier Format identifies a subject using an email address.  Subject Identifiers in this format MUST contain an `email` member whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` member is REQUIRED and MUST NOT be null or empty. The value of the `email` member SHOULD identify a mailbox to which email may be delivered, in accordance with {{!RFC5321}}. The Email Identifier Format is identified by the name `email`.
-
-Below is a non-normative example Subject Identifier in the Email Identifier Format:
-
-~~~
-{
-  "format": "email",
-  "email": "user@example.com"
-}
-~~~
-{: #figexamplesubidemail  title="Example: Subject Identifier in the Email Identifier Format"}
-
-#### Email Canonicalization {#email-canon}
-Many email providers will treat multiple email addresses as equivalent. While the domain portion of an {{?RFC5322}} email address is consistently treated as case-insensitive per {{?RFC1034}}, some providers treat the local part of the email address as case-insensitive as well, and consider "user@example.com", "User@example.com", and "USER@example.com" as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation's canonicalization algorithm to resolve the email address to the same string used in their system.
-
-### Phone Number Identifier Format {#sub-id-phone}
-The Phone Number Identifier Format identifies a subject using a telephone number.  Subject Identifiers in this format MUST contain a `phone_number` member whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone_number` member is REQUIRED and MUST NOT be null or empty. The Phone Number Identifier Format is identified by the name `phone_number`.
-
-Below is a non-normative example Subject Identifier in the Email Identifier Format:
-
-~~~
-{
-  "format": "phone_number",
-  "phone_number": "+12065550100"
-}
-~~~
-{: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format."}
-
-### Issuer and Subject Identifier Format {#sub-id-iss-sub}
-The Issuer and Subject Identifier Format identifies a subject using a pair of `iss` and `sub` members, analagous to how subjects are identified using the `iss` and `sub` claims in [OpenID Connect](#OpenID.Core) ID Tokens.  These members MUST follow the formats of the `iss` member and `sub` member defined by {{!RFC7519}}, respectively.  Both the `iss` member and the `sub` member are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Identifier Format is identified by the name `iss_sub`.
-
-Below is a non-normative example Subject Identifier in the Issuer and Subject Identifier Format:
-
-~~~
-{
-  "format": "iss_sub",
-  "iss": "http://issuer.example.com/",
-  "sub": "145234573"
-}
-~~~
-{: #figexamplesubidisssub  title="Example: Subject Identifier in the Issuer and Subject Identifier Format"}
-
 ### Aliases Identifier Format {#sub-id-aliases}
-The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This type is identified by the name `aliases`. 
+The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name `aliases`. 
 
-`alias` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `alias` Subject Identifier MUST NOT contain a Subject Identifier of type `aliases`.
+`alias` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `alias` Subject Identifier MUST NOT contain a Subject Identifier in the `aliases` format.
 
 Below is a non-normative example Subject Identifier in the Aliases Identifier Format:
 
@@ -258,19 +215,6 @@ Below is a non-normative example Subject Identifier in the Aliases Identifier Fo
 ~~~
 {: #figexamplesubididtoken  title="Example: Subject Identifier in the Aliases Identifier Format"}
 
-### Opaque Identifier Format {#sub-id-opaque}
-The Opaque Identifier Format describes a subject that is identified with a string with no semantics asserted beyond its usage as an identifier for the subject, such as a UUID or hash used as a surrogate identifier for a record in a database.  Subject Identifiers in this format MUST contain an `id` member whose value is a JSON string containing the opaque string identifier for the subject.  The `id` member is REQUIRED and MUST NOT be null or empty.  The Opaque Identifier Format is identified by the name `opaque`.
-
-Below is a non-normative example Subject Identifier in the Opaque Identifier Format:
-
-~~~
-{
-  "format": "opaque",
-  "id": "11112222333344445555"
-}
-~~~
-{: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
-
 ### Decentralized Identifier (DID) Format {#sub-id-did}
 The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the DID Subject being identified. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
 
@@ -292,6 +236,62 @@ Below are non-normative example Subject Identifiers for the Decentralized Identi
 ~~~
 {: #figexamplesubiddidcomplex title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components"}
 
+### Email Identifier Format {#sub-id-email}
+The Email Identifier Format identifies a subject using an email address.  Subject Identifiers in this format MUST contain an `email` member whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` member is REQUIRED and MUST NOT be null or empty. The value of the `email` member SHOULD identify a mailbox to which email may be delivered, in accordance with {{!RFC5321}}. The Email Identifier Format is identified by the name `email`.
+
+Below is a non-normative example Subject Identifier in the Email Identifier Format:
+
+~~~
+{
+  "format": "email",
+  "email": "user@example.com"
+}
+~~~
+{: #figexamplesubidemail  title="Example: Subject Identifier in the Email Identifier Format"}
+
+#### Email Canonicalization {#email-canon}
+Many email providers will treat multiple email addresses as equivalent. While the domain portion of an {{?RFC5322}} email address is consistently treated as case-insensitive per {{?RFC1034}}, some providers treat the local part of the email address as case-insensitive as well, and consider "user@example.com", "User@example.com", and "USER@example.com" as the same email address. This has led users to view these strings as equivalent, driving service providers to implement proprietary email canonicalization algorithms to ensure that email addresses entered by users resolve to the same canonical string. When receiving an Email Subject Identifier, the recipient SHOULD use their implementation's canonicalization algorithm to resolve the email address to the same string used in their system.
+
+### Issuer and Subject Identifier Format {#sub-id-iss-sub}
+The Issuer and Subject Identifier Format identifies a subject using a pair of `iss` and `sub` members, analagous to how subjects are identified using the `iss` and `sub` claims in [OpenID Connect](#OpenID.Core) ID Tokens.  These members MUST follow the formats of the `iss` member and `sub` member defined by {{!RFC7519}}, respectively.  Both the `iss` member and the `sub` member are REQUIRED and MUST NOT be null or empty. The Issuer and Subject Identifier Format is identified by the name `iss_sub`.
+
+Below is a non-normative example Subject Identifier in the Issuer and Subject Identifier Format:
+
+~~~
+{
+  "format": "iss_sub",
+  "iss": "http://issuer.example.com/",
+  "sub": "145234573"
+}
+~~~
+{: #figexamplesubidisssub  title="Example: Subject Identifier in the Issuer and Subject Identifier Format"}
+
+### Opaque Identifier Format {#sub-id-opaque}
+The Opaque Identifier Format describes a subject that is identified with a string with no semantics asserted beyond its usage as an identifier for the subject, such as a UUID or hash used as a surrogate identifier for a record in a database.  Subject Identifiers in this format MUST contain an `id` member whose value is a JSON string containing the opaque string identifier for the subject.  The `id` member is REQUIRED and MUST NOT be null or empty.  The Opaque Identifier Format is identified by the name `opaque`.
+
+Below is a non-normative example Subject Identifier in the Opaque Identifier Format:
+
+~~~
+{
+  "format": "opaque",
+  "id": "11112222333344445555"
+}
+~~~
+{: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
+
+### Phone Number Identifier Format {#sub-id-phone}
+The Phone Number Identifier Format identifies a subject using a telephone number.  Subject Identifiers in this format MUST contain a `phone_number` member whose value is a string containing the full telephone number of the subject, including international dialing prefix, formatted according to [E.164](#E164). The `phone_number` member is REQUIRED and MUST NOT be null or empty. The Phone Number Identifier Format is identified by the name `phone_number`.
+
+Below is a non-normative example Subject Identifier in the Email Identifier Format:
+
+~~~
+{
+  "format": "phone_number",
+  "phone_number": "+12065550100"
+}
+~~~
+{: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format."}
+
 Subject Identifiers in JWTs {#jwt-claims}
 ===========================
 
@@ -299,7 +299,7 @@ Subject Identifiers in JWTs {#jwt-claims}
 --------------
 The `sub` JWT Claim is defined in Section 4.1.2 of {{!RFC7519}} as containing a string value, and therefore cannot contain a Subject Identifier (which is a JSON object) as its value.  This document defines the `sub_id` JWT Claim, in accordance with Section 4.2 of {{!RFC7519}}, as a common claim that identifies the JWT Subject using a Subject Identifier.  When present, the value of this claim MUST be a Subject Identifier that identifies the subject of the JWT.  The `sub_id` claim MAY be included in a JWT, whether or not the `sub` claim is present.  When both the `sub` and `sub_id` claims are present in a JWT, they MUST identify the same subject, as a JWT has one and only one JWT Subject.
 
-When processing a JWT with both `sub` and `sub_id` claims, implementations MUST NOT rely on both claims to determine the JWT Subject.  An implementation MAY attempt to determine the JWT Subject from one claim and fall back to using the other if it determines it does not understand the format of the first claim.  For example, an implementation may attempt to use `sub_id`, and fall back to using `sub` upon finding that `sub_id` contains a Subject Identifier whose type is not recognized by the implementation.
+When processing a JWT with both `sub` and `sub_id` claims, implementations MUST NOT rely on both claims to determine the JWT Subject.  An implementation MAY attempt to determine the JWT Subject from one claim and fall back to using the other if it determines it does not understand the format of the first claim.  For example, an implementation may attempt to use `sub_id`, and fall back to using `sub` upon finding that `sub_id` contains a Subject Identifier whose format is not recognized by the implementation.
 
 Below are non-normative examples of JWTs containing the `sub_id` claim:
 
@@ -324,7 +324,7 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   }
 }
 ~~~
-{: #figexamplejwtsamesubtype title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using the same identifier"}
+{: #figexamplejwtsamesubid title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using the same identifier"}
 
 ~~~
 {
@@ -432,73 +432,73 @@ The authors recommend that the Identifier Formats registry be located at `https:
 ### Registration Template {#iana-formats-template}
 
 {: vspace="0"}
-Type Name
+Format Name
 : The name of the Identifier Format, as described in {{sub-ids}}. The name MUST be an ASCII string consisting only of lower-case characters ("a" - "z"), digits ("0" - "9"), underscores ("_"), and hyphens ("-"), and SHOULD NOT exceed 20 characters in length.
 
-Type Description
+Format Description
 : A brief description of the Identifier Format.
 
 Change Controller
-: For types defined in documents published by the IETF or its working groups, list "IETF".  For all other types, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.
+: For formats defined in documents published by the IETF or its working groups, list "IETF".  For all other formats, list the name of the party responsible for the registration.  Contact information such as mailing address, email address, or phone number may also be provided.
 
 Defining Document(s)
-: A reference to the document or documents that define the Identifier Format.  The definition MUST specify the name, format, and meaning of each member that may occur within a Subject Identifier of the defined type, as well as whether each member is optional, required, prohibited, or the circumstances under which the member may be optional, required, or prohibited. URIs that can be used to retrieve copies of each document SHOULD be included.
+: A reference to the document or documents that define the Identifier Format.  The definition MUST specify the name, format, and meaning of each member that may occur within a Subject Identifier of the defined format, as well as whether each member is optional, required, prohibited, or the circumstances under which the member may be optional, required, or prohibited. URIs that can be used to retrieve copies of each document SHOULD be included.
 
 ### Initial Registry Contents {#iana-formats-init}
 
 #### Account Identifier Format
 
-* Type Name: `account`
-* Type Description: Subject identifier based on `acct` URI.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
-#### Email Identifier Format
-
-* Type Name: `email`
-* Type Description: Subject identifier based on email address.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
-#### Issuer and Subject Identifier Format
-
-* Type Name: `iss_sub`
-* Type Description: Subject identifier based on an issuer and subject.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
-#### Phone Number Identifier Format
-
-* Type Name: `phone_number`
-* Type Description: Subject identifier based on an phone number.
+* Format Name: `account`
+* Format Description: Subject identifier based on `acct` URI.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Aliases Identifier Format
 
-* Type Name: `aliases`
-* Type Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
-#### Opaque Identifier Format
-
-* Type Name: `opaque`
-* Type Description: Subject identifier based on an opaque string.
+* Format Name: `aliases`
+* Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Decentralized Identifier Format
 
-* Type Name: `did`
-* Type Description: Subject identifier based on a Decentralized Identifier (DID) URL.
+* Format Name: `did`
+* Format Description: Subject identifier based on a Decentralized Identifier (DID) URL.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Email Identifier Format
+
+* Format Name: `email`
+* Format Description: Subject identifier based on email address.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Issuer and Subject Identifier Format
+
+* Format Name: `iss_sub`
+* Format Description: Subject identifier based on an issuer and subject.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Opaque Identifier Format
+
+* Format Name: `opaque`
+* Format Description: Subject identifier based on an opaque string.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Phone Number Identifier Format
+
+* Format Name: `phone_number`
+* Format Description: Subject identifier based on an phone number.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 ### Guidance for Expert Reviewers {#iana-formats-expert}
 The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.
 
-Identifier Formats need not be generally applicable and may be highly specific to a particular domain; it is expected that types may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the type is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing type.
+Identifier Formats need not be generally applicable and may be highly specific to a particular domain; it is expected that formats may be registered for niche or industry-specific use cases. The Expert Reviewer should focus on whether the format is thoroughly documented, and whether its registration will promote or harm interoperability.  In most cases, the Expert Reviewer should not approve a request if the registration would contribute to confusion, or amount to a synonym for an existing format.
  
 JSON Web Token Claims Registration
 ----------------------------------
@@ -579,5 +579,8 @@ Draft 07 - AB:
   * Replaced most instances of the word "principal" with "subject".
 * Added `opaque` Identifier Format
 
-Post 07:
+Post 07 - JR, AB:
 * Added `did` Identifier Format
+* Alphabetized identifier format definitions
+* Replaced "type" with "format" in places that had been missed in the -07 change. (mostly IANA Considerations)
+* Miscellaneous editorial fixes

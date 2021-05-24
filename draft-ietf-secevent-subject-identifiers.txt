@@ -71,35 +71,35 @@ Table of Contents
      3.1.  Identifier Formats versus Principal Types . . . . . . . .   6
      3.2.  Identifier Format Definitions . . . . . . . . . . . . . .   6
        3.2.1.  Account Identifier Format . . . . . . . . . . . . . .   6
-       3.2.2.  Email Identifier Format . . . . . . . . . . . . . . .   7
-       3.2.3.  Phone Number Identifier Format  . . . . . . . . . . .   7
-       3.2.4.  Issuer and Subject Identifier Format  . . . . . . . .   8
-       3.2.5.  Aliases Identifier Format . . . . . . . . . . . . . .   8
-       3.2.6.  Opaque Identifier Format  . . . . . . . . . . . . . .   9
-       3.2.7.  Decentralized Identifier (DID) Format . . . . . . . .  10
+       3.2.2.  Aliases Identifier Format . . . . . . . . . . . . . .   7
+       3.2.3.  Decentralized Identifier (DID) Format . . . . . . . .   8
+       3.2.4.  Email Identifier Format . . . . . . . . . . . . . . .   8
+       3.2.5.  Issuer and Subject Identifier Format  . . . . . . . .   9
+       3.2.6.  Opaque Identifier Format  . . . . . . . . . . . . . .  10
+       3.2.7.  Phone Number Identifier Format  . . . . . . . . . . .  10
    4.  Subject Identifiers in JWTs . . . . . . . . . . . . . . . . .  10
-     4.1.  "sub_id" Claim  . . . . . . . . . . . . . . . . . . . . .  10
+     4.1.  "sub_id" Claim  . . . . . . . . . . . . . . . . . . . . .  11
      4.2.  "sub_id" and "iss_sub" Subject Identifiers  . . . . . . .  12
    5.  Considerations for Specifications that Define Identifier
-           Formats . . . . . . . . . . . . . . . . . . . . . . . . .  13
-   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  13
-     6.1.  Identifier Correlation  . . . . . . . . . . . . . . . . .  13
+           Formats . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  14
+     6.1.  Identifier Correlation  . . . . . . . . . . . . . . . . .  14
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
      7.1.  Confidentiality and Integrity . . . . . . . . . . . . . .  14
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-     8.1.  Security Event Identifier Formats Registry  . . . . . . .  14
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+     8.1.  Security Event Identifier Formats Registry  . . . . . . .  15
        8.1.1.  Registry Location . . . . . . . . . . . . . . . . . .  15
        8.1.2.  Registration Template . . . . . . . . . . . . . . . .  15
-       8.1.3.  Initial Registry Contents . . . . . . . . . . . . . .  15
+       8.1.3.  Initial Registry Contents . . . . . . . . . . . . . .  16
        8.1.4.  Guidance for Expert Reviewers . . . . . . . . . . . .  17
-     8.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  17
-       8.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  17
+     8.2.  JSON Web Token Claims Registration  . . . . . . . . . . .  18
+       8.2.1.  Registry Contents . . . . . . . . . . . . . . . . . .  18
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  20
+   Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 
 
@@ -147,7 +147,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    {
      "format": "email",
-     "email": "user@example.com",
+     "email": "user@example.com"
    }
 
       Figure 1: Example: Subject Identifier using the Email Identifier
@@ -174,8 +174,8 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "iss": "issuer.example.com",
      "sub_id": {
        "format": "phone_number",
-       "phone_number": "+12065550100",
-     },
+       "phone_number": "+12065550100"
+     }
    }
 
      Figure 2: Example: JWT using a Subject Identifier with the sub_id
@@ -197,18 +197,18 @@ Internet-Draft        secevent-subject-identifiers              May 2021
        "https://secevent.example.com/events/message-interception": {
          "from": {
            "format": "email",
-           "email": "alice@example.com",
+           "email": "alice@example.com"
          },
          "to": {
            "format": "email",
-           "email": "bob@example.com",
+           "email": "bob@example.com"
          },
          "interceptor": {
            "format": "email",
-           "email": "eve@example.com",
-         },
-       },
-     },
+           "email": "eve@example.com"
+         }
+       }
+     }
    }
 
       Figure 3: Example: SET with an event payload containing multiple
@@ -323,7 +323,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    {
      "format": "account",
-     "uri": "acct:example.user@service.example.com",
+     "uri": "acct:example.user@service.example.com"
    }
 
       Figure 4: Example: Subject Identifier for the Account Identifier
@@ -338,97 +338,7 @@ Backman & Scurtescu     Expires 25 November 2021                [Page 6]
 Internet-Draft        secevent-subject-identifiers              May 2021
 
 
-3.2.2.  Email Identifier Format
-
-   The Email Identifier Format identifies a subject using an email
-   address.  Subject Identifiers in this format MUST contain an "email"
-   member whose value is a string containing the email address of the
-   subject, formatted as an "addr-spec" as defined in Section 3.4.1 of
-   [RFC5322].  The "email" member is REQUIRED and MUST NOT be null or
-   empty.  The value of the "email" member SHOULD identify a mailbox to
-   which email may be delivered, in accordance with [RFC5321].  The
-   Email Identifier Format is identified by the name "email".
-
-   Below is a non-normative example Subject Identifier in the Email
-   Identifier Format:
-
-   {
-     "format": "email",
-     "email": "user@example.com",
-   }
-
-    Figure 5: Example: Subject Identifier in the Email Identifier Format
-
-3.2.2.1.  Email Canonicalization
-
-   Many email providers will treat multiple email addresses as
-   equivalent.  While the domain portion of an [RFC5322] email address
-   is consistently treated as case-insensitive per [RFC1034], some
-   providers treat the local part of the email address as case-
-   insensitive as well, and consider "user@example.com",
-   "User@example.com", and "USER@example.com" as the same email address.
-   This has led users to view these strings as equivalent, driving
-   service providers to implement proprietary email canonicalization
-   algorithms to ensure that email addresses entered by users resolve to
-   the same canonical string.  When receiving an Email Subject
-   Identifier, the recipient SHOULD use their implementation's
-   canonicalization algorithm to resolve the email address to the same
-   string used in their system.
-
-3.2.3.  Phone Number Identifier Format
-
-   The Phone Number Identifier Format identifies a subject using a
-   telephone number.  Subject Identifiers in this format MUST contain a
-   "phone_number" member whose value is a string containing the full
-   telephone number of the subject, including international dialing
-   prefix, formatted according to E.164 [E164].  The "phone_number"
-   member is REQUIRED and MUST NOT be null or empty.  The Phone Number
-   Identifier Format is identified by the name "phone_number".
-
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021                [Page 7]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
-
-   Below is a non-normative example Subject Identifier in the Email
-   Identifier Format:
-
-   {
-     "format": "phone_number",
-     "phone_number": "+12065550100",
-   }
-
-         Figure 6: Example: Subject Identifier in the Phone Number
-                             Identifier Format.
-
-3.2.4.  Issuer and Subject Identifier Format
-
-   The Issuer and Subject Identifier Format identifies a subject using a
-   pair of "iss" and "sub" members, analagous to how subjects are
-   identified using the "iss" and "sub" claims in OpenID Connect
-   [OpenID.Core] ID Tokens.  These members MUST follow the formats of
-   the "iss" member and "sub" member defined by [RFC7519], respectively.
-   Both the "iss" member and the "sub" member are REQUIRED and MUST NOT
-   be null or empty.  The Issuer and Subject Identifier Format is
-   identified by the name "iss_sub".
-
-   Below is a non-normative example Subject Identifier in the Issuer and
-   Subject Identifier Format:
-
-   {
-     "format": "iss_sub",
-     "iss": "http://issuer.example.com/",
-     "sub": "145234573",
-   }
-
-      Figure 7: Example: Subject Identifier in the Issuer and Subject
-                             Identifier Format
-
-3.2.5.  Aliases Identifier Format
+3.2.2.  Aliases Identifier Format
 
    The Aliases Identifier Format describes a subject that is identified
    with a list of different Subject Identifiers.  It is intended for use
@@ -441,18 +351,11 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    The "identifiers" member is REQUIRED and MUST NOT be null or empty.
    It MAY contain multiple instances of the same Identifier Format
    (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain
-   exact duplicates.  This type is identified by the name "aliases".
-
-
-
-Backman & Scurtescu     Expires 25 November 2021                [Page 8]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
+   exact duplicates.  This format is identified by the name "aliases".
 
    "alias" Subject Identifiers MUST NOT be nested; i.e., the
    "identifiers" member of an "alias" Subject Identifier MUST NOT
-   contain a Subject Identifier of type "aliases".
+   contain a Subject Identifier in the "aliases" format.
 
    Below is a non-normative example Subject Identifier in the Aliases
    Identifier Format:
@@ -462,51 +365,36 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "identifiers": [
        {
          "format": "email",
-         "email": "user@example.com",
+         "email": "user@example.com"
        },
        {
          "format": "phone_number",
-         "phone_number": "+12065550100",
+         "phone_number": "+12065550100"
        },
        {
          "format": "email",
-         "email": "user+qualifier@example.com",
+         "email": "user+qualifier@example.com"
        }
-     ],
+     ]
    }
 
-      Figure 8: Example: Subject Identifier in the Aliases Identifier
+      Figure 5: Example: Subject Identifier in the Aliases Identifier
                                    Format
 
-3.2.6.  Opaque Identifier Format
-
-   The Opaque Identifier Format describes a subject that is identified
-   with a string with no semantics asserted beyond its usage as an
-   identifier for the subject, such as a UUID or hash used as a
-   surrogate identifier for a record in a database.  Subject Identifiers
-   in this format MUST contain an "id" member whose value is a JSON
-   string containing the opaque string identifier for the subject.  The
-   "id" member is REQUIRED and MUST NOT be null or empty.  The Opaque
-   Identifier Format is identified by the name "opaque".
-
-   Below is a non-normative example Subject Identifier in the Opaque
-   Identifier Format:
-
-   {
-     "format": "opaque",
-     "id": "11112222333344445555",
-   }
-
-   Figure 9: Example: Subject Identifier in the Opaque Identifier Format
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 9]
+
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021                [Page 7]
 
 Internet-Draft        secevent-subject-identifiers              May 2021
 
 
-3.2.7.  Decentralized Identifier (DID) Format
+3.2.3.  Decentralized Identifier (DID) Format
 
    The Decentralized Identifier Format identifies a subject using a
    Decentralized Identifier (DID) URL as defined in [DID].  Subject
@@ -524,7 +412,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "url": "did:example:123456"
    }
 
-        Figure 10: Example: Subject Identifier for the Decentralized
+        Figure 6: Example: Subject Identifier for the Decentralized
           Identifier Format, identifying a subject with a bare DID
 
    {
@@ -532,11 +420,147 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "url": "did:example:123456/did/url/path?versionId=1"
    }
 
-        Figure 11: Example: Subject Identifier for the Decentralized
+        Figure 7: Example: Subject Identifier for the Decentralized
      Identifier Format, identifying a subject with a DID URL with non-
                       empty path and query components
 
+3.2.4.  Email Identifier Format
+
+   The Email Identifier Format identifies a subject using an email
+   address.  Subject Identifiers in this format MUST contain an "email"
+   member whose value is a string containing the email address of the
+   subject, formatted as an "addr-spec" as defined in Section 3.4.1 of
+   [RFC5322].  The "email" member is REQUIRED and MUST NOT be null or
+   empty.  The value of the "email" member SHOULD identify a mailbox to
+   which email may be delivered, in accordance with [RFC5321].  The
+   Email Identifier Format is identified by the name "email".
+
+   Below is a non-normative example Subject Identifier in the Email
+   Identifier Format:
+
+   {
+     "format": "email",
+     "email": "user@example.com"
+   }
+
+
+
+Backman & Scurtescu     Expires 25 November 2021                [Page 8]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
+    Figure 8: Example: Subject Identifier in the Email Identifier Format
+
+3.2.4.1.  Email Canonicalization
+
+   Many email providers will treat multiple email addresses as
+   equivalent.  While the domain portion of an [RFC5322] email address
+   is consistently treated as case-insensitive per [RFC1034], some
+   providers treat the local part of the email address as case-
+   insensitive as well, and consider "user@example.com",
+   "User@example.com", and "USER@example.com" as the same email address.
+   This has led users to view these strings as equivalent, driving
+   service providers to implement proprietary email canonicalization
+   algorithms to ensure that email addresses entered by users resolve to
+   the same canonical string.  When receiving an Email Subject
+   Identifier, the recipient SHOULD use their implementation's
+   canonicalization algorithm to resolve the email address to the same
+   string used in their system.
+
+3.2.5.  Issuer and Subject Identifier Format
+
+   The Issuer and Subject Identifier Format identifies a subject using a
+   pair of "iss" and "sub" members, analagous to how subjects are
+   identified using the "iss" and "sub" claims in OpenID Connect
+   [OpenID.Core] ID Tokens.  These members MUST follow the formats of
+   the "iss" member and "sub" member defined by [RFC7519], respectively.
+   Both the "iss" member and the "sub" member are REQUIRED and MUST NOT
+   be null or empty.  The Issuer and Subject Identifier Format is
+   identified by the name "iss_sub".
+
+   Below is a non-normative example Subject Identifier in the Issuer and
+   Subject Identifier Format:
+
+   {
+     "format": "iss_sub",
+     "iss": "http://issuer.example.com/",
+     "sub": "145234573"
+   }
+
+      Figure 9: Example: Subject Identifier in the Issuer and Subject
+                             Identifier Format
+
+
+
+
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021                [Page 9]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
+3.2.6.  Opaque Identifier Format
+
+   The Opaque Identifier Format describes a subject that is identified
+   with a string with no semantics asserted beyond its usage as an
+   identifier for the subject, such as a UUID or hash used as a
+   surrogate identifier for a record in a database.  Subject Identifiers
+   in this format MUST contain an "id" member whose value is a JSON
+   string containing the opaque string identifier for the subject.  The
+   "id" member is REQUIRED and MUST NOT be null or empty.  The Opaque
+   Identifier Format is identified by the name "opaque".
+
+   Below is a non-normative example Subject Identifier in the Opaque
+   Identifier Format:
+
+   {
+     "format": "opaque",
+     "id": "11112222333344445555"
+   }
+
+      Figure 10: Example: Subject Identifier in the Opaque Identifier
+                                   Format
+
+3.2.7.  Phone Number Identifier Format
+
+   The Phone Number Identifier Format identifies a subject using a
+   telephone number.  Subject Identifiers in this format MUST contain a
+   "phone_number" member whose value is a string containing the full
+   telephone number of the subject, including international dialing
+   prefix, formatted according to E.164 [E164].  The "phone_number"
+   member is REQUIRED and MUST NOT be null or empty.  The Phone Number
+   Identifier Format is identified by the name "phone_number".
+
+   Below is a non-normative example Subject Identifier in the Email
+   Identifier Format:
+
+   {
+     "format": "phone_number",
+     "phone_number": "+12065550100"
+   }
+
+         Figure 11: Example: Subject Identifier in the Phone Number
+                             Identifier Format.
+
 4.  Subject Identifiers in JWTs
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 10]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
 
 4.1.  "sub_id" Claim
 
@@ -552,16 +576,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    present in a JWT, they MUST identify the same subject, as a JWT has
    one and only one JWT Subject.
 
-
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 10]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
-
    When processing a JWT with both "sub" and "sub_id" claims,
    implementations MUST NOT rely on both claims to determine the JWT
    Subject.  An implementation MAY attempt to determine the JWT Subject
@@ -569,7 +583,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    does not understand the format of the first claim.  For example, an
    implementation may attempt to use "sub_id", and fall back to using
    "sub" upon finding that "sub_id" contains a Subject Identifier whose
-   type is not recognized by the implementation.
+   format is not recognized by the implementation.
 
    Below are non-normative examples of JWTs containing the "sub_id"
    claim:
@@ -578,8 +592,8 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "iss": "issuer.example.com",
      "sub_id": {
        "format": "email",
-       "email": "user@example.com",
-     },
+       "email": "user@example.com"
+     }
    }
 
       Figure 12: Example: JWT containing a `sub_id` claim and no `sub`
@@ -590,26 +604,12 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "sub": "user@example.com",
      "sub_id": {
        "format": "email",
-       "email": "user@example.com",
-     },
+       "email": "user@example.com"
+     }
    }
 
       Figure 13: Example: JWT where both the `sub` and `sub_id` claims
              identify the JWT Subject using the same identifier
-
-   {
-     "iss": "issuer.example.com",
-     "sub": "user@example.com",
-     "sub_id": {
-       "format": "email",
-       "email": "elizabeth@example.com",
-     },
-   }
-
-      Figure 14: Example: JWT where both the `sub` and `sub_id` claims
-        identify the JWT Subject using different values of the same
-                              identifier type
-
 
 
 
@@ -622,9 +622,22 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "iss": "issuer.example.com",
      "sub": "user@example.com",
      "sub_id": {
+       "format": "email",
+       "email": "elizabeth@example.com"
+     }
+   }
+
+      Figure 14: Example: JWT where both the `sub` and `sub_id` claims
+        identify the JWT Subject using different values of the same
+                              identifier type
+
+   {
+     "iss": "issuer.example.com",
+     "sub": "user@example.com",
+     "sub_id": {
        "format": "account",
-       "uri": "acct:example.user@service.example.com",
-     },
+       "uri": "acct:example.user@service.example.com"
+     }
    }
 
         Figure 15: Example: JWT where the `sub` and `sub_id` claims
@@ -647,19 +660,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    "iss" member within the "sub_id" claim are the same, and a JWT where
    they are different.
 
-   {
-     "iss": "issuer.example.com",
-     "sub_id": {
-       "format": "iss_sub",
-       "iss": "issuer.example.com",
-       "sub": "example_user",
-     },
-   }
-
-     Figure 16: Example: JWT with a `iss_sub` Subject Identifier where
-               JWT issuer and JWT Subject issuer are the same
-
-
 
 
 
@@ -675,12 +675,24 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
    {
+     "iss": "issuer.example.com",
+     "sub_id": {
+       "format": "iss_sub",
+       "iss": "issuer.example.com",
+       "sub": "example_user"
+     }
+   }
+
+     Figure 16: Example: JWT with a `iss_sub` Subject Identifier where
+               JWT issuer and JWT Subject issuer are the same
+
+   {
      "iss": "client.example.com",
      "sub_id": {
        "format": "iss_sub",
        "iss": "issuer.example.com",
-       "sub": "example_user",
-     },
+       "sub": "example_user"
+     }
    }
 
         Figure 17: Example: JWT with an `iss_sub` Subject Identifier
@@ -692,13 +704,31 @@ Internet-Draft        secevent-subject-identifiers              May 2021
      "sub_id": {
        "format": "iss_sub",
        "iss": "issuer.example.com",
-       "sub": "example_user",
-     },
+       "sub": "example_user"
+     }
    }
 
         Figure 18: Example: JWT with an `iss_sub` Subject Identifier
           where the JWT `iss` and `sub` claims differ from the JWT
                      Subject's `iss` and `sub` members
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 13]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
 
 5.  Considerations for Specifications that Define Identifier Formats
 
@@ -722,14 +752,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    the subject than was intended.  For example, the entity to which the
    identifiers are presented now knows that both identifiers relate to
    the same subject, and may be able to correlate additional data based
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 13]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
-
    on that.  When transmitting Subject Identifiers, the transmitter
    SHOULD take care that they are only transmitting multiple identifiers
    together when it is known that the recipient already knows that the
@@ -756,6 +778,14 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    Further considerations regarding confidentiality and integrity of
    SETs can be found in Section 5.1 of [RFC8417].
 
+
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 14]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
 8.  IANA Considerations
 
 8.1.  Security Event Identifier Formats Registry
@@ -775,17 +805,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    Expert, that Expert should defer to the judgment of the other
    Experts.
 
-
-
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 14]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
-
 8.1.1.  Registry Location
 
    (This section to be removed by the RFC Editor before publication as
@@ -796,18 +815,18 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 8.1.2.  Registration Template
 
-   Type Name
+   Format Name
       The name of the Identifier Format, as described in Section 3.  The
       name MUST be an ASCII string consisting only of lower-case
       characters ("a" - "z"), digits ("0" - "9"), underscores ("_"), and
       hyphens ("-"), and SHOULD NOT exceed 20 characters in length.
 
-   Type Description
+   Format Description
       A brief description of the Identifier Format.
 
    Change Controller
-      For types defined in documents published by the IETF or its
-      working groups, list "IETF".  For all other types, list the name
+      For formats defined in documents published by the IETF or its
+      working groups, list "IETF".  For all other formats, list the name
       of the party responsible for the registration.  Contact
       information such as mailing address, email address, or phone
       number may also be provided.
@@ -815,25 +834,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    Defining Document(s)
       A reference to the document or documents that define the
       Identifier Format.  The definition MUST specify the name, format,
-      and meaning of each member that may occur within a Subject
-      Identifier of the defined type, as well as whether each member is
-      optional, required, prohibited, or the circumstances under which
-      the member may be optional, required, or prohibited.  URIs that
-      can be used to retrieve copies of each document SHOULD be
-      included.
-
-8.1.3.  Initial Registry Contents
-
-8.1.3.1.  Account Identifier Format
-
-   *  Type Name: "account"
-
-   *  Type Description: Subject identifier based on "acct" URI.
-
-   *  Change Controller: IETF
-
-   *  Defining Document(s): Section 3 of this document.
-
 
 
 
@@ -842,54 +842,54 @@ Backman & Scurtescu     Expires 25 November 2021               [Page 15]
 Internet-Draft        secevent-subject-identifiers              May 2021
 
 
-8.1.3.2.  Email Identifier Format
+      and meaning of each member that may occur within a Subject
+      Identifier of the defined format, as well as whether each member
+      is optional, required, prohibited, or the circumstances under
+      which the member may be optional, required, or prohibited.  URIs
+      that can be used to retrieve copies of each document SHOULD be
+      included.
 
-   *  Type Name: "email"
+8.1.3.  Initial Registry Contents
 
-   *  Type Description: Subject identifier based on email address.
+8.1.3.1.  Account Identifier Format
 
-   *  Change Controller: IETF
+   *  Format Name: "account"
 
-   *  Defining Document(s): Section 3 of this document.
-
-8.1.3.3.  Issuer and Subject Identifier Format
-
-   *  Type Name: "iss_sub"
-
-   *  Type Description: Subject identifier based on an issuer and
-      subject.
+   *  Format Description: Subject identifier based on "acct" URI.
 
    *  Change Controller: IETF
 
    *  Defining Document(s): Section 3 of this document.
 
-8.1.3.4.  Phone Number Identifier Format
+8.1.3.2.  Aliases Identifier Format
 
-   *  Type Name: "phone_number"
+   *  Format Name: "aliases"
 
-   *  Type Description: Subject identifier based on an phone number.
-
-   *  Change Controller: IETF
-
-   *  Defining Document(s): Section 3 of this document.
-
-8.1.3.5.  Aliases Identifier Format
-
-   *  Type Name: "aliases"
-
-   *  Type Description: Subject identifier that groups together multiple
-      different subject identifiers for the same subject.
+   *  Format Description: Subject identifier that groups together
+      multiple different subject identifiers for the same subject.
 
    *  Change Controller: IETF
 
    *  Defining Document(s): Section 3 of this document.
 
-8.1.3.6.  Opaque Identifier Format
+8.1.3.3.  Decentralized Identifier Format
 
-   *  Type Name: "opaque"
+   *  Format Name: "did"
 
-   *  Type Description: Subject identifier based on an opaque string.
+   *  Format Description: Subject identifier based on a Decentralized
+      Identifier (DID) URL.
 
+   *  Change Controller: IETF
+
+   *  Defining Document(s): Section 3 of this document.
+
+8.1.3.4.  Email Identifier Format
+
+   *  Format Name: "email"
+
+   *  Format Description: Subject identifier based on email address.
+
+   *  Change Controller: IETF
 
 
 
@@ -898,16 +898,34 @@ Backman & Scurtescu     Expires 25 November 2021               [Page 16]
 Internet-Draft        secevent-subject-identifiers              May 2021
 
 
+   *  Defining Document(s): Section 3 of this document.
+
+8.1.3.5.  Issuer and Subject Identifier Format
+
+   *  Format Name: "iss_sub"
+
+   *  Format Description: Subject identifier based on an issuer and
+      subject.
+
    *  Change Controller: IETF
 
    *  Defining Document(s): Section 3 of this document.
 
-8.1.3.7.  Decentralized Identifier Format
+8.1.3.6.  Opaque Identifier Format
 
-   *  Type Name: "did"
+   *  Format Name: "opaque"
 
-   *  Type Description: Subject identifier based on a Decentralized
-      Identifier (DID) URL.
+   *  Format Description: Subject identifier based on an opaque string.
+
+   *  Change Controller: IETF
+
+   *  Defining Document(s): Section 3 of this document.
+
+8.1.3.7.  Phone Number Identifier Format
+
+   *  Format Name: "phone_number"
+
+   *  Format Description: Subject identifier based on an phone number.
 
    *  Change Controller: IETF
 
@@ -927,14 +945,23 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    rejection, and be prepared to cite any sources of information that
    went into that decision.
 
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 17]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
    Identifier Formats need not be generally applicable and may be highly
-   specific to a particular domain; it is expected that types may be
+   specific to a particular domain; it is expected that formats may be
    registered for niche or industry-specific use cases.  The Expert
-   Reviewer should focus on whether the type is thoroughly documented,
+   Reviewer should focus on whether the format is thoroughly documented,
    and whether its registration will promote or harm interoperability.
    In most cases, the Expert Reviewer should not approve a request if
    the registration would contribute to confusion, or amount to a
-   synonym for an existing type.
+   synonym for an existing format.
 
 8.2.  JSON Web Token Claims Registration
 
@@ -945,14 +972,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 8.2.1.  Registry Contents
 
    *  Claim Name: "sub_id"
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 17]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
 
    *  Claim Description: Subject Identifier
 
@@ -981,6 +1000,16 @@ Internet-Draft        secevent-subject-identifiers              May 2021
               IANA, "JSON Web Token Claims", n.d.,
               <http://www.iana.org/assignments/jwt>.
 
+
+
+
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 18]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1001,14 +1030,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
               <https://www.rfc-editor.org/info/rfc7519>.
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 18]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
 
    [RFC7565]  Saint-Andre, P., "The 'acct' URI Scheme", RFC 7565,
               DOI 10.17487/RFC7565, May 2015,
@@ -1038,6 +1059,13 @@ Internet-Draft        secevent-subject-identifiers              May 2021
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 19]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
 Acknowledgements
 
    The authors would like to thank the members of the IETF Security
@@ -1057,14 +1085,6 @@ Change Log
    *  Added reference to RFC 5322 for format of "email" claim.
 
    *  Renamed "iss_sub" type to "iss-sub".
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 19]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
 
    *  Renamed "id_token_claims" type to "id-token-claims".
 
@@ -1095,6 +1115,13 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    *  Added privacy considerations for identifier correlation.
 
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 20]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
    Draft 05 - AB:
 
    *  Renamed the "phone" type to "phone-number" and its "phone" claim
@@ -1114,13 +1141,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    *  Clarified that identifier correlation may be acceptable when it is
       a core part of the use case.
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 20]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
 
    *  Replaced references to OIDF with IETF in IANA Considerations.
 
@@ -1151,6 +1171,13 @@ Internet-Draft        secevent-subject-identifiers              May 2021
       -  Renamed "Security Event Subject Identifier Type Registry" to
          "Security Event Identifier Format Registry".
 
+
+
+Backman & Scurtescu     Expires 25 November 2021               [Page 21]
+
+Internet-Draft        secevent-subject-identifiers              May 2021
+
+
       -  Added new section with guidance for specs defining Identifier
          Formats, with normative prohibition on formats that describe
          the subject itself, rather than the identifier.
@@ -1164,19 +1191,12 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    *  Added "opaque" Identifier Format
 
-   Post 07: * Added "did" Identifier Format
+   Post 07 - JR, AB: * Added "did" Identifier Format * Alphabetized
+   identifier format definitions * Replaced "type" with "format" in
+   places that had been missed in the -07 change. (mostly IANA
+   Considerations) * Miscellaneous editorial fixes
 
 Authors' Addresses
-
-
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 21]
-
-Internet-Draft        secevent-subject-identifiers              May 2021
-
 
    Annabelle Backman (editor)
    Amazon
@@ -1188,26 +1208,6 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    Coinbase
 
    Email: marius.scurtescu@coinbase.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
