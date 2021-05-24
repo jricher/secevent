@@ -41,6 +41,12 @@ normative:
     target: http://www.iana.org/assignments/jwt
     author:
       org: IANA
+  DID:
+    title: Decentralized Identifiers (DIDs) v1.0
+    target: https://www.w3.org/TR/did-core/
+    author:
+      org: World Wide Web Consortium (W3C)
+    date: 2021
 
 informative:
   OpenID.Core:
@@ -265,6 +271,27 @@ Below is a non-normative example Subject Identifier in the Opaque Identifier For
 ~~~
 {: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
 
+### Decentralized Identifier (DID) Format {#sub-id-did}
+The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the DID Subject being identified. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
+
+Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:
+
+~~~
+{
+  "format": "did",
+  "url": "did:example:123456"
+}
+~~~
+{: #figexamplesubiddidbare title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a bare DID"}
+
+~~~
+{
+  "format": "did",
+  "url": "did:example:123456/did/url/path?versionId=1"
+}
+~~~
+{: #figexamplesubiddidcomplex title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components"}
+
 Subject Identifiers in JWTs {#jwt-claims}
 ===========================
 
@@ -461,6 +488,13 @@ Defining Document(s)
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
+#### Decentralized Identifier Format
+
+* Type Name: `did`
+* Type Description: Subject identifier based on a Decentralized Identifier (DID) URL.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
 ### Guidance for Expert Reviewers {#iana-formats-expert}
 The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.
 
@@ -544,3 +578,6 @@ Draft 07 - AB:
   * Defined "subject" as applying generically and "JWT Subject" as applying specifically to the subject of a JWT.
   * Replaced most instances of the word "principal" with "subject".
 * Added `opaque` Identifier Format
+
+Post 07:
+* Added `did` Identifier Format
