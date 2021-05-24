@@ -96,7 +96,7 @@ Below is a non-normative example of a Subject Identifier that identifies a subje
 ~~~
 {
   "format": "email",
-  "email": "user@example.com",
+  "email": "user@example.com"
 }
 ~~~
 {: #figexampleintro title="Example: Subject Identifier using the Email Identifier Format"}
@@ -108,8 +108,8 @@ Subject Identifiers are intended to be a general purpose mechanism for identifyi
   "iss": "issuer.example.com",
   "sub_id": {
     "format": "phone_number",
-    "phone_number": "+12065550100",
-  },
+    "phone_number": "+12065550100"
+  }
 }
 ~~~
 {: #figexampleintro2 title="Example: JWT using a Subject Identifier with the sub_id claim"}
@@ -125,18 +125,18 @@ Usage of Subject Identifiers also need not be limited to identifying JWT Subject
     "https://secevent.example.com/events/message-interception": {
       "from": {
         "format": "email",
-        "email": "alice@example.com",
+        "email": "alice@example.com"
       },
       "to": {
         "format": "email",
-        "email": "bob@example.com",
+        "email": "bob@example.com"
       },
       "interceptor": {
         "format": "email",
-        "email": "eve@example.com",
-      },
-    },
-  },
+        "email": "eve@example.com"
+      }
+    }
+  }
 }
 
 ~~~
@@ -182,7 +182,7 @@ Below is a non-normative example Subject Identifier for the Account Identifier F
 ~~~
 {
   "format": "account",
-  "uri": "acct:example.user@service.example.com",
+  "uri": "acct:example.user@service.example.com"
 }
 ~~~
 {: #figexamplesubidaccount title="Example: Subject Identifier for the Account Identifier Format"}
@@ -195,7 +195,7 @@ Below is a non-normative example Subject Identifier in the Email Identifier Form
 ~~~
 {
   "format": "email",
-  "email": "user@example.com",
+  "email": "user@example.com"
 }
 ~~~
 {: #figexamplesubidemail  title="Example: Subject Identifier in the Email Identifier Format"}
@@ -211,7 +211,7 @@ Below is a non-normative example Subject Identifier in the Email Identifier Form
 ~~~
 {
   "format": "phone_number",
-  "phone_number": "+12065550100",
+  "phone_number": "+12065550100"
 }
 ~~~
 {: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format."}
@@ -225,7 +225,7 @@ Below is a non-normative example Subject Identifier in the Issuer and Subject Id
 {
   "format": "iss_sub",
   "iss": "http://issuer.example.com/",
-  "sub": "145234573",
+  "sub": "145234573"
 }
 ~~~
 {: #figexamplesubidisssub  title="Example: Subject Identifier in the Issuer and Subject Identifier Format"}
@@ -243,17 +243,17 @@ Below is a non-normative example Subject Identifier in the Aliases Identifier Fo
   "identifiers": [
     {
       "format": "email",
-      "email": "user@example.com",
+      "email": "user@example.com"
     },
     {
       "format": "phone_number",
-      "phone_number": "+12065550100",
+      "phone_number": "+12065550100"
     },
     {
       "format": "email",
-      "email": "user+qualifier@example.com",
+      "email": "user+qualifier@example.com"
     }
-  ],
+  ]
 }
 ~~~
 {: #figexamplesubididtoken  title="Example: Subject Identifier in the Aliases Identifier Format"}
@@ -266,7 +266,7 @@ Below is a non-normative example Subject Identifier in the Opaque Identifier For
 ~~~
 {
   "format": "opaque",
-  "id": "11112222333344445555",
+  "id": "11112222333344445555"
 }
 ~~~
 {: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
@@ -308,8 +308,8 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   "iss": "issuer.example.com",
   "sub_id": {
     "format": "email",
-    "email": "user@example.com",
-  },
+    "email": "user@example.com"
+  }
 }
 ~~~
 {: #figexamplejwtsubidemail title="Example: JWT containing a `sub_id` claim and no `sub` claim"}
@@ -320,8 +320,8 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   "sub": "user@example.com",
   "sub_id": {
     "format": "email",
-    "email": "user@example.com",
-  },
+    "email": "user@example.com"
+  }
 }
 ~~~
 {: #figexamplejwtsamesubtype title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using the same identifier"}
@@ -332,8 +332,8 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   "sub": "user@example.com",
   "sub_id": {
     "format": "email",
-    "email": "elizabeth@example.com",
-  },
+    "email": "elizabeth@example.com"
+  }
 }
 ~~~
 {: #figexamplejwtdiffsubvalues title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using different values of the same identifier type"}
@@ -344,8 +344,8 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   "sub": "user@example.com",
   "sub_id": {
     "format": "account",
-    "uri": "acct:example.user@service.example.com",
-  },
+    "uri": "acct:example.user@service.example.com"
+  }
 }
 ~~~
 {: #figexamplejwtdiffsubtype title="Example: JWT where the `sub` and `sub_id` claims identify the JWT Subject via different types of identifiers"}
@@ -362,8 +362,8 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   "sub_id": {
     "format": "iss_sub",
     "iss": "issuer.example.com",
-    "sub": "example_user",
-  },
+    "sub": "example_user"
+  }
 }
 ~~~
 {: #figexamplejwtsameiss title="Example: JWT with a `iss_sub` Subject Identifier where JWT issuer and JWT Subject issuer are the same"}
@@ -374,8 +374,8 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   "sub_id": {
     "format": "iss_sub",
     "iss": "issuer.example.com",
-    "sub": "example_user",
-  },
+    "sub": "example_user"
+  }
 }
 ~~~
 {: #figexamplejwtdiffiss title="Example: JWT with an `iss_sub` Subject Identifier where the JWT issuer and JWT Subject issuer are different"}
@@ -387,8 +387,8 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   "sub_id": {
     "format": "iss_sub",
     "iss": "issuer.example.com",
-    "sub": "example_user",
-  },
+    "sub": "example_user"
+  }
 }
 ~~~
 {: #figexamplejwtdiffisssub title="Example: JWT with an `iss_sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the JWT Subject's `iss` and `sub` members"}
