@@ -10,7 +10,7 @@ Expires: 25 November 2021                                       Coinbase
 
 
              Subject Identifiers for Security Event Tokens
-               draft-ietf-secevent-subject-identifiers-07
+               draft-ietf-secevent-subject-identifiers-08
 
 Abstract
 
@@ -1191,7 +1191,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    *  Added "opaque" Identifier Format
 
-   Post 07 - JR, AB: * Added "did" Identifier Format * Alphabetized
+   Draft 08 - JR, AB: * Added "did" Identifier Format * Alphabetized
    identifier format definitions * Replaced "type" with "format" in
    places that had been missed in the -07 change. (mostly IANA
    Considerations) * Miscellaneous editorial fixes

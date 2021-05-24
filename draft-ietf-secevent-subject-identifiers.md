@@ -1,11 +1,10 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-07
+docname: draft-ietf-secevent-subject-identifiers-08
 date: 2021-05-24
 category: std
 ipr: trust200902
-consensus: true
 
 area: Security
 workgroup: Security Events Working Group
@@ -579,7 +578,7 @@ Draft 07 - AB:
   * Replaced most instances of the word "principal" with "subject".
 * Added `opaque` Identifier Format
 
-Post 07 - JR, AB:
+Draft 08 - JR, AB:
 * Added `did` Identifier Format
 * Alphabetized identifier format definitions
 * Replaced "type" with "format" in places that had been missed in the -07 change. (mostly IANA Considerations)
