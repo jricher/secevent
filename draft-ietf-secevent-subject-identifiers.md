@@ -272,7 +272,7 @@ Below is a non-normative example Subject Identifier in the Opaque Identifier For
 {: #figexamplesubidopaque title="Example: Subject Identifier in the Opaque Identifier Format"}
 
 ### Decentralized Identifier (DID) Format {#sub-id-did}
-The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the subject. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
+The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the DID Subject being identified. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
 
 Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:
 
