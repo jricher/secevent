@@ -111,7 +111,7 @@ Subject Identifiers are intended to be a general purpose mechanism for identifyi
   }
 }
 ~~~
-{: #figexampleintro2 title="Example: JWT using a Subject Identifier with the sub_id claim"}
+{: #figexampleintro2 title="Example: JWT using a Subject Identifier with the \"sub_id\" claim"}
 
 Usage of Subject Identifiers also need not be limited to identifying JWT Subjects.  They are intended as a general purpose means of expressing identifying information in an unambiguous manner.  Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.
 
@@ -289,12 +289,12 @@ Below is a non-normative example Subject Identifier in the Email Identifier Form
   "phone_number": "+12065550100"
 }
 ~~~
-{: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format."}
+{: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format"}
 
 Subject Identifiers in JWTs {#jwt-claims}
 ===========================
 
-"sub_id" Claim {#jwt-claims-sub_id}
+`sub_id` Claim {#jwt-claims-sub_id}
 --------------
 The `sub` JWT Claim is defined in Section 4.1.2 of {{!RFC7519}} as containing a string value, and therefore cannot contain a Subject Identifier (which is a JSON object) as its value.  This document defines the `sub_id` JWT Claim, in accordance with Section 4.2 of {{!RFC7519}}, as a common claim that identifies the JWT Subject using a Subject Identifier.  When present, the value of this claim MUST be a Subject Identifier that identifies the subject of the JWT.  The `sub_id` claim MAY be included in a JWT, whether or not the `sub` claim is present.  When both the `sub` and `sub_id` claims are present in a JWT, they MUST identify the same subject, as a JWT has one and only one JWT Subject.
 
@@ -311,7 +311,7 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   }
 }
 ~~~
-{: #figexamplejwtsubidemail title="Example: JWT containing a `sub_id` claim and no `sub` claim"}
+{: #figexamplejwtsubidemail title="Example: JWT containing a \"sub_id\" claim and no \"sub\" claim"}
 
 ~~~
 {
@@ -323,7 +323,7 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   }
 }
 ~~~
-{: #figexamplejwtsamesubid title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using the same identifier"}
+{: #figexamplejwtsamesubid title="Example: JWT where both the \"sub\" and \"sub_id\" claims identify the JWT Subject using the same identifier"}
 
 ~~~
 {
@@ -335,7 +335,7 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   }
 }
 ~~~
-{: #figexamplejwtdiffsubvalues title="Example: JWT where both the `sub` and `sub_id` claims identify the JWT Subject using different values of the same identifier type"}
+{: #figexamplejwtdiffsubvalues title="Example: JWT where both the \"sub\" and \"sub_id\" claims identify the JWT Subject using different values of the same identifier type"}
 
 ~~~
 {
@@ -347,9 +347,9 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
   }
 }
 ~~~
-{: #figexamplejwtdiffsubtype title="Example: JWT where the `sub` and `sub_id` claims identify the JWT Subject via different types of identifiers"}
+{: #figexamplejwtdiffsubtype title="Example: JWT where the \"sub\" and \"sub_id\" claims identify the JWT Subject via different types of identifiers"}
 
-"sub_id" and "iss_sub" Subject Identifiers
+`sub_id` and `iss_sub` Subject Identifiers
 ------------------------------------------
 The `sub_id` claim MAY contain an `iss_sub` Subject Identifier.  In this case, the JWT's `iss` claim and the Subject Identifier's `iss` member MAY be different.  For example, in [OpenID Connect](#OpenID.Core) client may construct such a JWT when sending JWTs back to its OpenID Connect Identity Provider, in order to identify the JWT Subject using an identifier known to be understood by both parties.  Similarly, the JWT's `sub` claim and the Subject Identifier's `sub` member MAY be different.  For example, this may be used by an OpenID Connect client to communicate the JWT Subject's local identifier at the client back to its Identity Provider.
 
@@ -365,7 +365,7 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   }
 }
 ~~~
-{: #figexamplejwtsameiss title="Example: JWT with a `iss_sub` Subject Identifier where JWT issuer and JWT Subject issuer are the same"}
+{: #figexamplejwtsameiss title="Example: JWT with an \"iss_sub\" Subject Identifier where JWT issuer and JWT Subject issuer are the same"}
 
 ~~~
 {
@@ -377,7 +377,7 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   }
 }
 ~~~
-{: #figexamplejwtdiffiss title="Example: JWT with an `iss_sub` Subject Identifier where the JWT issuer and JWT Subject issuer are different"}
+{: #figexamplejwtdiffiss title="Example: JWT with an \"iss_sub\" Subject Identifier where the JWT issuer and JWT Subject issuer are different"}
 
 ~~~
 {
@@ -390,7 +390,7 @@ Below are non-normative examples of a JWT where the `iss` claim and `iss` member
   }
 }
 ~~~
-{: #figexamplejwtdiffisssub title="Example: JWT with an `iss_sub` Subject Identifier where the JWT `iss` and `sub` claims differ from the JWT Subject's `iss` and `sub` members"}
+{: #figexamplejwtdiffisssub title="Example: JWT with an \"iss_sub\" Subject Identifier where the JWT \"iss\" and \"sub\" claims differ from the JWT Subject's \"iss\" and \"sub\" members"}
 
 Considerations for Specifications that Define Identifier Formats {#implementer}
 ================================================================
@@ -447,21 +447,21 @@ Defining Document(s)
 
 #### Account Identifier Format
 
-* Format Name: `account`
+* Format Name: "account"
 * Format Description: Subject identifier based on `acct` URI.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Aliases Identifier Format
 
-* Format Name: `aliases`
+* Format Name: "aliases"
 * Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Decentralized Identifier Format
 
-* Format Name: `did`
+* Format Name: "did"
 * Format Description: Subject identifier based on a Decentralized Identifier (DID) URL.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
@@ -475,21 +475,21 @@ Defining Document(s)
 
 #### Issuer and Subject Identifier Format
 
-* Format Name: `iss_sub`
+* Format Name: "iss_sub"
 * Format Description: Subject identifier based on an issuer and subject.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Opaque Identifier Format
 
-* Format Name: `opaque`
+* Format Name: "opaque"
 * Format Description: Subject identifier based on an opaque string.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
 #### Phone Number Identifier Format
 
-* Format Name: `phone_number`
+* Format Name: "phone_number"
 * Format Description: Subject identifier based on an phone number.
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
