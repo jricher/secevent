@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-08
-date: 2021-05-24
+docname: draft-ietf-secevent-subject-identifiers-09
+date: 2022-02-25
 category: std
 ipr: trust200902
 
@@ -189,7 +189,7 @@ Below is a non-normative example Subject Identifier for the Account Identifier F
 ### Aliases Identifier Format {#sub-id-aliases}
 The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name `aliases`. 
 
-`alias` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `alias` Subject Identifier MUST NOT contain a Subject Identifier in the `aliases` format.
+`aliases` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `aliases` Subject Identifier MUST NOT contain a Subject Identifier in the `aliases` format.
 
 Below is a non-normative example Subject Identifier in the Aliases Identifier Format:
 
@@ -328,7 +328,7 @@ Below are non-normative examples of JWTs containing the `sub_id` claim:
 ~~~
 {
   "iss": "issuer.example.com",
-  "sub": "user@example.com",
+  "sub": "liz@example.com",
   "sub_id": {
     "format": "email",
     "email": "elizabeth@example.com"
@@ -410,7 +410,7 @@ Security Considerations {#security}
 
 Confidentiality and Integrity
 -----------------------------
-This specification does not define any mechanism for ensuring the confidentiality or integrityi of a Subject Identifier.  Where such properties are required, implementations MUST use mechanisms provided by the containing format (e.g., integrity protecting SETs or JWTs using JWS {{?RFC7515}}), or at the transport layer or other layer in the application stack (e.g., using TLS {{?RFC8446}}).
+This specification does not define any mechanism for ensuring the confidentiality or integrity of a Subject Identifier.  Where such properties are required, implementations MUST use mechanisms provided by the containing format (e.g., integrity protecting SETs or JWTs using JWS {{?RFC7515}}), or at the transport layer or other layer in the application stack (e.g., using TLS {{?RFC8446}}).
 
 Further considerations regarding confidentiality and integrity of SETs can be found in Section 5.1 of {{!RFC8417}}.  
 
@@ -579,7 +579,12 @@ Draft 07 - AB:
 * Added `opaque` Identifier Format
 
 Draft 08 - JR, AB:
+
 * Added `did` Identifier Format
 * Alphabetized identifier format definitions
 * Replaced "type" with "format" in places that had been missed in the -07 change. (mostly IANA Considerations)
+* Miscellaneous editorial fixes
+
+Draft 09 - AB:
+
 * Miscellaneous editorial fixes

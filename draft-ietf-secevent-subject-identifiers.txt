@@ -5,12 +5,12 @@
 Security Events Working Group                            A. Backman, Ed.
 Internet-Draft                                                    Amazon
 Intended status: Standards Track                            M. Scurtescu
-Expires: 25 November 2021                                       Coinbase
-                                                             24 May 2021
+Expires: 29 August 2022                                         Coinbase
+                                                        25 February 2022
 
 
              Subject Identifiers for Security Event Tokens
-               draft-ietf-secevent-subject-identifiers-08
+               draft-ietf-secevent-subject-identifiers-09
 
 Abstract
 
@@ -38,11 +38,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 November 2021.
+   This Internet-Draft will expire on 29 August 2022.
 
 Copyright Notice
 
-   Copyright (c) 2021 IETF Trust and the persons identified as the
+   Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 1]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 1]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    extracted from this document must include Simplified BSD License text
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 2]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 2]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 3]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 3]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    {
@@ -221,9 +221,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 4]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 4]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 2.  Notational Conventions
@@ -277,9 +277,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 5]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 5]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 3.1.  Identifier Formats versus Principal Types
@@ -333,9 +333,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 6]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 6]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 3.2.2.  Aliases Identifier Format
@@ -353,8 +353,8 @@ Internet-Draft        secevent-subject-identifiers              May 2021
    (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain
    exact duplicates.  This format is identified by the name "aliases".
 
-   "alias" Subject Identifiers MUST NOT be nested; i.e., the
-   "identifiers" member of an "alias" Subject Identifier MUST NOT
+   "aliases" Subject Identifiers MUST NOT be nested; i.e., the
+   "identifiers" member of an "aliases" Subject Identifier MUST NOT
    contain a Subject Identifier in the "aliases" format.
 
    Below is a non-normative example Subject Identifier in the Aliases
@@ -389,9 +389,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 7]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 7]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 3.2.3.  Decentralized Identifier (DID) Format
@@ -445,9 +445,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 8]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 8]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
     Figure 8: Example: Subject Identifier in the Email Identifier Format
@@ -501,9 +501,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021                [Page 9]
+Backman & Scurtescu      Expires 29 August 2022                 [Page 9]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 3.2.6.  Opaque Identifier Format
@@ -557,9 +557,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 10]
+Backman & Scurtescu      Expires 29 August 2022                [Page 10]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 4.1.  "sub_id" Claim
@@ -613,14 +613,14 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 11]
+Backman & Scurtescu      Expires 29 August 2022                [Page 11]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    {
      "iss": "issuer.example.com",
-     "sub": "user@example.com",
+     "sub": "liz@example.com",
      "sub_id": {
        "format": "email",
        "email": "elizabeth@example.com"
@@ -669,9 +669,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 12]
+Backman & Scurtescu      Expires 29 August 2022                [Page 12]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    {
@@ -725,9 +725,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 13]
+Backman & Scurtescu      Expires 29 August 2022                [Page 13]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 5.  Considerations for Specifications that Define Identifier Formats
@@ -769,7 +769,7 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 7.1.  Confidentiality and Integrity
 
    This specification does not define any mechanism for ensuring the
-   confidentiality or integrityi of a Subject Identifier.  Where such
+   confidentiality or integrity of a Subject Identifier.  Where such
    properties are required, implementations MUST use mechanisms provided
    by the containing format (e.g., integrity protecting SETs or JWTs
    using JWS [RFC7515]), or at the transport layer or other layer in the
@@ -781,9 +781,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 14]
+Backman & Scurtescu      Expires 29 August 2022                [Page 14]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 8.  IANA Considerations
@@ -837,9 +837,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 15]
+Backman & Scurtescu      Expires 29 August 2022                [Page 15]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
       and meaning of each member that may occur within a Subject
@@ -893,9 +893,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 16]
+Backman & Scurtescu      Expires 29 August 2022                [Page 16]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    *  Defining Document(s): Section 3 of this document.
@@ -949,9 +949,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 17]
+Backman & Scurtescu      Expires 29 August 2022                [Page 17]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    Identifier Formats need not be generally applicable and may be highly
@@ -1005,9 +1005,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 18]
+Backman & Scurtescu      Expires 29 August 2022                [Page 18]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -1061,9 +1061,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 19]
+Backman & Scurtescu      Expires 29 August 2022                [Page 19]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
 Acknowledgements
@@ -1117,9 +1117,9 @@ Change Log
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 20]
+Backman & Scurtescu      Expires 29 August 2022                [Page 20]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
    Draft 05 - AB:
@@ -1173,9 +1173,9 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
 
 
-Backman & Scurtescu     Expires 25 November 2021               [Page 21]
+Backman & Scurtescu      Expires 29 August 2022                [Page 21]
 
-Internet-Draft        secevent-subject-identifiers              May 2021
+Internet-Draft        secevent-subject-identifiers         February 2022
 
 
       -  Added new section with guidance for specs defining Identifier
@@ -1191,10 +1191,20 @@ Internet-Draft        secevent-subject-identifiers              May 2021
 
    *  Added "opaque" Identifier Format
 
-   Draft 08 - JR, AB: * Added "did" Identifier Format * Alphabetized
-   identifier format definitions * Replaced "type" with "format" in
-   places that had been missed in the -07 change. (mostly IANA
-   Considerations) * Miscellaneous editorial fixes
+   Draft 08 - JR, AB:
+
+   *  Added "did" Identifier Format
+
+   *  Alphabetized identifier format definitions
+
+   *  Replaced "type" with "format" in places that had been missed in
+      the -07 change. (mostly IANA Considerations)
+
+   *  Miscellaneous editorial fixes
+
+   Draft 09 - AB:
+
+   *  Miscellaneous editorial fixes
 
 Authors' Addresses
 
@@ -1219,14 +1229,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-Backman & Scurtescu     Expires 25 November 2021               [Page 22]
+Backman & Scurtescu      Expires 29 August 2022                [Page 22]
