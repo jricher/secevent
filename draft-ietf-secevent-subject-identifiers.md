@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-09
-date: 2022-02-25
+docname: draft-ietf-secevent-subject-identifiers-10
+date: 2022-03-01
 category: std
 ipr: trust200902
 
@@ -26,6 +26,12 @@ author:
     name: Marius Scurtescu
     organization: Coinbase
     email: marius.scurtescu@coinbase.com
+
+ -
+    ins: P. Jain
+    name: Prachi Jain
+    organization: Fastly
+    email: prachi.jain1288@gmail.com
 
 normative:
   BCP26: RFC8126
@@ -86,7 +92,7 @@ Security events communicated within Security Event Tokens may support a variety 
 
 Introduction {#intro}
 ============
-As described in Section 1.2 of SET {{!RFC8417}}, subjects related to security events may take a variety of forms, including but not limited to a JWT {{!RFC7519}} principal, an IP address, a URL, etc.  Different types of subjects may need to be identified in different ways. (e.g., a host might be identified by an IP or MAC address, while a user might be identified by an email address)  Furthermore, even in the case where the type of the subject is known, there may be multiple ways by which a given subject may be identified.  For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT `iss` claim and `sub` claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which a subject is being identified.
+As described in Section 1.2 of SET {{!RFC8417}}, subjects related to security events may take a variety of forms, including but not limited to a JWT {{!RFC7519}} principal, an IP address, a URL, etc.  Different types of subjects may need to be identified in different ways (e.g., a host might be identified by an IP or MAC address, while a user might be identified by an email address).  Furthermore, even in the case where the type of the subject is known, there may be multiple ways by which a given subject may be identified.  For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT `iss` claim and `sub` claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which a subject is being identified.
 
 To address this problem, this specification defines Subject Identifiers - JSON {{!RFC7159}} objects containing information identifying a subject - and Identifier Formats - named sets of rules describing how to encode different kinds of subject identifying information (e.g., an email address, or an issuer and subject pair) as a Subject Identifier.
 
