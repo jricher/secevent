@@ -7,12 +7,13 @@
 <title>Subject Identifiers for Security Event Tokens</title>
 <meta content="Annabelle Backman" name="author">
 <meta content="Marius Scurtescu" name="author">
+<meta content="Prachi Jain" name="author">
 <meta content="
        Security events communicated within Security Event Tokens may support a variety of identifiers to identify subjects related to the event.  This specification formalizes the notion of subject identifiers as structured information that describe a subject, and named formats that define the syntax and semantics for encoding subject identifiers as JSON objects.  It also defines a registry for defining and allocating names for such formats, as well as the  sub_id  JSON Web Token (JWT) claim. 
     " name="description">
 <meta content="xml2rfc 3.12.3" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-ietf-secevent-subject-identifiers-09" name="ietf.draft">
+<meta content="draft-ietf-secevent-subject-identifiers-10" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.12.3
     Python 3.9.1
@@ -1187,11 +1188,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">secevent-subject-identifiers</td>
-<td class="right">February 2022</td>
+<td class="right">March 2022</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Backman &amp; Scurtescu</td>
-<td class="center">Expires 29 August 2022</td>
+<td class="left">Backman, et al.</td>
+<td class="center">Expires 8 September 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1201,15 +1202,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Security Events Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-secevent-subject-identifiers-09</dd>
+<dd class="internet-draft">draft-ietf-secevent-subject-identifiers-10</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-02-25" class="published">25 February 2022</time>
+<time datetime="2022-03-07" class="published">7 March 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-08-29">29 August 2022</time></dd>
+<dd class="expires"><time datetime="2022-09-08">8 September 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1220,6 +1221,10 @@ li > p:last-of-type {
 <div class="author">
       <div class="author-name">M. Scurtescu</div>
 <div class="org">Coinbase</div>
+</div>
+<div class="author">
+      <div class="author-name">P. Jain</div>
+<div class="org">Fastly</div>
 </div>
 </dd>
 </dl>
@@ -1248,7 +1253,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 August 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1411,7 +1416,7 @@ li > p:last-of-type {
       <h2 id="name-introduction-2">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction-2" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">As described in Section 1.2 of SET <span>[<a href="#RFC8417" class="xref">RFC8417</a>]</span>, subjects related to security events may take a variety of forms, including but not limited to a JWT <span>[<a href="#RFC7519" class="xref">RFC7519</a>]</span> principal, an IP address, a URL, etc.  Different types of subjects may need to be identified in different ways. (e.g., a host might be identified by an IP or MAC address, while a user might be identified by an email address)  Furthermore, even in the case where the type of the subject is known, there may be multiple ways by which a given subject may be identified.  For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT <code>iss</code> claim and <code>sub</code> claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which a subject is being identified.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">As described in Section 1.2 of SET <span>[<a href="#RFC8417" class="xref">RFC8417</a>]</span>, subjects related to security events may take a variety of forms, including but not limited to a JWT <span>[<a href="#RFC7519" class="xref">RFC7519</a>]</span> principal, an IP address, a URL, etc.  Different types of subjects may need to be identified in different ways (e.g., a host might be identified by an IP or MAC address, while a user might be identified by an email address).  Furthermore, even in the case where the type of the subject is known, there may be multiple ways by which a given subject may be identified.  For example, an account may be identified by an opaque identifier, an email address, a phone number, a JWT <code>iss</code> claim and <code>sub</code> claim, etc., depending on the nature and needs of the transmitter and receiver. Even within the context of a given transmitter and receiver relationship, it may be appropriate to identify different accounts in different ways, for example if some accounts only have email addresses associated with them while others only have phone numbers. Therefore it can be necessary to indicate within a SET the mechanism by which a subject is being identified.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">To address this problem, this specification defines Subject Identifiers - JSON <span>[<a href="#RFC7159" class="xref">RFC7159</a>]</span> objects containing information identifying a subject - and Identifier Formats - named sets of rules describing how to encode different kinds of subject identifying information (e.g., an email address, or an issuer and subject pair) as a Subject Identifier.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Below is a non-normative example of a Subject Identifier that identifies a subject by email address, using the Email Identifier Format.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <span id="name-example-subject-identifier-u"></span><div id="figexampleintro">
@@ -2355,6 +2360,14 @@ document are to be interpreted as described in <span>[<a href="#RFC2119" class="
 <div class="email">
 <span>Email:</span>
 <a href="mailto:marius.scurtescu@coinbase.com" class="email">marius.scurtescu@coinbase.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Prachi Jain</span></div>
+<div dir="auto" class="left"><span class="org">Fastly</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:prachi.jain1288@gmail.com" class="email">prachi.jain1288@gmail.com</a>
 </div>
 </address>
 </section>
