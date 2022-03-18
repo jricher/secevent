@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-10
-date: 2022-03-07
+docname: draft-ietf-secevent-subject-identifiers-11
+date: 2022-03-18
 category: std
 ipr: trust200902
 
@@ -407,7 +407,7 @@ Privacy Considerations {#privacy}
 
 Identifier Correlation
 ----------------------
-The act of presenting two or more identifiers for a single subject together (e.g., within an `aliases` Subject Identifier, or via the `sub` and `sub_id` JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.
+The act of presenting two or more identifiers for a single subject together (e.g., within an `aliases` Subject Identifier, or via the `sub` and `sub_id` JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.  Implementers must consider such risks, and specs that use subject identifiers must provide appropriate privacy considerations of their own.
 
 The considerations described in Section 6 of {{!RFC8417}} also apply when Subject Identifiers are used within SETs.  The considerations described in Section 12 of {{!RFC7519}} also apply when Subject Identifiers are used within JWTs.
 
