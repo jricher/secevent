@@ -5,10 +5,10 @@
 Security Events Working Group                            A. Backman, Ed.
 Internet-Draft                                                    Amazon
 Intended status: Standards Track                            M. Scurtescu
-Expires: 29 September 2022                                      Coinbase
+Expires: 3 October 2022                                         Coinbase
                                                                  P. Jain
                                                                   Fastly
-                                                           28 March 2022
+                                                            1 April 2022
 
 
              Subject Identifiers for Security Event Tokens
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 September 2022.
+   This Internet-Draft will expire on 3 October 2022.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 1]
+Backman, et al.          Expires 3 October 2022                 [Page 1]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    Please review these documents carefully, as they describe your rights
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 2]
+Backman, et al.          Expires 3 October 2022                 [Page 2]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 3]
+Backman, et al.          Expires 3 October 2022                 [Page 3]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    {
@@ -221,9 +221,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 4]
+Backman, et al.          Expires 3 October 2022                 [Page 4]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 2.  Notational Conventions
@@ -277,9 +277,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 5]
+Backman, et al.          Expires 3 October 2022                 [Page 5]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 3.1.  Identifier Formats versus Principal Types
@@ -333,9 +333,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 6]
+Backman, et al.          Expires 3 October 2022                 [Page 6]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 3.2.2.  Email Identifier Format
@@ -389,9 +389,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 7]
+Backman, et al.          Expires 3 October 2022                 [Page 7]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    Below is a non-normative example Subject Identifier in the Issuer and
@@ -445,9 +445,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 8]
+Backman, et al.          Expires 3 October 2022                 [Page 8]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    {
@@ -501,9 +501,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022               [Page 9]
+Backman, et al.          Expires 3 October 2022                 [Page 9]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
       Figure 9: Example: Subject Identifier in the Aliases Identifier
@@ -557,9 +557,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 10]
+Backman, et al.          Expires 3 October 2022                [Page 10]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    {
@@ -613,9 +613,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 11]
+Backman, et al.          Expires 3 October 2022                [Page 11]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    to its Identity Provider.
@@ -669,9 +669,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 12]
+Backman, et al.          Expires 3 October 2022                [Page 12]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 5.  Considerations for Specifications that Define Identifier Formats
@@ -725,9 +725,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 13]
+Backman, et al.          Expires 3 October 2022                [Page 13]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    Further considerations regarding confidentiality and integrity of
@@ -781,9 +781,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 14]
+Backman, et al.          Expires 3 October 2022                [Page 14]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    Defining Document(s)
@@ -837,9 +837,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 15]
+Backman, et al.          Expires 3 October 2022                [Page 15]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    *  Format Description: Subject identifier based on an issuer and
@@ -893,9 +893,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 16]
+Backman, et al.          Expires 3 October 2022                [Page 16]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    requesting party with a written statement expressing the reason for
@@ -949,9 +949,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 17]
+Backman, et al.          Expires 3 October 2022                [Page 17]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    [IANA.JWT.Claims]
@@ -1005,9 +1005,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 18]
+Backman, et al.          Expires 3 October 2022                [Page 18]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -1020,8 +1020,8 @@ Acknowledgements
    Events working group, as well as those of the OpenID Shared Signals
    and Events Working Group, whose work provided the original basis for
    this document.  We would also like to acknowledge Aaron Parecki,
-   Justin Richer, Mike Jones and other members of the working group for
-   reviewing this document.
+   Denis Pinkas, Justin Richer, Mike Jones and other members of the
+   working group for reviewing this document.
 
 Change Log
 
@@ -1061,9 +1061,9 @@ Change Log
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 19]
+Backman, et al.          Expires 3 October 2022                [Page 19]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
    *  Added sub_id JWT Claim definition, guidance, examples.
@@ -1117,9 +1117,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 20]
+Backman, et al.          Expires 3 October 2022                [Page 20]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
       -  Renamed "Subject Identifier Type" to "Identifier Format".
@@ -1173,9 +1173,9 @@ Internet-Draft        secevent-subject-identifiers            March 2022
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 21]
+Backman, et al.          Expires 3 October 2022                [Page 21]
 
-Internet-Draft        secevent-subject-identifiers            March 2022
+Internet-Draft        secevent-subject-identifiers            April 2022
 
 
 Authors' Addresses
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Backman, et al.         Expires 29 September 2022              [Page 22]
+Backman, et al.          Expires 3 October 2022                [Page 22]

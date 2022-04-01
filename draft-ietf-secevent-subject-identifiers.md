@@ -2,7 +2,7 @@
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
 docname: draft-ietf-secevent-subject-identifiers-11
-date: 2022-03-28
+date: 2022-04-01
 category: std
 ipr: trust200902
 
@@ -502,7 +502,7 @@ Acknowledgements
 ================
 {: numbered="no"}
 The authors would like to thank the members of the IETF Security Events working group, as well as those of the OpenID Shared Signals and Events Working Group, whose work provided the original basis for this document.
-We would also like to acknowledge Aaron Parecki, Justin Richer, Mike Jones and other members of the working group for reviewing this document.
+We would also like to acknowledge Aaron Parecki, Denis Pinkas, Justin Richer, Mike Jones and other members of the working group for reviewing this document.
 
 Change Log
 ==========
