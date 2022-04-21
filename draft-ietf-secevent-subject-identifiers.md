@@ -1,8 +1,8 @@
 ---
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
-docname: draft-ietf-secevent-subject-identifiers-10
-date: 2022-03-07
+docname: draft-ietf-secevent-subject-identifiers-11
+date: 2022-04-01
 category: std
 ipr: trust200902
 
@@ -106,7 +106,7 @@ Below is a non-normative example of a Subject Identifier that identifies a subje
 ~~~
 {: #figexampleintro title="Example: Subject Identifier using the Email Identifier Format"}
 
-Subject Identifiers are intended to be a general purpose mechanism for identifying subjects within JSON objects and their usage need not be limited to SETs.  Below is a non-normative example of a JWT that uses a Subject Identifier in the `sub_id` claim (defined in this specification) to identify the JWT Subject.
+Subject Identifiers are intended to be a general-purpose mechanism for identifying subjects within JSON objects and their usage need not be limited to SETs.  Below is a non-normative example of a JWT that uses a Subject Identifier in the `sub_id` claim (defined in this specification) to identify the JWT Subject.
 
 ~~~
 {
@@ -119,7 +119,7 @@ Subject Identifiers are intended to be a general purpose mechanism for identifyi
 ~~~
 {: #figexampleintro2 title="Example: JWT using a Subject Identifier with the \"sub_id\" claim"}
 
-Usage of Subject Identifiers also need not be limited to identifying JWT Subjects.  They are intended as a general purpose means of expressing identifying information in an unambiguous manner.  Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.
+Usage of Subject Identifiers also need not be limited to identifying JWT Subjects.  They are intended as a general-purpose means of expressing identifying information in an unambiguous manner.  Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.
 
 ~~~
 {
@@ -155,7 +155,7 @@ document are to be interpreted as described in {{!RFC2119}}.
 
 Definitions {#defn}
 ---------------
-This specification utilizes terminology defined in {{!RFC7159}}, {{!RFC7519}}, and {{!RFC8417}}.
+This specification utilizes terminology defined in {{!RFC7159}} and {{!RFC8417}}.
 
 Within this specification, the terms "Subject" and "subject" refer generically to anything being identified via one or more pieces of information.  The term "JWT Subject" refers specifically to the to the subject of a JWT. (i.e., the subject that the JWT asserts claims about)
 
@@ -191,55 +191,6 @@ Below is a non-normative example Subject Identifier for the Account Identifier F
 }
 ~~~
 {: #figexamplesubidaccount title="Example: Subject Identifier for the Account Identifier Format"}
-
-### Aliases Identifier Format {#sub-id-aliases}
-The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name `aliases`. 
-
-`aliases` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `aliases` Subject Identifier MUST NOT contain a Subject Identifier in the `aliases` format.
-
-Below is a non-normative example Subject Identifier in the Aliases Identifier Format:
-
-~~~
-{
-  "format": "aliases",
-  "identifiers": [
-    {
-      "format": "email",
-      "email": "user@example.com"
-    },
-    {
-      "format": "phone_number",
-      "phone_number": "+12065550100"
-    },
-    {
-      "format": "email",
-      "email": "user+qualifier@example.com"
-    }
-  ]
-}
-~~~
-{: #figexamplesubididtoken  title="Example: Subject Identifier in the Aliases Identifier Format"}
-
-### Decentralized Identifier (DID) Format {#sub-id-did}
-The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the DID Subject being identified. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
-
-Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:
-
-~~~
-{
-  "format": "did",
-  "url": "did:example:123456"
-}
-~~~
-{: #figexamplesubiddidbare title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a bare DID"}
-
-~~~
-{
-  "format": "did",
-  "url": "did:example:123456/did/url/path?versionId=1"
-}
-~~~
-{: #figexamplesubiddidcomplex title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components"}
 
 ### Email Identifier Format {#sub-id-email}
 The Email Identifier Format identifies a subject using an email address.  Subject Identifiers in this format MUST contain an `email` member whose value is a string containing the email address of the subject, formatted as an `addr-spec` as defined in Section 3.4.1 of {{!RFC5322}}. The `email` member is REQUIRED and MUST NOT be null or empty. The value of the `email` member SHOULD identify a mailbox to which email may be delivered, in accordance with {{!RFC5321}}. The Email Identifier Format is identified by the name `email`.
@@ -296,6 +247,35 @@ Below is a non-normative example Subject Identifier in the Email Identifier Form
 }
 ~~~
 {: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format"}
+
+### Aliases Identifier Format {#sub-id-aliases}
+The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name `aliases`. 
+
+`aliases` Subject Identifiers MUST NOT be nested; i.e., the `identifiers` member of an `aliases` Subject Identifier MUST NOT contain a Subject Identifier in the `aliases` format.
+
+Below is a non-normative example Subject Identifier in the Aliases Identifier Format:
+
+~~~
+{
+  "format": "aliases",
+  "identifiers": [
+    {
+      "format": "email",
+      "email": "user@example.com"
+    },
+    {
+      "format": "phone_number",
+      "phone_number": "+12065550100"
+    },
+    {
+      "format": "email",
+      "email": "user+qualifier@example.com"
+    }
+  ]
+}
+~~~
+{: #figexamplesubididtoken  title="Example: Subject Identifier in the Aliases Identifier Format"}
+
 
 Subject Identifiers in JWTs {#jwt-claims}
 ===========================
@@ -407,7 +387,7 @@ Privacy Considerations {#privacy}
 
 Identifier Correlation
 ----------------------
-The act of presenting two or more identifiers for a single subject together (e.g., within an `aliases` Subject Identifier, or via the `sub` and `sub_id` JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.
+The act of presenting two or more identifiers for a single subject together (e.g., within an `aliases` Subject Identifier, or via the `sub` and `sub_id` JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.  Implementers must consider such risks, and specs that use subject identifiers must provide appropriate privacy considerations of their own.
 
 The considerations described in Section 6 of {{!RFC8417}} also apply when Subject Identifiers are used within SETs.  The considerations described in Section 12 of {{!RFC7519}} also apply when Subject Identifiers are used within JWTs.
 
@@ -458,13 +438,6 @@ Defining Document(s)
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
-#### Aliases Identifier Format
-
-* Format Name: "aliases"
-* Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
 #### Decentralized Identifier Format
 
 * Format Name: "did"
@@ -500,6 +473,13 @@ Defining Document(s)
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
+#### Aliases Identifier Format
+
+* Format Name: "aliases"
+* Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
 ### Guidance for Expert Reviewers {#iana-formats-expert}
 The Expert Reviewer is expected to review the documentation referenced in a registration request to verify its completeness. The Expert Reviewer must base their decision to accept or reject the request on a fair and impartial assessment of the request. If the Expert Reviewer has a conflict of interest, such as being an author of a defining document referenced by the request, they must recuse themselves from the approval process for that request. In the case where a request is rejected, the Expert Reviewer should provide the requesting party with a written statement expressing the reason for rejection, and be prepared to cite any sources of information that went into that decision.
 
@@ -522,6 +502,7 @@ Acknowledgements
 ================
 {: numbered="no"}
 The authors would like to thank the members of the IETF Security Events working group, as well as those of the OpenID Shared Signals and Events Working Group, whose work provided the original basis for this document.
+We would also like to acknowledge Aaron Parecki, Denis Pinkas, Justin Richer, Mike Jones and other members of the working group for reviewing this document.
 
 Change Log
 ==========
@@ -594,3 +575,14 @@ Draft 08 - JR, AB:
 Draft 09 - AB:
 
 * Miscellaneous editorial fixes
+
+Draft 10 - PJ:
+
+* Added author
+* Editorial nits
+
+Draft 11 - PJ:
+
+* Miscellaneous editorial fixes
+* Moved aliases to the last in identifier format definitions
+* Acknowledged individual reviewers

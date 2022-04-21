@@ -12,7 +12,7 @@
 ]>
 
 
-<rfc ipr="trust200902" docName="draft-ietf-secevent-subject-identifiers-10" category="std" consensus="true" tocInclude="true" sortRefs="true" symRefs="true">
+<rfc ipr="trust200902" docName="draft-ietf-secevent-subject-identifiers-11" category="std" consensus="true" tocInclude="true" sortRefs="true" symRefs="true">
   <front>
     <title abbrev="secevent-subject-identifiers">Subject Identifiers for Security Event Tokens</title>
 
@@ -35,7 +35,7 @@
       </address>
     </author>
 
-    <date year="2022" month="March" day="07"/>
+    <date year="2022" month="April" day="01"/>
 
     <area>Security</area>
     <workgroup>Security Events Working Group</workgroup>
@@ -71,7 +71,7 @@
 }
 ]]></artwork></figure>
 
-<t>Subject Identifiers are intended to be a general purpose mechanism for identifying subjects within JSON objects and their usage need not be limited to SETs.  Below is a non-normative example of a JWT that uses a Subject Identifier in the <spanx style="verb">sub_id</spanx> claim (defined in this specification) to identify the JWT Subject.</t>
+<t>Subject Identifiers are intended to be a general-purpose mechanism for identifying subjects within JSON objects and their usage need not be limited to SETs.  Below is a non-normative example of a JWT that uses a Subject Identifier in the <spanx style="verb">sub_id</spanx> claim (defined in this specification) to identify the JWT Subject.</t>
 
 <figure title="Example: JWT using a Subject Identifier with the &quot;sub_id&quot; claim" anchor="figexampleintro2"><artwork><![CDATA[
 {
@@ -83,7 +83,7 @@
 }
 ]]></artwork></figure>
 
-<t>Usage of Subject Identifiers also need not be limited to identifying JWT Subjects.  They are intended as a general purpose means of expressing identifying information in an unambiguous manner.  Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.</t>
+<t>Usage of Subject Identifiers also need not be limited to identifying JWT Subjects.  They are intended as a general-purpose means of expressing identifying information in an unambiguous manner.  Below is a non-normative example of a SET containing a hypothetical security event describing the interception of a message, using Subject Identifiers to identify the sender, intended recipient, and interceptor.</t>
 
 <figure title="Example: SET with an event payload containing multiple Subject Identifiers" anchor="figexampleintro3"><artwork><![CDATA[
 {
@@ -117,7 +117,7 @@
 document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 <section anchor="defn"><name>Definitions</name>
-<t>This specification utilizes terminology defined in <xref target="RFC7159"/>, <xref target="RFC7519"/>, and <xref target="RFC8417"/>.</t>
+<t>This specification utilizes terminology defined in <xref target="RFC7159"/> and <xref target="RFC8417"/>.</t>
 
 <t>Within this specification, the terms "Subject" and "subject" refer generically to anything being identified via one or more pieces of information.  The term "JWT Subject" refers specifically to the to the subject of a JWT. (i.e., the subject that the JWT asserts claims about)</t>
 
@@ -149,54 +149,6 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 {
   "format": "account",
   "uri": "acct:example.user@service.example.com"
-}
-]]></artwork></figure>
-
-</section>
-<section anchor="sub-id-aliases"><name>Aliases Identifier Format</name>
-<t>The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an <spanx style="verb">identifiers</spanx> member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <spanx style="verb">identifiers</spanx> member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name <spanx style="verb">aliases</spanx>.</t>
-
-<t><spanx style="verb">aliases</spanx> Subject Identifiers MUST NOT be nested; i.e., the <spanx style="verb">identifiers</spanx> member of an <spanx style="verb">aliases</spanx> Subject Identifier MUST NOT contain a Subject Identifier in the <spanx style="verb">aliases</spanx> format.</t>
-
-<t>Below is a non-normative example Subject Identifier in the Aliases Identifier Format:</t>
-
-<figure title="Example: Subject Identifier in the Aliases Identifier Format" anchor="figexamplesubididtoken"><artwork><![CDATA[
-{
-  "format": "aliases",
-  "identifiers": [
-    {
-      "format": "email",
-      "email": "user@example.com"
-    },
-    {
-      "format": "phone_number",
-      "phone_number": "+12065550100"
-    },
-    {
-      "format": "email",
-      "email": "user+qualifier@example.com"
-    }
-  ]
-}
-]]></artwork></figure>
-
-</section>
-<section anchor="sub-id-did"><name>Decentralized Identifier (DID) Format</name>
-<t>The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in <xref target="DID"/>.  Subject Identifiers in this format MUST contain a <spanx style="verb">url</spanx> member whose value is a DID URL for the DID Subject being identified. The value of the <spanx style="verb">url</spanx> member MUST be a valid DID URL and MAY be a bare DID. The <spanx style="verb">url</spanx> member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name <spanx style="verb">did</spanx>.</t>
-
-<t>Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:</t>
-
-<figure title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a bare DID" anchor="figexamplesubiddidbare"><artwork><![CDATA[
-{
-  "format": "did",
-  "url": "did:example:123456"
-}
-]]></artwork></figure>
-
-<figure title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components" anchor="figexamplesubiddidcomplex"><artwork><![CDATA[
-{
-  "format": "did",
-  "url": "did:example:123456/did/url/path?versionId=1"
 }
 ]]></artwork></figure>
 
@@ -254,6 +206,34 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 {
   "format": "phone_number",
   "phone_number": "+12065550100"
+}
+]]></artwork></figure>
+
+</section>
+<section anchor="sub-id-aliases"><name>Aliases Identifier Format</name>
+<t>The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an <spanx style="verb">identifiers</spanx> member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The <spanx style="verb">identifiers</spanx> member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name <spanx style="verb">aliases</spanx>.</t>
+
+<t><spanx style="verb">aliases</spanx> Subject Identifiers MUST NOT be nested; i.e., the <spanx style="verb">identifiers</spanx> member of an <spanx style="verb">aliases</spanx> Subject Identifier MUST NOT contain a Subject Identifier in the <spanx style="verb">aliases</spanx> format.</t>
+
+<t>Below is a non-normative example Subject Identifier in the Aliases Identifier Format:</t>
+
+<figure title="Example: Subject Identifier in the Aliases Identifier Format" anchor="figexamplesubididtoken"><artwork><![CDATA[
+{
+  "format": "aliases",
+  "identifiers": [
+    {
+      "format": "email",
+      "email": "user@example.com"
+    },
+    {
+      "format": "phone_number",
+      "phone_number": "+12065550100"
+    },
+    {
+      "format": "email",
+      "email": "user+qualifier@example.com"
+    }
+  ]
 }
 ]]></artwork></figure>
 
@@ -361,7 +341,7 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <section anchor="privacy"><name>Privacy Considerations</name>
 
 <section anchor="identifier-correlation"><name>Identifier Correlation</name>
-<t>The act of presenting two or more identifiers for a single subject together (e.g., within an <spanx style="verb">aliases</spanx> Subject Identifier, or via the <spanx style="verb">sub</spanx> and <spanx style="verb">sub_id</spanx> JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.</t>
+<t>The act of presenting two or more identifiers for a single subject together (e.g., within an <spanx style="verb">aliases</spanx> Subject Identifier, or via the <spanx style="verb">sub</spanx> and <spanx style="verb">sub_id</spanx> JWT claims) may communicate more information about the subject than was intended.  For example, the entity to which the identifiers are presented now knows that both identifiers relate to the same subject, and may be able to correlate additional data based on that.  When transmitting Subject Identifiers, the transmitter SHOULD take care that they are only transmitting multiple identifiers together when it is known that the recipient already knows that the identifiers are related (e.g., because they were previously sent to the recipient as claims in an OpenID Connect ID Token), or when correlation is essential to the use case.  Implementers must consider such risks, and specs that use subject identifiers must provide appropriate privacy considerations of their own.</t>
 
 <t>The considerations described in Section 6 of <xref target="RFC8417"/> also apply when Subject Identifiers are used within SETs.  The considerations described in Section 12 of <xref target="RFC7519"/> also apply when Subject Identifiers are used within JWTs.</t>
 
@@ -423,16 +403,6 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 </list></t>
 
 </section>
-<section anchor="aliases-identifier-format"><name>Aliases Identifier Format</name>
-
-<t><list style="symbols">
-  <t>Format Name: "aliases"</t>
-  <t>Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.</t>
-  <t>Change Controller: IETF</t>
-  <t>Defining Document(s): <xref target="sub-ids"/> of this document.</t>
-</list></t>
-
-</section>
 <section anchor="decentralized-identifier-format"><name>Decentralized Identifier Format</name>
 
 <t><list style="symbols">
@@ -478,6 +448,16 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 <t><list style="symbols">
   <t>Format Name: "phone_number"</t>
   <t>Format Description: Subject identifier based on an phone number.</t>
+  <t>Change Controller: IETF</t>
+  <t>Defining Document(s): <xref target="sub-ids"/> of this document.</t>
+</list></t>
+
+</section>
+<section anchor="aliases-identifier-format"><name>Aliases Identifier Format</name>
+
+<t><list style="symbols">
+  <t>Format Name: "aliases"</t>
+  <t>Format Description: Subject identifier that groups together multiple different subject identifiers for the same subject.</t>
   <t>Change Controller: IETF</t>
   <t>Defining Document(s): <xref target="sub-ids"/> of this document.</t>
 </list></t>
@@ -738,7 +718,8 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 
 
 <section numbered="no" anchor="acknowledgements"><name>Acknowledgements</name>
-<t>The authors would like to thank the members of the IETF Security Events working group, as well as those of the OpenID Shared Signals and Events Working Group, whose work provided the original basis for this document.</t>
+<t>The authors would like to thank the members of the IETF Security Events working group, as well as those of the OpenID Shared Signals and Events Working Group, whose work provided the original basis for this document.
+We would also like to acknowledge Aaron Parecki, Denis Pinkas, Justin Richer, Mike Jones and other members of the working group for reviewing this document.</t>
 
 </section>
 <section numbered="no" anchor="change-log"><name>Change Log</name>
@@ -833,215 +814,230 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
   <t>Miscellaneous editorial fixes</t>
 </list></t>
 
+<t>Draft 10 - PJ:</t>
+
+<t><list style="symbols">
+  <t>Added author</t>
+  <t>Editorial nits</t>
+</list></t>
+
+<t>Draft 11 - PJ:</t>
+
+<t><list style="symbols">
+  <t>Miscellaneous editorial fixes</t>
+  <t>Moved aliases to the last in identifier format definitions</t>
+  <t>Acknowledged individual reviewers</t>
+</list></t>
+
 </section>
 
 
   </back>
 
 <!-- ##markdown-source:
-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
-4Xb0NM3MJ22rBX/jj/T2Dv8PfWWhhbp/AAA=
+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
+h/9Vm1x9AAA=
 
 -->
 
