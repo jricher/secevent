@@ -2,7 +2,7 @@
 title: Subject Identifiers for Security Event Tokens
 abbrev: secevent-subject-identifiers
 docname: draft-ietf-secevent-subject-identifiers-11
-date: 2022-04-01
+date: 2022-04-21
 category: std
 ipr: trust200902
 
