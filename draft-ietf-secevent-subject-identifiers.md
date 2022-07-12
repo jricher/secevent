@@ -179,6 +179,8 @@ Identifier Format Definitions
 
 The following Identifier Formats are registered in the IANA "Security Event Identifier Formats" registry established by {{iana-formats}}.
 
+Since the subject identifier format conveys semantic information, applications SHOULD choose the most specific possible format for the identifier in question. For example, an email address can be conveyed using a `mailto:` URI and the `uri` identifier format, but since the value is known to be an email address, the application should prefer to use the `email` identifier format instead.
+
 ### Account Identifier Format {#sub-id-acct}
 The Account Identifier Format identifies a subject using an account at a service provider, identified with an `acct` URI as defined in {{!RFC7565}}.  Subject Identifiers in this format MUST contain a `uri` member whose value is the `acct` URI for the subject.  The `uri` member is REQUIRED and MUST NOT be null or empty.  The Account Identifier Format is identified by the name `account`.
 
@@ -247,6 +249,50 @@ Below is a non-normative example Subject Identifier in the Email Identifier Form
 }
 ~~~
 {: #figexamplesubidphone  title="Example: Subject Identifier in the Phone Number Identifier Format"}
+
+### Decentralized Identifier (DID) Format {#sub-id-did}
+
+The Decentralized Identifier Format identifies a subject using a Decentralized Identifier (DID) URL as defined in {{DID}}.  Subject Identifiers in this format MUST contain a `url` member whose value is a DID URL for the DID Subject being identified. The value of the `url` member MUST be a valid DID URL and MAY be a bare DID. The `url` member is REQUIRED and MUST NOT be null or empty. The Decentralized Identifier Format is identified by the name `did`.
+ 
+Below are non-normative example Subject Identifiers for the Decentralized Identifier Format:
+ 
+~~~
+{
+  "format": "did",
+  "url": "did:example:123456"
+}
+~~~
+{: #figexamplesubiddidbare title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a bare DID"}
+
+~~~
+{
+  "format": "did",
+  "url": "did:example:123456/did/url/path?versionId=1"
+}
+~~~
+{: #figexamplesubiddidcomplex title="Example: Subject Identifier for the Decentralized Identifier Format, identifying a subject with a DID URL with non-empty path and query components"}
+
+### Uniform Resource Identifier (URI) Format {#sub-id-uri}
+
+The Uniform Resource Identifier (URI) Format identifies a subject using a URI as defined in {{RFC3986}}. This identifier format makes no assumptions or guarantees with regard to the content, scheme, or reachability of the URI within the field. Subject Identifiers in this format MUST contain a `uri` members whose value is a URI for the subject being identified. The `uri` member is REQUIRED and MUST NOT be null or empty. The URI format is identified by the name `uri`.
+
+Below are non-normative example Subject Identifiers for the URI format:
+
+~~~
+{
+  "format": "uri",
+  "uri": "https://user.example.com/"
+}
+~~~
+{: #figexamplesubiddidbare title="Example: Subject Identifier for the URI Format, identifying a subject with a website URI"}
+
+~~~
+{
+  "format": "uri",
+  "uri": "urn:uuid:4e851e98-83c4-4743-a5da-150ecb53042f"
+}
+~~~
+{: #figexamplesubiddidbare title="Example: Subject Identifier for the URI Format, identifying a subject with a random URN"}
 
 ### Aliases Identifier Format {#sub-id-aliases}
 The Aliases Identifier Format describes a subject that is identified with a list of different Subject Identifiers. It is intended for use when a variety of identifiers have been shared with the party that will be interpreting the Subject Identifier, and it is unknown which of those identifiers they will recognize or support.  Subject Identifiers in this format MUST contain an `identifiers` member whose value is a JSON array containing one or more Subject Identifiers.  Each Subject Identifier in the array MUST identify the same entity.  The `identifiers` member is REQUIRED and MUST NOT be null or empty.  It MAY contain multiple instances of the same Identifier Format (e.g., multiple Email Subject Identifiers), but SHOULD NOT contain exact duplicates.  This format is identified by the name `aliases`. 
@@ -438,13 +484,6 @@ Defining Document(s)
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
-#### Decentralized Identifier Format
-
-* Format Name: "did"
-* Format Description: Subject identifier based on a Decentralized Identifier (DID) URL.
-* Change Controller: IETF
-* Defining Document(s): {{sub-ids}} of this document.
-
 #### Email Identifier Format
 
 * Format Name: `email`
@@ -470,6 +509,20 @@ Defining Document(s)
 
 * Format Name: "phone_number"
 * Format Description: Subject identifier based on an phone number.
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Decentralized Identifier Format
+
+* Format Name: "did"
+* Format Description: Subject identifier based on a decentralized identifier (DID).
+* Change Controller: IETF
+* Defining Document(s): {{sub-ids}} of this document.
+
+#### Uniform Resource Identifier Format
+
+* Format Name: "uri"
+* Format Description: Subject identifier based on a uniform resource identifier (URI).
 * Change Controller: IETF
 * Defining Document(s): {{sub-ids}} of this document.
 
